@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "smartdetectoralertrules_failure_anomalies___azsuappinsights_nfr_poc_004_name": {
+            "defaultValue": "failure anomalies - azsuappinsights-nfr-poc-004",
+            "type": "String"
+        },
+        "components_azsuappinsights_nfr_poc_004_externalid": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-devops-nfr-poc-001/providers/microsoft.insights/components/azsuappinsights-nfr-poc-004",
+            "type": "String"
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-dev-001/providers/microsoft.insights/actiongroups/application insights smart detection",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___azsuappinsights_nfr_poc_004_name')]",
+            "location": "global",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Dev/Test",
+                "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION"
+            },
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[parameters('components_azsuappinsights_nfr_poc_004_externalid')]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[parameters('actiongroups_application_insights_smart_detection_externalid')]"
+                    ],
+                    "customProperties": {
+                        "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION",
+                        "Environment": "Preproduction"
+                    }	   						
+                }
+            }
+        }
+    ]
+}

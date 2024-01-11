@@ -1,0 +1,194 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webJobsWebAppName": {
+      "type": "string"
+    },
+    "webJobsWebAppLocation": {
+      "type": "string"
+    },
+    "webJobsWebAppHostingEnvironment": {
+      "type": "string"
+    },
+    "webJobsWebAppHostingPlanName": {
+      "type": "string"
+    },
+    "webJobsWebAppServerFarmResourceGroup": {
+      "type": "string"
+    },
+    "webJobsWebAppCurrentStack": {
+      "type": "string"
+    },
+    "appInsightsName": {
+      "type": "string"
+    },
+    "keyVaultName": {
+      "type": "string"
+    },
+    "loggingStorageAccountName": {
+      "type": "string"
+    },
+     "diagLoglawsubid": {
+      "type": "string"
+    },
+    "diagLoglaw_rg": {
+      "type": "string"
+    },
+    "diagLoglaw_name": {
+      "type": "string"
+    }   
+  },
+  "variables": {
+    "subscriptionId": "[subscription().subscriptionId]",
+    "asp_rg": "azsu-rg-nfr-poc-fa-asp",
+    "DiagLogwebapSettingName": "AzureAppsServiceDiagnoticsLogsToWorkspace"
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-11-01",
+      "name": "[parameters('webJobsWebAppName')]",
+      "type": "Microsoft.Web/sites",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "location": "[parameters('webJobsWebAppLocation')]",
+      "tags": null,
+      "dependsOn": [],
+      "properties": {
+        "name": "[parameters('webJobsWebAppName')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', parameters('appInsightsName')), '2014-04-01').InstrumentationKey]"
+            },
+            {
+              "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "XDT_MicrosoftApplicationInsights_Mode",
+              "value": "default"
+            },
+            {
+              "name": "VaultUrl",
+              "value": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/')]"
+            },
+            {
+              "name": "LogStorageAccountConnection",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('loggingStorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('loggingStorageAccountName')), '2017-10-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
+            },
+            {
+              "name": "StorageAccountLogLevel",
+              "value": "Information"
+            },
+            {
+              "name": "SearchNoOfDays",
+              "value": "365"
+            },
+            {
+              "name": "WEBJOBS_IDLE_TIMEOUT",
+              "value": "600"
+            }
+          ],
+          "metadata": [
+            {
+              "name": "CURRENT_STACK",
+              "value": "[parameters('webJobsWebAppCurrentStack')]"
+            }
+          ],
+          "alwaysOn": true
+        },
+        "serverFarmId": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('asp_rg'), '/providers/Microsoft.Web/serverfarms/', parameters('webJobsWebAppHostingPlanName'))]",
+        "hostingEnvironment": "[parameters('webJobsWebAppHostingEnvironment')]",
+        "clientAffinityEnabled": true
+      },
+      "resources": [
+        {
+          "type": "providers/diagnosticSettings",
+          "apiVersion": "2017-05-01-preview",
+          "name": "[concat('Microsoft.Insights/', variables('DiagLogwebapSettingName'))]",
+          "location": "[parameters('webJobsWebAppLocation')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('webJobsWebAppName'))]"
+          ],
+          "properties": {
+            "name": "[variables('DiagLogwebapSettingName')]",
+            "storageAccountId": null,
+            "eventHubAuthorizationRuleId": null,
+            "eventHubName": null,
+            "workspaceId": "[resourceId(parameters('diagLoglawsubid'), parameters('diagLoglaw_rg'), 'microsoft.operationalinsights/workspaces',parameters('diagLoglaw_name'))]",
+            "logs": [
+                {
+                    "category": "AppServiceHTTPLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceConsoleLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceAppLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceAuditLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceIPSecAuditLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServicePlatformLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                }
+            ],
+            "metrics": [
+              {
+                "category": "AllMetrics",
+                "timeGrain": null,
+                "enabled": true,
+                "retentionPolicy": {
+                  "enabled": true,
+                  "days": 365
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

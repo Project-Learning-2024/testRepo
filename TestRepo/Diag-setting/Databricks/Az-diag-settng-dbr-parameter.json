@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dbrname": {
+            "value": ""
+        },
+        "diagLoglawsubid": {
+        "value": "a2a057a9-c6d7-42cf-b5eb-c7b69aad9042"
+        },
+        "diagLoglaw_rg": {
+        "value": "azsu-rg-coreloganalyticsprod-sipd-001"
+        },
+        "diagLoglaw_name": {
+        "value": ""
+        },        
+        "apiversion": {
+            "value": "2021-05-01-preview"
+        }          
+    }
+}

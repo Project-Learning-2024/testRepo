@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "service_Apimtiertestpoc_name": {
+            "defaultValue": "Apimtiertestpoc",
+            "type": "String"
+        }      
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2022-04-01-preview",
+            "name": "[parameters('service_Apimtiertestpoc_name')]",
+            "location": "UK South",
+            "sku": {
+                "name": "Premium",
+                "capacity": 1
+            },
+            "properties": {
+                "publisherEmail": "suresh.s@centrica.com",
+                "publisherName": "Centrica",
+                "notificationSenderEmail": "suresh.s@centrica.com",              
+                "virtualNetworkType": "None",
+                "disableGateway": false,
+                "apiVersionConstraint": {},                
+                "publicNetworkAccess": "Enabled"
+            }
+        }
+    ]
+}

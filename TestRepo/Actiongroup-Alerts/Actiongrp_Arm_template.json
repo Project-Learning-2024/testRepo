@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "actionGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique name (within the Resource Group) for the Action group."
+      }
+    },
+    "actionGroupShortName": {
+      "type": "string",
+      "metadata": {
+        "description": "Short name (maximum 12 characters) for the Action group."
+      }
+    }
+  },
+  "resources": [
+    {
+    
+    "type": "Microsoft.Insights/ActionGroups",
+    "apiVersion": "2022-06-01",
+    "name": "[parameters('actionGroupName')]",
+    "location": "Global",
+    "kind": null,
+    "properties": {
+        "groupShortName": "[parameters('actionGroupShortName')]",
+        "enabled": true,
+        "tags": null,
+        "emailReceivers": [],
+        "smsReceivers": [],
+        "WebhookReceivers": [
+            {
+                "name": "AG_webhook_poc",
+                "serviceUri": "https://csmpmpreprod.service-now.com",
+                "useCommonAlertSchema": false,
+                "useAadAuth": true,
+                "objectId": "9b8d91ba-7e00-46c9-a3d7-29f6662d5197",
+                "identifierUri": "api://6ab07f80-0417-4dab-95fa-dd87ecfa2ef3",
+                "tenantId": "a603898f-7de2-45ba-b67d-d35fb519b2cf"
+            
+                }
+                            
+            
+        ],
+        "eventHubReceivers": [],
+        "itsmReceivers": [],
+        "azureAppPushReceivers": [],
+        "automationRunbookReceivers": [],
+        "voiceReceivers": [],
+        "logicAppReceivers": [],
+        "azureFunctionReceivers": [],
+        "armRoleReceivers": []
+    }
+    
+    }
+  ]
+}

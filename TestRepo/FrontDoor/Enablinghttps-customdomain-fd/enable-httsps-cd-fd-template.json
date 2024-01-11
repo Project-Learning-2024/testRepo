@@ -1,0 +1,16 @@
+    {
+      "type": "Microsoft.Network/frontdoors/frontendEndpoints/customHttpsConfiguration",
+      "apiVersion": "2020-07-01",
+      "dependsOn": [
+          "[resourceId('Microsoft.Network/frontdoors/', parameters('frontDoorName'))]"
+      ],       
+      "name": "[format('{0}/{1}/{2}', parameters('frontDoorName'), variables('customDomainName1'), 'default')]",
+      "properties": {
+        "protocolType": "ServerNameIndication",
+        "certificateSource": "FrontDoor",
+        "frontDoorCertificateSourceParameters": {
+          "certificateType": "Dedicated"
+        },
+        "minimumTlsVersion": "1.2"
+      }
+    }, 

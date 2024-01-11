@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverName": {
+            "value": "azsusqlserver-poc-001"
+        },
+        "workspaceName": {
+            "value": "azsu-d-law-sipd-001"
+        },               
+        "logAnalyticsWorkspaceResourceId": {
+            "value": "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"
+        },
+        "diagLogSettingName": {
+            "value": "archiveTolaw"
+        },
+        "sqlDatabaseName": {
+            "value": "azsusqldbpoc-001"
+        }
+
+    }
+}

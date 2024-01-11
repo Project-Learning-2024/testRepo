@@ -1,0 +1,644 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "servers_azsusqlserver_poc_001_name": {
+            "defaultValue": "azsusqlserver-poc-001",
+            "type": "String"
+        },
+        "workspaceName": {
+            "defaultValue": "POC-LogAnalytics-Integration",
+            "type": "String"
+        },
+        "dbName": {
+            "defaultValue": "azsusqldbpoc-001",
+            "type": "String"
+        }                 
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[parameters('servers_azsusqlserver_poc_001_name')]",
+            "location": "uksouth",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Dev/Test",
+                "ServiceName": "FIELD OPERATIONS PLATFORM Dev/Test"
+            },
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "pocadmin123",
+                "administratorLoginPassword": "Pocadmin@123",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Disabled",
+                "administrators": {
+                    "administratorType": "ActiveDirectory",
+                    "principalType": "User",
+                    "login": "Surendranath.RJ@centrica.com",
+                    "sid": "1cb7f53a-cc37-4fa6-b9a4-a2e0e6d0b0c0",
+                    "tenantId": "a603898f-7de2-45ba-b67d-d35fb519b2cf",
+                    "azureADOnlyAuthentication": false
+                },
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/administrators",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/ActiveDirectory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "Surendranath.RJ@centrica.com",
+                "sid": "1cb7f53a-cc37-4fa6-b9a4-a2e0e6d0b0c0",
+                "tenantId": "a603898f-7de2-45ba-b67d-d35fb519b2cf"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advancedThreatProtectionSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "isDevopsAuditEnabled": false,
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "azureADOnlyAuthentication": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/connectionPolicies",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/default')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "connectionType": "Default"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Dev/Test",
+                "ServiceName": "FIELD OPERATIONS PLATFORM Dev/Test"
+            },
+            "sku": {
+                "name": "GP_S_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 1
+            },
+            "kind": "v12.0,user,vcore,serverless",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 34359738368,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "autoPauseDelay": 60,
+                "requestedBackupStorageRedundancy": "Local",
+                "minCapacity": 0.5,
+                "maintenanceConfigurationId": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Default')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Default')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },      
+        {
+            "type": "Microsoft.Sql/servers/devOpsAuditingSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/extendedAuditingSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "isDevopsAuditEnabled": false,
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/keys",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/ServiceManaged')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyType": "ServiceManaged"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/sqlVulnerabilityAssessments",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Default')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "weeklyRetention": "PT0S",
+                "monthlyRetention": "PT0S",
+                "yearlyRetention": "PT0S",
+                "weekOfYear": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 7,
+                "diffBackupIntervalInHours": 12
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Default')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2022-02-01-preview",
+            "name": "[concat(parameters('servers_azsusqlserver_poc_001_name'), '/azsusqldbpoc-001/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azsusqlserver_poc_001_name'), 'azsusqldbpoc-001')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azsusqlserver_poc_001_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        }
+    ]
+}

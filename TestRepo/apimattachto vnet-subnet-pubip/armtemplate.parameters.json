@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "service_Apim_name": {
+            "value": "fieldopsfit001"
+        },
+        "vnet_snet_id": {
+            "value": "/subscriptions/$()/resourceGroups/$()/providers/Microsoft.Network/virtualNetworks/$()/subnets/$()"
+        },
+        "pubIP_id": {
+            "value": "/subscriptions/$()/resourceGroups/$()/providers/Microsoft.Network/publicIPAddresses/$()"
+        },
+        "sku_type": {
+            "value": "Developer"
+        }
+    }
+}

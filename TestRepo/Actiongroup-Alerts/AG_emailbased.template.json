@@ -1,0 +1,88 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AG_name": {
+            "type": "String"
+        },
+        "AG_name_short": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2022-06-01",
+            "name": "[parameters('AG_name')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "[parameters('AG_name_short')]",
+                "enabled": true,
+                "tags": null,
+                "emailReceivers": [
+                    {
+                        "name": "Aman_-EmailAction-",
+                        "emailAddress": "aman.khan@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Anitha_-EmailAction-",
+                        "emailAddress": "anitha.mutyala@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Anmol_-EmailAction-",
+                        "emailAddress": "anmol.jain@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Vijay_-EmailAction-",
+                        "emailAddress": "vijaykumar.s@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Suresh_-EmailAction-",
+                        "emailAddress": "suresh.s@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Idris_-EmailAction-",
+                        "emailAddress": "shaikmohammed.idris@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Vignesh_-EmailAction-",
+                        "emailAddress": "vignesh.r@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Venkatraj_-EmailAction-",
+                        "emailAddress": "venkatraj.vp@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Prabhu_-EmailAction-",
+                        "emailAddress": "prabhu.dhanasekar@centrica.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Praveen_-EmailAction-",
+                        "emailAddress": "praveenreddy.ariga@centrica.com",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "eventHubReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": []
+            }
+        }
+    ]
+}

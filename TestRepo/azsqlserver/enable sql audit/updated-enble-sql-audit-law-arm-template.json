@@ -1,0 +1,156 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverName": {
+            "type": "String"
+        },
+        "workspaceName": {
+            "type": "String"
+        },
+        "logAnalyticsWorkspaceResourceId": {
+            "type": "String"
+        },
+        "diagLogSettingName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Storage Account in which Diagnostic Logs should be saved."
+            }
+        },
+        "sqlDatabaseName": {
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "2017-03-01-preview",
+            "name": "[concat(parameters('serverName'),'/Default')]",
+            "properties": {
+                "state": "Enabled",
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000",
+                "isAzureMonitorTargetEnabled": true
+            }
+        },
+        {
+            "type": "microsoft.sql/servers/databases/providers/diagnosticSettings",
+            "name": "[concat(parameters('serverName'),'/master/microsoft.insights/', parameters('workspaceName'))]",
+            "apiVersion": "2017-05-01-preview",
+            "properties": {
+                "name": "[parameters('workspaceName')]",
+                "workspaceId": "[parameters('logAnalyticsWorkspaceResourceId')]",
+                "logs": [
+                    {
+                        "category": "SQLSecurityAuditEvents",
+                        "enabled": true
+                    }
+                ]
+            }
+        },
+        {
+
+            "type": "microsoft.sql/servers/databases/providers/diagnosticSettings",
+            "name": "[concat(parameters('serverName'),'/', parameters('sqlDatabaseName'),'/Microsoft.Insights/', parameters('diagLogSettingName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases/', parameters('serverName'), parameters('sqlDatabaseName'))]"
+            ],
+            "apiVersion": "2017-05-01-preview",
+            "properties": {
+                "name": "[parameters('diagLogSettingName')]",
+                "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces', parameters('workspaceName'))]",
+                "logs": [
+                    {
+                        "category": "SQLInsights",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "AutomaticTuning",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "QueryStoreRuntimeStatistics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "QueryStoreWaitStatistics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "Errors",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "DatabaseWaitStatistics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "Timeouts",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "Blocks",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "Deadlocks",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 365,
+                            "enabled": false
+                        }
+                    }
+                ],
+                "metrics": [
+                    {
+                        "category": "AllMetrics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": false,
+                            "days": 365
+                        }
+                    }
+                ]
+            }
+        }
+
+    ]
+}

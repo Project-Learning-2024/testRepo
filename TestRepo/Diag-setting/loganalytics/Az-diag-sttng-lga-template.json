@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "lganame": {
+            "type": "string"
+        },
+        "diagLoglawsubid": {
+            "type": "string"
+        },
+        "diagLoglaw_rg": {
+            "type": "string"
+        },
+        "diagLoglaw_name": {
+            "type": "string"
+        },
+        "apiversion": {
+            "type": "string"
+        }        
+
+    },
+    "variables": {
+        "DiagSettingName": "AzureLogicAppDiagnoticsLogsToWorkspace"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows/providers/diagnosticSettings",
+            "name": "[concat(parameters('lganame'),'/microsoft.insights/', variables('DiagSettingName'))]",
+            "apiVersion": "[parameters('apiversion')]",
+            "properties": {
+                "name": "[variables('DiagSettingName')]",
+                "workspaceId": "[resourceId(parameters('diagLoglawsubid'), parameters('diagLoglaw_rg'), 'microsoft.operationalinsights/workspaces',parameters('diagLoglaw_name'))]",
+                "logs": [
+                    {
+                        "category": null,
+                        "categoryGroup": "allLogs",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    }
+                ],
+                "metrics": [
+                    {
+                        "timeGrain": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        },
+                        "category": "AllMetrics"
+                    }
+                ]
+            }
+        }
+    ]
+}

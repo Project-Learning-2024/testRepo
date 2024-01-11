@@ -1,0 +1,25 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": ""
+        },
+        "firewallPolicyName": {
+            "value": ""
+        },
+        "vnet_address": {
+            "value": ""
+        },
+        "spokepub_address1": {
+            "value": ""
+        },
+        "spokepub_address2": {
+            "value": ""
+        },
+        "denyprvtep_address": {
+            "value": ""
+        }                 
+        
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "scheduledqueryrules_Forecasting_Prod_Long_Running_Pipelines_name": {
+            "type": "String"
+        },
+        "workspaces_azsuloganalyticsforecastprod_externalid": {
+            "type": "String"
+        },
+        "actiongroups_sipd_snow_int_externalid": {
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/scheduledqueryrules",
+            "apiVersion": "2022-06-15",
+            "name": "[parameters('scheduledqueryrules_Forecasting_Prod_Long_Running_Pipelines_name')]",
+            "location": "uksouth",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Preproduction",
+                "Accountable": "Pre-Production",
+                "ServiceName": "FIELD OPERATIONS - FORECASTING"
+            },
+            "properties": {
+                "displayName": "[parameters('scheduledqueryrules_Forecasting_Prod_Long_Running_Pipelines_name')]",
+                "severity": 3,
+                "enabled": true,
+                "evaluationFrequency": "PT1H",
+                "scopes": [
+                    "[parameters('workspaces_azsuloganalyticsforecastprod_externalid')]"
+                ],
+                "targetResourceTypes": [
+                    "microsoft.operationalinsights/workspaces"
+                ],
+                "windowSize": "PT1H",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "query": "ADFPipelineRun  \n\n| where Status ==\"InProgress\"  // Pipeline is in progress \n\n| where RunId !in (( ADFPipelineRun | where Status in (\"Succeeded\",\"Failed\",\"Cancelled\") | project RunId ) ) // Subquery, pipeline hasn't finished \n\n| where datetime_diff('minute',now(),Start) > 600 // It has been running for more than 10 hrs\n\n",
+                            "timeAggregation": "Count",
+                            "dimensions": [],
+                            "operator": "GreaterThan",
+                            "threshold": 0,
+                            "failingPeriods": {
+                                "numberOfEvaluationPeriods": 1,
+                                "minFailingPeriodsToAlert": 1
+                            }
+                        }
+                    ]
+                },
+                "autoMitigate": false,
+                "actions": {
+                    "actionGroups": [
+                        "[parameters('actiongroups_sipd_snow_int_externalid')]"
+                    ],
+                    "customProperties": {
+                        "Service Name": "FIELD OPERATIONS - FORECASTING",
+                        "Environment": "PreProduction"
+                    }
+                }
+            }
+        }
+    ]
+}

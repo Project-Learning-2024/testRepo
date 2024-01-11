@@ -1,0 +1,158 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "profileName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the frontdoor resource."
+            }
+        },
+        "originGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the backendpool."
+            }
+        },
+        "originName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the backend."
+            }
+        },
+        "originHostName": {
+            "type": "string",
+            "metadata": {
+                "description": "The Hostname of the backend."
+            }
+        },
+        "routeName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Routingrule."
+            }
+        },
+        "Diagsettngs_Name": {
+            "type": "string"
+        },
+        "diagLoglawsubid": {
+            "type": "string"
+        },
+        "diagLoglaw_rg": {
+            "type": "string"
+        },
+        "diagLoglaw_name": {
+            "type": "string"
+        }
+
+    },
+    "variables": {
+        "frontEndEndpointName": "[concat(parameters('profileName'), '.azurefd.net')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Cdn/profiles",
+            "apiVersion": "2021-06-01",
+            "name": "[parameters('profileName')]",
+            "location": "global",
+            "sku": {
+                "name": "Standard_AzureFrontDoor"
+            },
+            "kind": "frontdoor",
+            "properties": {
+                "enabledState": "Enabled",
+                "afdEndpoints": [
+                    {
+                        "name": "[variables('frontEndEndpointName')]",
+                        "location": "global",
+                        "properties": {
+                            "enabledState": "Enabled"
+                        }
+                    }
+
+                ],
+                "originGroups": [
+                    {
+                        "name": "[parameters('originGroupName')]",
+                        "properties": {
+                            "loadBalancingSettings": {
+                                "sampleSize": 4,
+                                "successfulSamplesRequired": 2
+                            },
+                            "healthProbeSettings": {
+                                "probePath": "/",
+                                "probeRequestType": "HEAD",
+                                "probeProtocol": "Https",
+                                "probeIntervalInSeconds": 30
+                            },
+                            "origins": [
+                                {
+                                    "name": "[parameters('originName')]",
+                                    "properties": {
+                                        "hostName": "[parameters('originHostName')]",
+                                        "httpPort": 80,
+                                        "httpsPort": 443,
+                                        "originHostHeader": "[parameters('originHostName')]",
+                                        "priority": 1,
+                                        "weight": 50
+                                    }
+                                }
+
+                            ]
+                        }
+                    }
+                ]
+
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdEndpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[format('{0}/{1}/{2}', parameters('profileName'), variables('frontEndEndpointName'), parameters('routeName'))]",
+            "properties": {
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('profileName'), parameters('originGroupName'))]"
+                },
+                "supportedProtocols": [
+                    "Http",
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Enabled",
+                "httpsRedirect": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Insights/diagnosticSettings",
+            "apiVersion": "2021-05-01-preview",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/', parameters('profileName'))]"
+            ],
+            "scope": "[concat('Microsoft.Cdn/profiles/', parameters('profileName'))]",
+            "name": "[parameters('Diagsettngs_Name')]",
+            "location": "uksouth",
+            "properties": {
+                "workspaceId": "[resourceId(parameters('diagLoglawsubid'), parameters('diagLoglaw_rg'), 'microsoft.operationalinsights/workspaces',parameters('diagLoglaw_name'))]",
+                "logs": [
+                    {
+                        "category": "FrontdoorAccessLog",
+                        "enabled": true
+                    },
+                    {
+                        "category": "FrontdoorWebApplicationFirewallLog",
+                        "enabled": true
+                    }
+                ],
+                "metrics": [
+                    {
+                        "category": "AllMetrics",
+                        "enabled": true
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of new or existing vnet"
+            }
+        },
+        "mgmnt_Subnetnme": {
+            "type": "string",
+            "metadata": {
+                "description": "Management subnet name"
+            }
+        },
+        "mgmnt_SubnetAddressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Address space of the subnet to add"
+            }
+        },
+        "routeTable_nme": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the routetable"
+            }
+        },
+        "location": {
+            "type": "string"
+        },
+
+        "mgmnt_nsgName": {
+            "type": "String",
+            "metadata": {
+                "description": "Management NSG"
+            }
+        }
+
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2021-03-01",
+            "name": "[format('{0}/{1}', parameters('vnetName'), parameters('mgmnt_Subnetnme'))]",
+            "properties": {
+                "addressPrefix": "[parameters('mgmnt_SubnetAddressPrefix')]",
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('mgmnt_nsgName'))]"
+                },
+                "routeTable": {
+                    "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTable_nme'))]"
+                }
+            }
+        }
+    ]
+}

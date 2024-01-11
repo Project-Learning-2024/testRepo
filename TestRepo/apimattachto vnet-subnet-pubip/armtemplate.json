@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "service_Apim_name": {
+            "type": "String"
+        },
+        "vnet_snet_id": {
+            "type": "String"
+        },
+        "pubIP_id": {
+            "type": "String"
+        },
+        "sku_type": {
+            "type": "String"
+        } 
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2021-08-01",
+            "name": "[parameters('service_Apim_name')]",
+            "location": "UK South",
+            "sku": {
+                "name": "[parameters('sku_type')]",
+                "capacity": 1
+            },           
+            "properties": {
+                "publisherEmail": "suresh.s@centrica.com",
+                "publisherName": "Centrica",
+                "notificationSenderEmail": "suresh.s@centrica.com",
+                "virtualNetworkConfiguration": {
+                    "subnetResourceId": "[parameters('vnet_snet_id')]"
+                },                
+                "virtualNetworkType": "External",
+                "disableGateway": false,
+                "apiVersionConstraint": {},               
+                "publicNetworkAccess": "Enabled",
+                "publicIpAddressId": "[parameters('pubIP_id')]"
+            }
+        }
+    ]
+}

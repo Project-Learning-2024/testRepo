@@ -1,0 +1,302 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "FrontDoor_PrfleName": {
+            "value": ""
+        },
+        "FD_Default_originHostName": {
+            "value": "$()"
+        },
+        "FE_CDN_api_test01": {
+            "value": "$()"
+        },
+        "FE_CDN_dvlpr_test01": {
+            "value": "$()"
+        },
+        "FE_CDN_mngmt_test01": {
+            "value": "$()"
+        },
+        "FE_CDN_pilot_test01": {
+            "value": "$()"
+        },
+        "FE_CDN_prtl_test01": {
+            "value": "$()"
+        },
+        "FE_CDN_scm_test01": {
+            "value": "$()"
+        },
+        "FD_rulset_nme_test01": {
+            "value": "$()"
+        },
+        "FE_CDN_api_fit01": {
+            "value": "$()"
+        },
+        "FE_CDN_dvlpr_fit01": {
+            "value": "$()"
+        },
+        "FE_CDN_mngmt_fit01": {
+            "value": "$()"
+        },
+        "FE_CDN_pilot_fit01": {
+            "value": "$()"
+        },
+        "FE_CDN_prtl_fit01": {
+            "value": "$()"
+        },
+        "FE_CDN_scm_fit01": {
+            "value": "$()"
+        },
+        "FD_rulset_nme_fit01": {
+            "value": "$()"
+        },
+        "FE_CDN_api_fit02": {
+            "value": "$()"
+        },
+        "FE_CDN_dvlpr_fit02": {
+            "value": "$()"
+        },
+        "FE_CDN_mngmt_fit02": {
+            "value": "$()"
+        },
+        "FE_CDN_pilot_fit02": {
+            "value": "$()"
+        },
+        "FE_CDN_prtl_fit02": {
+            "value": "$()"
+        },
+        "FE_CDN_scm_fit02": {
+            "value": "$()"
+        },
+        "FD_rulset_nme_fit02": {
+            "value": "$()"
+        },
+        "FE_CDN_api_fit03": {
+            "value": "$()"
+        },
+        "FE_CDN_dvlpr_fit03": {
+            "value": "$()"
+        },
+        "FE_CDN_mngmt_fit03": {
+            "value": "$()"
+        },
+        "FE_CDN_pilot_fit03": {
+            "value": "$()"
+        },
+        "FE_CDN_prtl_fit03": {
+            "value": "$()"
+        },
+        "FE_CDN_scm_fit03": {
+            "value": "$()"
+        },
+        "FD_rulset_nme_fit03": {
+            "value": "$()"
+        },
+        "OGnme_api_test01": {
+            "value": "$()"
+        },
+        "OGnme_dvlpr_test01": {
+            "value": "$()"
+        },
+        "OGnme_mngmt_test01": {
+            "value": "$()"
+        }, 
+        "OGnme_prtl_test01": {
+            "value": "$()"
+        },
+        "OGnme_scm_test01": {
+            "value": "$()"
+        }, 
+        "Org_HostName_api_test01": {
+            "value": "$()"
+        },         
+        "Org_HostName_dvlpr_test01": {
+            "value": "$()"
+        },
+        "Org_HostName_mngmt_test01": {
+            "value": "$()"
+        },
+        "Org_HostName_prtl_test01": {
+            "value": "$()"
+        },
+        "Org_HostName_scm_test01": {
+            "value": "$()"
+        },
+        "OGnme_api_fit01": {
+            "value": "$()"
+        },
+        "OGnme_dvlpr_fit01": {
+            "value": "$()"
+        },
+        "OGnme_mngmt_fit01": {
+            "value": "$()"
+        }, 
+        "OGnme_prtl_fit01": {
+            "value": "$()"
+        },
+        "OGnme_scm_fit01": {
+            "value": "$()"
+        }, 
+        "Org_HostName_api_fit01": {
+            "value": "$()"
+        },         
+        "Org_HostName_dvlpr_fit01": {
+            "value": "$()"
+        },
+        "Org_HostName_mngmt_fit01": {
+            "value": "$()"
+        },
+        "Org_HostName_prtl_fit01": {
+            "value": "$()"
+        },
+        "Org_HostName_scm_fit01": {
+            "value": "$()"
+        },
+        "OGnme_api_fit02": {
+            "value": "$()"
+        },
+        "OGnme_dvlpr_fit02": {
+            "value": "$()"
+        },
+        "OGnme_mngmt_fit02": {
+            "value": "$()"
+        }, 
+        "OGnme_prtl_fit02": {
+            "value": "$()"
+        },
+        "OGnme_scm_fit02": {
+            "value": "$()"
+        }, 
+        "Org_HostName_api_fit02": {
+            "value": "$()"
+        },         
+        "Org_HostName_dvlpr_fit02": {
+            "value": "$()"
+        },
+        "Org_HostName_mngmt_fit02": {
+            "value": "$()"
+        },
+        "Org_HostName_prtl_fit02": {
+            "value": "$()"
+        },
+        "Org_HostName_scm_fit02": {
+            "value": "$()"
+        },
+        "OGnme_api_fit03": {
+            "value": "$()"
+        },
+        "OGnme_dvlpr_fit03": {
+            "value": "$()"
+        },
+        "OGnme_mngmt_fit03": {
+            "value": "$()"
+        }, 
+        "OGnme_prtl_fit03": {
+            "value": "$()"
+        },
+        "OGnme_scm_fit03": {
+            "value": "$()"
+        }, 
+        "Org_HostName_api_fit03": {
+            "value": "$()"
+        },         
+        "Org_HostName_dvlpr_fit03": {
+            "value": "$()"
+        },
+        "Org_HostName_mngmt_fit03": {
+            "value": "$()"
+        },
+        "Org_HostName_prtl_fit03": {
+            "value": "$()"
+        },
+        "Org_HostName_scm_fit03": {
+            "value": "$()"
+        },                                                                       
+        "Routing_RulName_api_test01": {
+            "value": "$()"
+        },
+        "Routing_RulName_dvlpr_test01": {
+            "value": "$()"
+        }, 
+        "Routing_RulName_mngmt_test01": {
+            "value": "$()"
+        },
+        "Routing_RulName_prtl_test01": {
+            "value": "$()"
+        },
+        "Routing_RulName_scm_test01": {
+            "value": "$()"
+        },
+        "Routing_RulName_http_to_https_test01": {
+            "value": "$()"
+        },
+               
+        "Routing_RulName_api_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_http_to_https_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_dvlpr_fit01": {
+            "value": "$()"
+        }, 
+        "Routing_RulName_mngmt_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_prtl_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_scm_fit01": {
+            "value": "$()"
+        },                 
+        "Routing_RulName_api_fit02": {
+            "value": "$()"
+        },
+        "Routing_RulName_http_to_https_fit02": {
+            "value": "$()"
+        }, 
+        "Routing_RulName_dvlpr_fit02": {
+            "value": "$()"
+        }, 
+        "Routing_RulName_mngmt_fit02": {
+            "value": "$()"
+        },
+        "Routing_RulName_prtl_fit02": {
+            "value": "$()"
+        },
+        "Routing_RulName_scm_fit02": {
+            "value": "$()"
+        },                       
+        "Routing_RulName_api_fit03": {
+            "value": "$()"
+        },
+        "Routing_RulName_http_to_https_fit03": {
+            "value": "$()"
+        }, 
+        "Routing_RulName_dvlpr_fit03": {
+            "value": "$()"
+        }, 
+        "Routing_RulName_mngmt_fit03": {
+            "value": "$()"
+        },
+        "Routing_RulName_prtl_fit03": {
+            "value": "$()"
+        },
+        "Routing_RulName_scm_fit03": {
+            "value": "$()"
+        }, 
+                                                                                                               
+        "FD_Diagsettngs_Name": {
+            "value": "AzureFrontDoorDiagnosticsLogsToWorkspace"
+        },
+        "diagLoglawsubid": {
+            "value": "a2a057a9-c6d7-42cf-b5eb-c7b69aad9042"
+        },
+        "diagLoglaw_rg": {
+            "value": "azsu-rg-coreloganalyticsprod-sipd-001"
+        },
+        "diagLoglaw_name": {
+            "value": "$()"
+        }  
+    }
+}        

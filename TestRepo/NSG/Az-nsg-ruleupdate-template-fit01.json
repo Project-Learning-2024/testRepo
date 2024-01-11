@@ -1,0 +1,680 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "nsg_name": {
+            "type": "string"
+        },        
+        "nsgrule1": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ClientCommunicationToAPIManagementInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "80",
+                        "sourceAddressPrefix": "AzureFrontDoor.Backend",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 100,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule2": {
+            "type": "object",
+            "defaultValue": {
+                "name": "SecureClientCommunicationToAPIManagementInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "443",
+                        "sourceAddressPrefix": "AzureFrontDoor.Backend",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 110,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule3": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ManagementEndpointForAzurePortalAndPowershellInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "3443",
+                        "sourceAddressPrefix": "ApiManagement",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 120,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule4": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnRedisCacheInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "6381-6383",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 130,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule5": {
+            "type": "object",
+            "defaultValue": {
+                "name": "AzureInfrastructureLoadBalancer",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "*",
+                        "sourceAddressPrefix": "AzureLoadBalancer",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 180,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule6": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnAzureSQLOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "1433",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Sql",
+                        "access": "Allow",
+                        "priority": 140,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule7": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyForLogToEventHubPolicyOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "5671",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "EventHub",
+                        "access": "Allow",
+                        "priority": 150,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule8": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnRedisCacheOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "6381-6383",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 160,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule9": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnAzureFileShareForGitOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "445",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Storage",
+                        "access": "Allow",
+                        "priority": 170,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule10": {
+            "type": "object",
+            "defaultValue": {
+                "name": "PublishDiagnosticLogsAndMetricsOutbound",
+                    "properties": {
+                        "description": "APIM Logs and Metrics for consumption by admins and your IT team are all part of the management plane",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "AzureMonitor",
+                        "access": "Allow",
+                        "priority": 185,
+                        "direction": "Outbound",
+                        "destinationPortRanges": [
+                            "443",
+                            "12000",
+                            "1886"
+                        ]
+                    }
+            }
+        },
+        "nsgrule11": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ConnectToSmtpRelayForSendingEmailsOutbound",
+                    "properties": {
+                        "description": "APIM features the ability to generate email traffic as part of the data plane and the management plane",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Internet",
+                        "access": "Allow",
+                        "priority": 190,
+                        "direction": "Outbound",
+                        "destinationPortRanges": [
+                            "25",
+                            "587",
+                            "25028"
+                        ]
+                    }
+            }
+        },
+
+        "nsgrule12": {
+            "type": "object",
+            "defaultValue": {
+                "name": "AuthenticateToAzureActiveDirectoryOutbound",
+                    "properties": {
+                        "description": "Connect to Azure Active Directory for Developer Portal Authentication or for Oauth2 flow during * Proxy Authentication",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "AzureActiveDirectory",
+                        "access": "Allow",
+                        "priority": 200,
+                        "direction": "Outbound",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ]
+                    }
+            }
+        },
+        "nsgrule13": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnAzureStorageOutbound",
+                    "properties": {
+                        "description": "APIM service dependency on Azure Blob and Azure Table Storage",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "443",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Storage",
+                        "access": "Allow",
+                        "priority": 100,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule14": {
+            "type": "object",
+            "defaultValue": {
+                "name": "PublishMonitoringLogsOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "443",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "AzureCloud",
+                        "access": "Allow",
+                        "priority": 300,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule15": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-01",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "199.168.148.0/22",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 201,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule16": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-02",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "213.152.228.0/24",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 202,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule17": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-03",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "216.218.133.192/26",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 203,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule18": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-04",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "216.52.207.64/26",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 204,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule19": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-05",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "64.74.126.64/26",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 205,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule20": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-06",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "70.39.159.0/24",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 206,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule21": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-07",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "72.52.96.0/26",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 207,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule22": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-08",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "8.25.203.0/24",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 208,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule23": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-09",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "89.167.131.0/24",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 209,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule24": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Zscaler-Hub-10",
+                    "properties": {
+                        "description": "Zscaler Hub networks",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "112.196.99.180/32",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 210,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule25": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerSuperNet-01",
+                    "properties": {
+                        "description": "Zscaler DC SuperNet",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "165.225.0.0/17",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 211,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule26": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerSuperNet-02",
+                    "properties": {
+                        "description": "Zscaler DC SuperNet",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "165.225.192.0/18",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 212,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule27": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerSuperNet-03",
+                    "properties": {
+                        "description": "Zscaler DC SuperNet",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "185.46.212.0/22",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 213,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule28": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerSuperNet-04",
+                    "properties": {
+                        "description": "Zscaler DC SuperNet",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "104.129.192.0/20",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 214,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule29": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerSuperNet-05",
+                    "properties": {
+                        "description": "Zscaler DC SuperNet",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "147.161.128.0/17",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 215,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+         "nsgrule30": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerSuperNet-06",
+                    "properties": {
+                        "description": "Zscaler DC SuperNet",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "136.226.0.0/16",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 216,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+         "nsgrule31": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerSuperNet-07",
+                    "properties": {
+                        "description": "Zscaler DC SuperNet",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "137.83.128.0/18",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 217,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+         "nsgrule32": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerOslo-01",
+                    "properties": {
+                        "description": "Zscaler Oslo DC",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "213.52.102.0/24",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 218,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+         "nsgrule33": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ZscalerTelAviv-01",
+                    "properties": {
+                        "description": "Zscaler Tel Aviv DC",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ],
+                        "sourceAddressPrefix": "94.188.131.0/25",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 219,
+                        "direction": "Inbound"
+                    }
+            }
+        }                                                                                                                                                                          
+    },
+    "variables": {     
+    },
+    "resources": [
+    {
+        "type": "Microsoft.Network/networkSecurityGroups",
+        "name": "[parameters('nsg_name')]",        
+        "apiVersion": "2019-09-01",
+        "location": "[parameters('location')]",
+        "properties": {
+            "securityRules": [
+                "[parameters('nsgrule1')]",
+                "[parameters('nsgrule2')]",
+                "[parameters('nsgrule3')]",
+                "[parameters('nsgrule4')]",
+                "[parameters('nsgrule5')]",
+                "[parameters('nsgrule6')]",
+                "[parameters('nsgrule7')]",
+                "[parameters('nsgrule8')]",
+                "[parameters('nsgrule9')]",
+                "[parameters('nsgrule10')]",
+                "[parameters('nsgrule11')]",
+                "[parameters('nsgrule12')]",
+                "[parameters('nsgrule13')]",
+                "[parameters('nsgrule14')]",
+                "[parameters('nsgrule15')]",
+                "[parameters('nsgrule16')]",
+                "[parameters('nsgrule17')]",
+                "[parameters('nsgrule18')]",
+                "[parameters('nsgrule19')]",
+                "[parameters('nsgrule20')]",
+                "[parameters('nsgrule21')]",
+                "[parameters('nsgrule22')]",
+                "[parameters('nsgrule23')]",
+                "[parameters('nsgrule24')]",
+                "[parameters('nsgrule25')]",
+                "[parameters('nsgrule26')]",
+                "[parameters('nsgrule27')]",
+                "[parameters('nsgrule28')]",
+                "[parameters('nsgrule29')]",
+                "[parameters('nsgrule30')]",
+                "[parameters('nsgrule31')]",
+                "[parameters('nsgrule32')]",
+                "[parameters('nsgrule33')]"              
+
+            ]
+        }
+    }
+    ]
+}

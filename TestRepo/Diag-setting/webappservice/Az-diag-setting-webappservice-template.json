@@ -1,0 +1,94 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webJobsWebAppName": {
+            "type": "string"
+        },
+        "law_ResourceId": {
+            "type": "string"
+        }
+
+    },
+    "variables": {
+        "DiagSettingName": "[concat(parameters('webJobsWebAppName'),'-diagnostics')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites/providers/diagnosticSettings",
+            "name": "[concat(parameters('webJobsWebAppName'),'/microsoft.insights/', variables('DiagSettingName'))]",
+            "apiVersion": "2017-05-01-preview",
+            "properties": {
+                "name": "[variables('DiagSettingName')]",
+                "workspaceId": "[parameters('law_ResourceId')]",
+                "logs": [
+                    {
+                        "category": "AppServiceHTTPLogs",
+                        "categoryGroup": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "AppServiceConsoleLogs",
+                        "categoryGroup": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "AppServiceAppLogs",
+                        "categoryGroup": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "AppServiceAuditLogs",
+                        "categoryGroup": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "AppServiceIPSecAuditLogs",
+                        "categoryGroup": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "AppServicePlatformLogs",
+                        "categoryGroup": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    }
+                ],
+                "metrics": [
+                    {
+                        "timeGrain": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        },
+                        "category": "AllMetrics"
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,182 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "Uk South"
+            
+        },
+        "nsg_name": {
+            "type": "string",
+            "defaultValue": "azsu-nsg-integration-azbastion-test-001"
+        },
+        "nsgrule1": {
+            "type": "object",
+            "defaultValue": {
+                "name": "GatewayManager",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "GatewayManager",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443"
+                    }
+            }
+        },
+        "nsgrule2": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Https",
+                    "properties": {
+                        "priority": 320,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "Internet",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443"
+                    }
+            }
+        },                            
+        "nsgrule3": {
+            "type": "object",
+            "defaultValue": {
+                "name": "LoadBalancer",
+                    "properties": {
+                        "priority": 340,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "AzureLoadBalancer",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443"
+                    }
+            }
+        },          
+
+        "nsgrule4": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Bastnhostcommunication",
+                    "properties": {
+                        "priority": 360,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "destinationPortRanges": [
+                            "8080",
+                            "5701"
+                        ] 
+                        
+                    }
+            }
+        },            
+
+        "nsgrule5": {
+            "type": "object",
+            "defaultValue": {
+                "name": "sshrdp",
+                    "properties": {
+                        "priority": 100,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "destinationPortRanges": [
+                            "22",
+                            "3389"
+                        ]
+                    }
+            }
+        },            
+
+        "nsgrule6": {
+            "type": "object",
+            "defaultValue": {
+                "name": "AzCloud", 
+                    "properties": {
+                        "priority": 110,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "AzureCloud",
+                        "destinationPortRange": "443"
+                    }
+            }         
+        },
+        "nsgrule7": {
+            "type": "object",
+            "defaultValue": {
+                "name": "Bastnhostcommunicationob",  
+                    "properties": {
+                        "priority": 120,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "destinationPortRanges": [
+                            "8080",
+                            "5701"
+                        ]
+                    }
+            }
+        },                            
+        "nsgrule8": {
+            "type": "object",
+            "defaultValue": {
+                "name": "AllowGetSessionInformationout",
+                    "properties": {
+                        "priority": 150,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "Internet",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ]
+                    }
+            }
+        }                    
+        
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('nsg_name')]",
+            "apiVersion": "2019-09-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    "[parameters('nsgrule1')]",
+                    "[parameters('nsgrule2')]",
+                    "[parameters('nsgrule3')]",
+                    "[parameters('nsgrule4')]",
+                    "[parameters('nsgrule5')]",
+                    "[parameters('nsgrule6')]",
+                    "[parameters('nsgrule7')]",
+                    "[parameters('nsgrule8')]"
+                ]
+            }
+        }
+    ]
+}

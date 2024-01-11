@@ -1,0 +1,170 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AlertName": {
+            "type": "String"
+        },
+        "WO_Name": {
+            "type": "String",
+            "allowedValues": [
+                "'ukf_CreateWorkOrder'",
+                "'ukf_CancelWorkOrder'",
+                "'ukf_updateworkorder'",
+                "'ukf_rescheduleworkorder'"
+            ]           
+        },
+        "AI_name": {
+            "type": "string"
+        },
+        "AG_name": {
+            "type": "string"
+        },        
+		"ServiceName":{
+			"type": "string",
+            "allowedValues": [
+                "FIELD OPERATIONS - FORECASTING",
+                "FIELD OPERATIONS - CAPACITY MANAGEMENT & ROSTERING",
+                "FIELD OPERATIONS - AZURE INTEGRATION",
+                "FIELD OPERATIONS - PLATFORM (D365)"
+            ] 
+		},
+		"Environment":{	
+			"type": "string",
+            "allowedValues": [
+                "Preproduction",
+				"Production"
+            ]           
+		},
+        "Alert_Description":{
+            "type": "string"
+        },
+        "AlertSeverity":{
+            "type": "int",
+            "allowedValues": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ]            
+        },		
+        "evaluationFrequency": {
+            "type": "string",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H"
+            ],
+            "metadata": {
+                "description": "how often the metric alert is evaluated represented in ISO 8601 duration format"
+            }
+        },
+        "timeAggregation": {
+            "type": "string",
+            "defaultValue": "Average",
+            "allowedValues": [
+                "Average",
+                "Minimum",
+                "Maximum",
+                "Total",
+                "Count"
+            ],
+            "metadata": {
+                "description": "How the data that is collected should be combined over time."
+            }
+        },        	
+        "windowSize": {
+            "type": "string",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H",
+                "PT6H",
+                "PT12H",
+                "PT24H"
+            ],
+            "metadata": {
+                "description": "Period of time used to monitor alert activity based on the threshold. Must be between one minute and one day. ISO 8601 duration format."
+            }
+        },
+        "threshold": {
+            "type": "int",
+            "metadata": {
+                "description": "The threshold value at which the alert is activated."
+            }
+        },	      
+        "operator": {
+            "type": "string",
+            "allowedValues": [
+                "Equals",
+                "GreaterThan",
+                "GreaterThanOrEqual",
+                "LessThan",
+                "LessThanOrEqual"
+            ],
+            "metadata": {
+                "description": "Operator comparing the current value with the threshold value."
+            }
+        }	
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/scheduledqueryrules",
+            "apiVersion": "2022-06-15",
+            "name": "[parameters('AlertName')]",
+            "location": "UK South",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "[parameters('Environment')]",
+                "Service Name": "[parameters('ServiceName')]"
+            },
+            "properties": {
+                "displayName": "[parameters('AlertName')]",
+                "description": "[parameters('Alert_Description')]",
+                "severity": "[parameters('AlertSeverity')]",
+                "enabled": true,
+                "evaluationFrequency": "[parameters('evaluationFrequency')]",
+                "scopes": [
+                    "[resourceId('microsoft.insights/components', parameters('AI_name'))]"
+                ],
+                "targetResourceTypes": [
+                    "microsoft.insights/components"
+                ],
+                "windowSize": "[parameters('windowSize')]",
+                "criteria": {
+                    "allOf": [
+                   
+                        {
+                            "query": "[concat ('requests | where operation_Name has ', parameters('WO_Name'), ' | summarize ErrorCount=countif(resultCode==500), TotalRequests=count() by operation_Name | extend FailurePercentage=ErrorCount*100/TotalRequests | where FailurePercentage ', '>', parameters('threshold'))]",
+                            "timeAggregation": "[parameters('timeAggregation')]",
+                            "metricMeasureColumn": "FailurePercentage",
+                            "dimensions": [],
+                            "operator": "[parameters('operator')]",
+                            "threshold": "[parameters('threshold')]",
+                            "failingPeriods": {
+                                "numberOfEvaluationPeriods": 1,
+                                "minFailingPeriodsToAlert": 1
+                            }    
+                        }
+                    ]
+                },
+                "autoMitigate": false,
+                "actions": {
+                    "actionGroups": [
+                        "[resourceId('microsoft.insights/actiongroups', parameters('AG_name'))]"
+                    ],
+                    "customProperties": {
+                        "Service Name": "[parameters('ServiceName')]",
+                        "Environment": "[parameters('Environment')]"
+                    }
+                }
+            }
+        }
+    ]
+}

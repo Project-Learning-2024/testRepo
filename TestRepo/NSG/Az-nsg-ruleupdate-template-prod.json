@@ -1,0 +1,281 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "nsg_name": {
+            "type": "string"
+        },        
+        "nsgrule1": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ClientCommunicationToAPIManagementInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "80",
+                        "sourceAddressPrefix": "AzureFrontDoor.Backend",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 100,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule2": {
+            "type": "object",
+            "defaultValue": {
+                "name": "SecureClientCommunicationToAPIManagementInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "443",
+                        "sourceAddressPrefix": "AzureFrontDoor.Backend",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 110,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule3": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ManagementEndpointForAzurePortalAndPowershellInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "3443",
+                        "sourceAddressPrefix": "ApiManagement",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 120,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule4": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnRedisCacheInbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "6381-6383",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 130,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule5": {
+            "type": "object",
+            "defaultValue": {
+                "name": "AzureInfrastructureLoadBalancer",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "*",
+                        "sourceAddressPrefix": "AzureLoadBalancer",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 180,
+                        "direction": "Inbound"
+                    }
+            }
+        },
+        "nsgrule6": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnAzureSQLOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "1433",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Sql",
+                        "access": "Allow",
+                        "priority": 140,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule7": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyForLogToEventHubPolicyOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "5671",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "EventHub",
+                        "access": "Allow",
+                        "priority": 150,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule8": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnRedisCacheOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "6381-6383",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "access": "Allow",
+                        "priority": 160,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule9": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnAzureFileShareForGitOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "445",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Storage",
+                        "access": "Allow",
+                        "priority": 170,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule10": {
+            "type": "object",
+            "defaultValue": {
+                "name": "PublishDiagnosticLogsAndMetricsOutbound",
+                    "properties": {
+                        "description": "APIM Logs and Metrics for consumption by admins and your IT team are all part of the management plane",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "AzureMonitor",
+                        "access": "Allow",
+                        "priority": 185,
+                        "direction": "Outbound",
+                        "destinationPortRanges": [
+                            "443",
+                            "12000",
+                            "1886"
+                        ]
+                    }
+            }
+        },
+        "nsgrule11": {
+            "type": "object",
+            "defaultValue": {
+                "name": "ConnectToSmtpRelayForSendingEmailsOutbound",
+                    "properties": {
+                        "description": "APIM features the ability to generate email traffic as part of the data plane and the management plane",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Internet",
+                        "access": "Allow",
+                        "priority": 190,
+                        "direction": "Outbound",
+                        "destinationPortRanges": [
+                            "25",
+                            "587",
+                            "25028"
+                        ]
+                    }
+            }
+        },
+
+        "nsgrule12": {
+            "type": "object",
+            "defaultValue": {
+                "name": "AuthenticateToAzureActiveDirectoryOutbound",
+                    "properties": {
+                        "description": "Connect to Azure Active Directory for Developer Portal Authentication or for Oauth2 flow during * Proxy Authentication",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "AzureActiveDirectory",
+                        "access": "Allow",
+                        "priority": 200,
+                        "direction": "Outbound",
+                        "destinationPortRanges": [
+                            "80",
+                            "443"
+                        ]
+                    }
+            }
+        },
+        "nsgrule13": {
+            "type": "object",
+            "defaultValue": {
+                "name": "DependencyOnAzureStorageOutbound",
+                    "properties": {
+                        "description": "APIM service dependency on Azure Blob and Azure Table Storage",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "443",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "Storage",
+                        "access": "Allow",
+                        "priority": 100,
+                        "direction": "Outbound"
+                    }
+            }
+        },
+        "nsgrule14": {
+            "type": "object",
+            "defaultValue": {
+                "name": "PublishMonitoringLogsOutbound",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "443",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "destinationAddressPrefix": "AzureCloud",
+                        "access": "Allow",
+                        "priority": 300,
+                        "direction": "Outbound"
+                    }
+            }
+        }       
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('nsg_name')]",
+            "apiVersion": "2019-09-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    "[parameters('nsgrule1')]",
+                    "[parameters('nsgrule2')]",
+                    "[parameters('nsgrule3')]",
+                    "[parameters('nsgrule4')]",
+                    "[parameters('nsgrule5')]",
+                    "[parameters('nsgrule6')]",
+                    "[parameters('nsgrule7')]",
+                    "[parameters('nsgrule8')]",
+                    "[parameters('nsgrule9')]",
+                    "[parameters('nsgrule10')]",
+                    "[parameters('nsgrule11')]",
+                    "[parameters('nsgrule12')]",
+                    "[parameters('nsgrule13')]",
+                    "[parameters('nsgrule14')]"
+
+                ]
+            }
+        }
+    ]
+}

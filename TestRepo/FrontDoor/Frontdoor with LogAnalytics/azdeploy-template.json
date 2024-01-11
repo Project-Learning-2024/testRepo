@@ -1,0 +1,164 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"frontDoorName": {
+			"type": "string",
+			"metadata": {
+				"description": "The name of the frontdoor resource."
+			}
+		},
+		"backendAddress": {
+			"type": "string",
+			"metadata": {
+				"description": "The hostname of the backend. Must be an IP address or FQDN."
+			}
+		},
+		"frontDoorId": {
+			"type": "string",
+			"metadata": {
+				"description": "The frontDoorID."
+			}
+		},
+		"workspaceId": {
+			"type": "string",
+			"metadata": {
+				"description": "The workspaceID."
+			}
+		},
+		"workspaceName": {
+			"type": "string",
+			"metadata": {
+				"description": "The workspaceName."
+			}
+		}
+	},
+	"variables": {
+		"frontEndEndpointName": "[concat(parameters('frontDoorName'), '-frontEndEndpoint')]",
+		"loadBalancingSettingsName": "[concat(parameters('frontDoorName'), '-loadBalancingSettings')]",
+		"healthProbeSettingsName": "[concat(parameters('frontDoorName'), '-healthProbeSettings')]",
+		"routingRuleName": "[concat(parameters('frontDoorName'), '-routingRule')]",
+		"backendPoolName": "[concat(parameters('frontDoorName'), '-backendPool')]"
+	},
+	"resources": [{
+			"type": "Microsoft.Network/frontDoors",
+			"apiVersion": "2020-05-01",
+			"name": "[parameters('frontDoorName')]",
+			"location": "global",
+			"properties": {
+				"enabledState": "Enabled",
+				"frontendEndpoints": [{
+					"name": "[variables('frontEndEndpointName')]",
+					"properties": {
+						"hostName": "[concat(parameters('frontDoorName'), '.azurefd.net')]",
+						"sessionAffinityEnabledState": "Disabled"
+					}
+				}],
+				"loadBalancingSettings": [{
+					"name": "[variables('loadBalancingSettingsName')]",
+					"properties": {
+						"sampleSize": 4,
+						"successfulSamplesRequired": 2
+					}
+				}],
+				"healthProbeSettings": [{
+					"name": "[variables('healthProbeSettingsName')]",
+					"properties": {
+						"path": "/",
+						"protocol": "Https",
+						"intervalInSeconds": 30
+					}
+				}],
+				"backendPools": [{
+					"name": "[variables('backendPoolName')]",
+					"properties": {
+						"backends": [{
+							"address": "[parameters('backendAddress')]",
+							"backendHostHeader": "[parameters('backendAddress')]",
+							"httpPort": 80,
+							"httpsPort": 443,
+							"weight": 50,
+							"priority": 1,
+							"enabledState": "Enabled"
+						}],
+						"loadBalancingSettings": {
+							"id": "[resourceId('Microsoft.Network/frontDoors/loadBalancingSettings', parameters('frontDoorName'), variables('loadBalancingSettingsName'))]"
+						},
+						"healthProbeSettings": {
+							"id": "[resourceId('Microsoft.Network/frontDoors/healthProbeSettings', parameters('frontDoorName'), variables('healthProbeSettingsName'))]"
+						}
+					}
+				}],
+				"routingRules": [{
+					"name": "[variables('routingRuleName')]",
+					"properties": {
+						"frontendEndpoints": [{
+							"id": "[resourceId('Microsoft.Network/frontDoors/frontEndEndpoints', parameters('frontDoorName'), variables('frontEndEndpointName'))]"
+						}],
+						"acceptedProtocols": [
+							"Http",
+							"Https"
+						],
+						"patternsToMatch": [
+							"/*"
+						],
+						"routeConfiguration": {
+							"@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+							"forwardingProtocol": "MatchRequest",
+							"backendPool": {
+								"id": "[resourceId('Microsoft.Network/frontDoors/backEndPools', parameters('frontDoorName'), variables('backendPoolName'))]"
+							}
+						},
+						"enabledState": "Enabled"
+					}
+				}]
+			}
+		},
+		{
+			"type": "Microsoft.Network/frontdoors/providers/diagnosticsettings",
+			"name": "[concat(parameters('frontDoorName'),'/Microsoft.Insights/service')]",
+			"apiVersion": "2016-09-01",
+			"location": "uksouth",
+			"dependsOn": [
+				"[parameters('frontDoorId')]",
+				"[parameters('workspaceId')]"
+			],
+			"properties": {
+				"workspaceId": "[parameters('workspaceId')]",
+				"logs": [{
+						"category": "FrontdoorAccessLog",
+						"enabled": true,
+						"retentionPolicy": {
+							"enabled": true,
+							"days": 0
+						}
+					},
+					{
+						"category": "FrontdoorWebApplicationFirewallLog",
+						"enabled": true,
+						"retentionPolicy": {
+							"enabled": true,
+							"days": 0
+						}
+					}
+				],
+				"metrics": [{
+					"category": "AllMetrics",
+					"timeGrain": "PT1M",
+					"enabled": true,
+					"retentionPolicy": {
+						"enabled": false,
+						"days": 0
+					}
+				}]
+			}
+		},
+		{
+			"type": "Microsoft.OperationalInsights/workspaces",
+			"apiVersion": "2021-12-01-preview",
+			"name": "[parameters('workspaceName')]",
+			"location": "uksouth",
+			"properties": {}
+		}
+	]
+}

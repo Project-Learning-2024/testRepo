@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "service_Apim_name": {
+            "value": "fieldopspreprod001"
+        },
+        "vnet_snet_id": {
+            "value": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-Integration-preprod-001/providers/Microsoft.Network/virtualNetworks/azsu-vnet-integration-preprod-001/subnets/azsu-sub-integration-apim-preprod-001"
+        },
+        "pubIP_id": {
+            "value": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-Integration-preprod-001/providers/Microsoft.Network/publicIPAddresses/azsu-pubIP-integration-preprod-001"
+        },
+        "sku_type": {
+            "value": "Premium"
+        }         
+    }
+}

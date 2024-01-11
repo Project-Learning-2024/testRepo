@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sbName": {
+            "type": "string"
+        },
+        "law_ResourceId": {
+            "type": "string"
+        },
+        "apiversion": {
+            "type": "string"
+        }        
+
+    },
+    "variables": {
+        "DiagSettingName": "AzureServiceBusDiagnoticsLogsToWorkspace"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ServiceBus/Namespaces/providers/diagnosticSettings",
+            "name": "[concat(parameters('sbName'),'/microsoft.insights/', variables('DiagSettingName'))]",
+            "apiVersion": "[parameters('apiversion')]",
+            "properties": {
+                "name": "[variables('DiagSettingName')]",
+                "workspaceId": "[parameters('law_ResourceId')]",
+                "logs": [
+                    {
+                        "category": null,
+                        "categoryGroup": "allLogs",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": null,
+                        "categoryGroup": "audit",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    }
+                ],
+                "metrics": [
+                    {
+                        "timeGrain": null,
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        },
+                        "category": "AllMetrics"
+                    }
+                ]
+            }
+        }
+    ]
+}

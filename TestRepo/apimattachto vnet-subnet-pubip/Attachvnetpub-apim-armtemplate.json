@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "service_Apimtiertestpoc_name": {
+            "defaultValue": "Apimtiertestpoc",
+            "type": "String"
+        },
+        "virtualnetworks_azsu_vnet_subnet_integration_test_001_externalid": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-es-dev-001/providers/Microsoft.Network/virtualNetworks/azsu-vnet-integration-test-001/subnets/azsu-sub-integration-test-002",
+            "type": "String"
+        },
+        "publicIPAddresses_azsu_pubIP_integration_test_001_externalid": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-es-dev-001/providers/Microsoft.Network/publicIPAddresses/Test-pub-ip",
+            "type": "String"
+        }        
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[parameters('service_Apimtiertestpoc_name')]",
+            "location": "UK South",
+            "sku": {
+                "name": "Premium",
+                "capacity": 1
+            },
+            "properties": {
+                "publisherEmail": "suresh.s@centrica.com",
+                "publisherName": "Centrica",
+                "notificationSenderEmail": "suresh.s@centrica.com",
+                "hostnameConfigurations": [
+                    {
+                        "type": "Proxy",
+                        "hostName": "apimtiertestpoc.azure-api.net",
+                        "negotiateClientCertificate": false,
+                        "defaultSslBinding": true,
+                        "certificateSource": "BuiltIn"
+                    }
+                ],
+                "virtualNetworkConfiguration": {
+                    "subnetResourceId": "[parameters('virtualnetworks_azsu_vnet_subnet_integration_test_001_externalid')]"
+                },                
+                "virtualNetworkType": "External",
+                "disableGateway": false,
+                "apiVersionConstraint": {},
+                "publicIpAddressId": "[parameters('publicIPAddresses_azsu_pubIP_integration_test_001_externalid')]",                
+                "publicNetworkAccess": "Enabled"
+            }
+        }
+    ]
+}

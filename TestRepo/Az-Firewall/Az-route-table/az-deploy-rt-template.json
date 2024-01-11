@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rout_tblnme": {
+            "type": "String"
+        },
+        "nextHopType": {
+            "type": "String"
+        },
+        "nextHopIpAddress": {
+            "type": "String"
+        },
+        "location": {
+            "type": "String"
+        }                         
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/routeTables",
+            "apiVersion": "2023-06-01",
+            "name": "[parameters('rout_tblnme')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "disableBgpRoutePropagation": false,
+                "routes": [
+                    {
+                        "type": "Microsoft.Network/routeTables/routes",
+                        "name": "[parameters('rout_tblnme')]",
+                        "id": "[resourceId('Microsoft.Network/routeTables/routes', parameters('rout_tblnme'), parameters('rout_tblnme'))]",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "[parameters('nextHopType')]",
+                            "nextHopIpAddress": "[parameters('nextHopIpAddress')]",
+                            "hasBgpOverride": false
+                        }
+                        
+                    }
+                ]
+            }
+        }
+    ]
+}

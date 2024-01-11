@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+
+    "webJobsWebAppName": { 
+        "value": "azsuwebapp-nfr-poc-001" 
+    },
+    "webJobsWebAppLocation": { 
+        "value": "UK South" 
+    },
+    "webJobsWebAppHostingEnvironment": { 
+        "value": "null" 
+    },
+    "webJobsWebAppHostingPlanName": { 
+        "value": "test-asp-ep-01" 
+    },
+    "webJobsWebAppServerFarmResourceGroup": { 
+        "value": "azsu-rg-devops-nfr-poc-001"
+     },
+    "webJobsWebAppCurrentStack": { 
+        "value": "dotnetcore" 
+    },
+    "appInsightsName": { 
+        "value": "azsuappinsights-nfr-poc-001" 
+        },
+    "keyVaultName": {
+        "value": "azsukvnfrpoc-01" 
+    },
+    "loggingStorageAccountName": { 
+        "value": "azsusanfrpoc001" 
+    },
+    "diagLoglawsubid": { 
+        "value": "a2a057a9-c6d7-42cf-b5eb-c7b69aad9042" 
+    },
+    "diagLoglaw_rg": { 
+        "value": "azsu-rg-coreloganalyticsprod-sipd-001" 
+    },
+    "diagLoglaw_name": { 
+        "value": "azsu-d-law-sipd-001" 
+    }
+
+  }
+}

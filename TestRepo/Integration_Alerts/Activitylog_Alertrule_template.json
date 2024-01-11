@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "activityLogAlerts_asp_integration_channelrouting_scale_down_name": {
+            "defaultValue": "asp-integration-channelrouting-scale-down",
+            "type": "String"
+        },
+        "serverFarms_azsu_plan_integration_channelrouting_preprod_001_externalid": {
+            "defaultValue": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-integration-preprod-001/providers/Microsoft.Web/serverFarms/azsu-plan-integration-chrout-preprod-001",
+            "type": "String"
+        },
+        "actiongroups_filedplatform_integration_externalid": {
+            "defaultValue": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-Integration-preprod-001/providers/microsoft.insights/actionGroups/AG_Snow_Int_PreProd",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/activityLogAlerts",
+            "apiVersion": "2020-10-01",
+            "name": "[parameters('activityLogAlerts_asp_integration_channelrouting_scale_down_name')]",
+            "location": "Global",
+            "tags": {
+                "Environment": "Production",
+                "CostCode": "D.4993-01-R01",
+                "Accountable": "Production",
+                "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION"
+            },
+            "properties": {
+                "scopes": [
+                    "[parameters('serverFarms_azsu_plan_integration_channelrouting_preprod_001_externalid')]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Autoscale"
+                        },
+                        {
+                            "field": "operationName",
+                            "equals": "Microsoft.Insights/AutoscaleSettings/ScaledownResult/Action"
+                        },
+                        {
+                            "field": "level",
+                            "containsAny": [
+                                "informational"
+                            ]
+                        },
+                        {
+                            "field": "status",
+                            "containsAny": [
+                                "succeeded"
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('actiongroups_filedplatform_integration_externalid')]",
+                            "webhookProperties": {}
+                        }
+                    ]
+                },
+                "enabled": true
+            }
+        }
+    ]
+}

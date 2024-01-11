@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "FA_name": {
+            "type": "array",
+            "defaultValue": [
+                "azsu-fa-nfr-poc-002",
+                "azsu-fa-sb-poc-001"
+            ] 
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "[parameters('FA_name')[copyIndex('FA-Names')]]",
+            "copy": {
+                "name": "FA-Names",
+                "count": "[length(parameters('FA_name'))]",
+                "mode": "serial"
+            },              
+            "location": "UK South",
+            "kind": "functionapp",             
+            "properties": {
+                "httpsOnly": true                           
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('FA_name')[copyIndex('FA-Names')], '/web')]",
+            "copy": {
+                "name": "FA-Names",
+                "count": "[length(parameters('FA_name'))]",
+                "mode": "serial"
+            },             
+            "location": "UK South",           
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('FA_name'))]"
+            ],
+            "properties": {
+                "ftpsState": "Disabled"                                
+            }
+        }        
+
+    ]
+}

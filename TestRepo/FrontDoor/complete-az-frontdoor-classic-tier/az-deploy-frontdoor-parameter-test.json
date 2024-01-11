@@ -1,0 +1,90 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "frontDoorName": {
+            "value": "azfrontdoor-poc-001"
+        },
+        "backendAddress": {
+            "value": "apim-nfr-poc-001.azure-api.net"
+        },
+        "Diagsettngs_Name": {
+            "value": "AzureFrontDoorDiagnosticsLogsToWorkspace"
+        },
+        "FE_customDomainName_api": {
+            "value": "null"
+        },
+        "FE_customDomainName_prtl": {
+            "value": "null"
+        },
+        "FE_customDomainName_dvlpr": {
+            "value": "null"
+        },
+        "FE_customDomainName_mngmt": {
+            "value": "null"
+        },
+        "FE_customDomainName_scm": {
+            "value": "null"
+        },
+        "FE_customDomainName_pilot": {
+            "value": "null"
+        },
+        "BE_customDomainName_prtl": {
+            "value": "null"
+        },
+        "BE_customDomainName_api": {
+            "value": "null"
+        },
+        "BE_customDomainName_dvlpr": {
+            "value": "null"
+        },
+        "BE_customDomainName_mngmt": {
+            "value": "null"
+        },
+        "BE_customDomainName_scm": {
+            "value": "null"
+        },
+        "BE_HostName_prtl": {
+            "value": "null"
+        },
+        "BE_HostName_api": {
+            "value": "null"
+        },
+        "BE_HostName_dvlpr": {
+            "value": "null"
+        },
+        "BE_HostName_mngmt": {
+            "value": "null"
+        },
+        "BE_HostName_scm": {
+            "value": "null"
+        },
+        "Routing_RulName_api": {
+            "value": "null"
+        },
+        "Routing_RulName_dvlpr": {
+            "value": "null"
+        },
+        "Routing_RulName_mngmt": {
+            "value": "null"
+        },
+        "Routing_RulName_prtl": {
+            "value": "null"
+        },
+        "Routing_RulName_scm": {
+            "value": "null"
+        },
+        "Routing_RulName_http_to_https": {
+            "value": "null"
+        },
+        "diagLoglawsubid": {
+            "value": "a2a057a9-c6d7-42cf-b5eb-c7b69aad9042"
+        },
+        "diagLoglaw_rg": {
+            "value": "azsu-rg-coreloganalyticsprod-sipd-001"
+        },
+        "diagLoglaw_name": {
+            "value": "null"
+        }        
+    }
+}

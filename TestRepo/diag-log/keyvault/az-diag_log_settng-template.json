@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "settingName": {
+      "type": "string",
+      "defaultValue": "AzureKeyVaultDiagnosticsLogsToWorkspace"
+    },
+    "vaultName": {
+      "type": "string",
+      "defaultValue": "poc-keyvault-test001",
+      "allowedValues": [
+        "poc-keyvault-test001",
+        "azsukvnfrpoc-01",
+        "azsukvnfrpoc-02"
+      ]      
+    },
+    "workspaceId": {
+      "type": "string",
+      "defaultValue": "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"      
+    }
+  },
+  "variables": {
+    "settingName1": "[if(or(equals(parameters('vaultName'), 'poc-keyvault-test001'),equals(parameters('vaultName'), 'azsukvnfrpoc-01')), parameters('settingName'), 'test-law')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "scope": "[format('Microsoft.KeyVault/vaults/{0}', parameters('vaultName'))]",
+      "name": "[variables('settingName1')]",
+      "properties": {
+        "workspaceId": "[parameters('workspaceId')]",
+        "logs": [
+          {
+            "category": "AuditEvent",
+            "enabled": true
+          }
+        ],
+        "metrics": [
+          {
+            "category": "AllMetrics",
+            "enabled": true
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "Vaultname": {
+      "type": "string",
+      "value": "[parameters('vaultName')]"
+    }
+  }  
+}

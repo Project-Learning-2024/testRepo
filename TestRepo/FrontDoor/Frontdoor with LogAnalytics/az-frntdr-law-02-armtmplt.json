@@ -1,0 +1,49 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"frontDoorName": {
+			"defaultValue": "azfrontdoor-poc-001",
+			"type": "string"
+		},
+		"backendAddress": {
+			"defaultValue": "apim-nfr-poc-001.azure-api.net",
+			"type": "string"
+		},
+		"frontDoorId": {
+			"defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-devops-nfr-poc-001/providers/Microsoft.Network/frontdoors/azfrontdoor-poc-001",
+			"type": "string"
+		},
+		"workspaceId": {
+			"defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourcegroups/azsu-rg-es-dev-001/providers/microsoft.operationalinsights/workspaces/poc-loganalytics-integration",
+			"type": "string"
+		},
+		"workspaceName": {
+			"defaultValue": "POC-LogAnalytics-Integration",
+			"type": "string"
+		}
+	},
+
+  "resources": [
+    {
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "scope": "[concat('Microsoft.Network/frontdoors/', parameters('frontDoorName'))]",
+      "name": "service01",
+      "location": "uksouth",
+      "properties": {
+        "workspaceId": "[parameters('workSpaceId')]",
+        "logs": [
+          {
+            "category": "FrontdoorAccessLog",
+            "enabled": true
+          },
+          {
+            "category": "FrontdoorWebApplicationFirewallLog",
+            "enabled": true
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+		"windowSize": {
+            "type": "string",
+            "defaultValue": "PT5M",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H",
+                "PT6H",
+                "PT12H",
+                "PT24H"
+            ],
+            "metadata": {
+                "description": "Period of time used to monitor alert activity based on the threshold. Must be between one minute and one day. ISO 8601 duration format."
+            }
+		},
+        "actiongroups_ag_snow_poc_externalid": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-devops-nfr-poc-001/providers/microsoft.insights/actiongroups/ag_snow_poc",
+            "type": "String"
+        },		
+        "evaluationFrequency": {
+            "type": "string",
+            "defaultValue": "PT1M",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H"
+            ],
+            "metadata": {
+                "description": "how often the metric alert is evaluated represented in ISO 8601 duration format"
+            }
+        }
+		},
+    "resources": [
+        {
+			"name": "test_action2",
+			"type": "Microsoft.Insights/metricAlerts",
+			"apiVersion": "2018-03-01",
+			"location": "global",
+			"tags": {
+				"CostCode": "D.4993-01-R01",
+				"Environment": "Dev/Test",
+				"ServiceName": "FIELD OPERATIONS PLATFORM Dev/Test"
+			},
+			"properties": {
+				"description": "",
+				"severity": 3,
+				"enabled": true,
+				"scopes": [
+					"/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-rostering-es-001/providers/Microsoft.KeyVault/vaults/azsukvcapmanes001"
+				],
+				"evaluationFrequency":"[parameters('evaluationFrequency')]",
+				"windowSize": "[parameters('windowSize')]",
+				"criteria": {
+					"allOf": [
+						{
+							"threshold": 100,
+							"name": "Metric1",
+							"metricNamespace": "Microsoft.KeyVault/vaults",
+							"metricName": "Availability",
+							"operator": "LessThan",
+							"timeAggregation": "Average",
+							"alertSeverity": 3,
+							"criterionType": "StaticThresholdCriterion"
+						},
+						{
+							"threshold": 75,
+							"name": "Metric2",
+							"metricNamespace": "Microsoft.KeyVault/vaults",
+							"metricName": "SaturationShoebox",
+							"operator": "GreaterThan",
+							"timeAggregation": "Average",
+							"alertSeverity": 4,
+							"criterionType": "StaticThresholdCriterion"
+						},
+						{
+							"threshold": 1000,
+							"name": "Metric3",
+							"metricNamespace": "Microsoft.KeyVault/vaults",
+							"metricName": "ServiceApiLatency",
+							"operator": "GreaterThan",
+							"timeAggregation": "Average",
+							"alertSeverity": 4,
+							"criterionType": "StaticThresholdCriterion"
+						}
+					],
+					"odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+				},
+				"autoMitigate": true,
+				"targetResourceType": "Microsoft.KeyVault/vaults",
+				"targetResourceRegion": "uksouth",
+				"actions": [
+					{					
+                    	"actionGroupId": "[parameters('actiongroups_ag_snow_poc_externalid')]",
+						"webHookProperties": {
+							"Environment": "Dev/Test",
+							"ServiceName": "FIELD OPERATIONS PLATFORM Dev/Test"
+						}
+							
+					}
+					
+				]					
+				
+			}
+		}
+	]
+}	
+     
+		
+    

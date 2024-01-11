@@ -1,0 +1,176 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiName": {
+      "type": "string"
+    },
+    "apiHostingPlanName": {
+      "type": "string"
+    },
+    "apiLocation": {
+      "type": "string"
+    },
+    "apiHostingEnvironment": {
+      "type": "string"
+    },
+    "apiServerFarmResourceGroup": {
+      "type": "string"
+    },
+    "apiSubscriptionId": {
+      "type": "string"
+    },
+     "diagLoglawsubid": {
+      "type": "string"
+    },
+    "diagLoglaw_rg": {
+      "type": "string"
+    },
+    "diagLoglaw_name": {
+      "type": "string"
+    }    
+
+  },
+  "variables": {
+    "DiagLogapiapSettingName": "AzureApiAppDiagnoticsLogsToWorkspace"
+
+  },
+  "resources": [
+    {
+      "name": "[parameters('apiName')]",
+      "type": "Microsoft.Web/sites",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "siteConfig": {
+          "metadata": [],
+          "use32BitWorkerProcess": "false",
+          "alwaysOn": "true"
+        },
+        "name": "[parameters('apiName')]",
+        "serverFarmId": "[concat('/subscriptions/', parameters('apiSubscriptionId'),'/resourcegroups/', parameters('apiServerFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('apiHostingPlanName'))]",
+        "hostingEnvironment": "[parameters('apiHostingEnvironment')]",
+        "httpsOnly": true
+      },
+      "apiVersion": "2016-03-01",
+      "location": "[parameters('apiLocation')]",
+      "kind": "api",
+      "resources": [
+        {
+          "type": "providers/diagnosticSettings",
+          "apiVersion": "2021-05-01-preview",
+          "name": "[concat('Microsoft.Insights/', variables('DiagLogapiapSettingName'))]",
+          "location": "[parameters('apiLocation')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('apiName'))]"
+          ],
+          "properties": {
+            "name": "[variables('DiagLogapiapSettingName')]",
+            "storageAccountId": null,
+            "eventHubAuthorizationRuleId": null,
+            "eventHubName": null,
+            "workspaceId": "[resourceId(parameters('diagLoglawsubid'), parameters('diagLoglaw_rg'), 'microsoft.operationalinsights/workspaces',parameters('diagLoglaw_name'))]",
+            "logs": [
+                {
+                    "category": "AppServiceHTTPLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceConsoleLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceAppLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceAuditLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServiceIPSecAuditLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                },
+                {
+                    "category": "AppServicePlatformLogs",
+                    "categoryGroup": null,
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                }
+            ],
+            "metrics": [
+                {
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    },
+                    "category": "AllMetrics"
+                }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "apiVersion": "2016-08-01",
+      "type": "Microsoft.Web/sites/slots",
+      "name": "[concat(parameters('apiName'), '/', 'staging')]",
+      "location": "[parameters('apiLocation')]",
+      "properties": {
+        "serverFarmId": "[concat('/subscriptions/', parameters('apiSubscriptionId'),'/resourcegroups/', parameters('apiServerFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('apiHostingPlanName'))]",
+        "httpsOnly": true,
+        "siteConfig": {
+          "appSettings": []
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', parameters('apiName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2016-08-01",
+      "name": "[concat(parameters('apiName'), '/web')]",
+      "location": "[parameters('apiLocation')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('apiName'))]"
+      ],
+      "properties": {
+        "ftpsState": "Disabled",
+        "ipSecurityRestrictions": []
+      }
+    }    
+  ],
+  "outputs": {
+  }
+}

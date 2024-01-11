@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "components_azsuappinsightforecastprod_externalid": {
+            "value": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-forecast-preprod-01/providers/microsoft.insights/components/azsuappinsightforecastpprod"
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "value": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-Integration-preprod-001/providers/microsoft.insights/actionGroups/AG_Snow_Int_PreProd"
+        },
+        "smartdetectoralertrules_failure_anomalies___azsuappinsightforecastprod_name": {
+            "value": "failure anomalies - azsuappinsightforecastpprod"
+        }
+    }
+}

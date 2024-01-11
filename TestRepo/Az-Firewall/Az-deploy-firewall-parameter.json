@@ -1,0 +1,37 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "uksouth"
+        },
+        "resourceGroup": {
+            "value": ""
+        },
+        "azureFirewallName": {
+            "value": ""
+        },
+        "azureFirewallTier": {
+            "value": "Standard"
+        },
+        "vnet_nme": {
+            "value": ""
+        },
+        "fw_snet_nme": {
+            "value": ""
+        },
+        "zones": {
+            "value": [
+                "1",
+                "2",
+                "3"
+            ]
+        },
+        "pip_nme": {
+            "value": ""
+        },
+        "fwplcy_nme": {
+            "value": ""
+        }         
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {      
+        "virtualMachineName1": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "LinkedcustmscrptfileUrl": {
+            "type": "String"
+        },
+        "CSE_typeHandlerVersion": {
+            "type": "String"
+        },                
+        "cs_linkdfilesastoken": {
+            "type": "string",
+            "metadata": {
+                "description": "Storage account sas token for Customscript file"
+            }
+        }                                                               
+    },
+    "variables": {},
+    "resources": [    
+        {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "apiVersion": "2021-04-01",
+        "name": "[format('{0}/{1}', parameters('virtualMachineName1'), 'InstallTools')]",
+        "location": "[parameters('location')]",
+        "dependsOn": [],
+        "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "[parameters('CSE_typeHandlerVersion')]",
+            "autoUpgradeMinorVersion": true,
+            "settings": {},
+            "protectedSettings":  {
+            "fileUris": [
+                "[concat(parameters('LinkedcustmscrptfileUrl'),'/localusercreation.ps1', parameters('cs_linkdfilesastoken'))]"                
+            ],
+            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File localusercreation.ps1"
+
+            }
+        }
+        }
+    ]
+}  

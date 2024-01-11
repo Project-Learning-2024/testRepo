@@ -1,0 +1,141 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "firewallPolicyName": {
+            "type": "string"
+        },
+        "vnet_address": {
+            "type": "string"
+        },
+        "spokepub_address1": {
+            "type": "string"
+        },
+        "spokepub_address2": {
+            "type": "string"
+        },
+        "denyprvtep_address": {
+            "type": "string"
+        }                                
+        
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2022-07-01",
+            "type": "Microsoft.Network/firewallPolicies",
+            "name": "[parameters('firewallPolicyName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "properties": {
+                "sku": {
+                    "tier": "Standard"
+                },
+                "threatIntelMode": "Alert",
+                "threatIntelWhitelist": {
+                    "fqdns": [],
+                    "ipAddresses": []
+                }
+            },
+            "resources": [
+                {
+                    "apiVersion": "2022-07-01",
+                    "type": "ruleCollectionGroups",
+                    "name": "DefaultNetworkRuleCollectionGroup",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Network/firewallPolicies',parameters('firewallPolicyName'))]"
+                    ],
+                    "properties": {
+                        "priority": 200,
+                        "ruleCollections": [
+                            {
+                                "ruleCollectionType": "FirewallPolicyFilterRuleCollection",                                
+                                "name": "netRC1-Allow-Internet",
+                                "priority": 200,
+                                "action": {
+                                    "type": "Allow"
+                                },
+                                "rules": [
+                                    {
+                                        "name": "netRule-Integration-All",
+                                        "ipProtocols": [
+                                            "Any"
+                                        ],
+                                        "destinationPorts": [
+                                            "*"
+                                        ],
+                                        "sourceAddresses": [
+                                            "[parameters('vnet_address')]"
+                                        ],
+                                        "sourceIpGroups": [],
+                                        "ruleType": "NetworkRule",
+                                        "destinationIpGroups": [],
+                                        "destinationAddresses": [
+                                            "*"
+                                        ],
+                                        "destinationFqdns": []
+                                    },
+                                    {
+                                        "name": "netRule-Spoke-Public",
+                                        "ipProtocols": [
+                                            "Any"
+                                        ],
+                                        "destinationPorts": [
+                                            "*"
+                                        ],
+                                        "sourceAddresses": [
+                                            "[parameters('spokepub_address1')]",
+                                            "[parameters('spokepub_address2')]"
+                                        ],
+                                        "sourceIpGroups": [],
+                                        "ruleType": "NetworkRule",
+                                        "destinationIpGroups": [],
+                                        "destinationAddresses": [
+                                            "*"
+                                        ],
+                                        "destinationFqdns": []
+                                    }                                    
+                                ]
+
+                            },
+                            {
+                                "ruleCollectionType": "FirewallPolicyFilterRuleCollection",                                
+                                "name": "netRC1-Deny-PrivateEndpoints",
+                                "priority": 900,
+                                "action": {
+                                    "type": "Deny"
+                                },
+                                "rules": [
+                                    {
+                                        "name": "netRC1-Deny-PrivateEndpoints",
+                                        "ipProtocols": [
+                                            "Any"
+                                        ],
+                                        "destinationPorts": [
+                                            "*"
+                                        ],
+                                        "sourceAddresses": [
+                                            "[parameters('denyprvtep_address')]"                                            
+                                        ],
+                                        "sourceIpGroups": [],
+                                        "ruleType": "NetworkRule",
+                                        "destinationIpGroups": [],
+                                        "destinationAddresses": [
+                                            "*"
+                                        ],
+                                        "destinationFqdns": []
+                                    }
+                                ]
+                            }                            
+                        ]
+                    }
+                }
+            ],
+            "tags": {}
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+  "contentVersion": "1.0.0.0",
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "parameters": {
+    "resourceLocation": {
+      "type": "string"
+    },
+    "insightName": {
+      "type": "string"
+    },
+    "diagLoglawsubid": {
+        "type": "string"
+    },
+    "diagLoglaw_rg": {
+        "type": "string"
+    },
+    "diagLoglaw_name": {
+        "type": "string"
+    },
+    "apiversion": {
+        "type": "string"
+    },
+    "Ingestionmode": {
+      "type": "string"
+    }        
+  },
+  "resources": [
+    {
+      "type": "microsoft.insights/components",
+      "kind": "web",
+      "name": "[parameters('insightName')]",
+      "apiVersion": "[parameters('apiversion')]",
+      "location": "[parameters('resourceLocation')]",
+      "properties": {
+        "Application_Type": "web",
+        "Flow_Type": "Redfield",
+        "Request_Source": "IbizaAIExtension",
+        "RetentionInDays": 90,       
+        "WorkspaceResourceId": "[resourceId(parameters('diagLoglawsubid'), parameters('diagLoglaw_rg'), 'microsoft.operationalinsights/workspaces',parameters('diagLoglaw_name'))]",
+        "IngestionMode": "LogAnalytics",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"        
+      },
+     
+      "dependsOn": []
+    }
+  ]
+}

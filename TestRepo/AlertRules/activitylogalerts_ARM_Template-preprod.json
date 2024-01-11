@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "activityLogAlerts_asp_integration_channelrouting_scale_down_name": {
+            "defaultValue": "asp-integration-channelrouting-scale-down",
+            "type": "String"
+        },
+        "serverFarms_azsu_plan_integration_chrout_preprod_001_externalid": {
+            "defaultValue": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-integration-preprod-001/providers/Microsoft.Web/serverFarms/azsu-plan-integration-chrout-preprod-001",
+            "type": "String"
+        },
+        "actiongroups_ag_snowint_preprod_externalid": {
+            "defaultValue": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-integration-preprod-001/providers/microsoft.insights/actiongroups/ag_snowint_preprod",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/activityLogAlerts",
+            "apiVersion": "2020-10-01",
+            "name": "[parameters('activityLogAlerts_asp_integration_channelrouting_scale_down_name')]",
+            "location": "Global",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Preproduction",
+                "ServiceName": "FIELD OPERATIONS PLATFORM"
+            },
+            "properties": {
+                "scopes": [
+                    "[parameters('serverFarms_azsu_plan_integration_chrout_preprod_001_externalid')]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Administrative"
+                        },
+                        {
+                            "field": "level",
+                            "containsAny": [
+                                "informational"
+                            ]
+                        },
+                        {
+                            "field": "status",
+                            "containsAny": [
+                                "succeeded"
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('actiongroups_ag_snowint_preprod_externalid')]",
+                            "webhookProperties": {}
+                        }
+                    ]
+                },
+                "enabled": false
+            }
+        }
+    ]
+}

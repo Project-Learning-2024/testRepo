@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"frontDoorName": {
+			"type": "string"
+		},
+		"workspaceId": {
+			"type": "string"
+		},
+		"Diagsettngs_Name": {
+			"type": "string"
+		}      
+        
+	},
+
+  "resources": [
+    {
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "scope": "[concat('Microsoft.Network/frontdoors/', parameters('frontDoorName'))]",
+      "name": "[parameters('Diagsettngs_Name')]",
+      "location": "uksouth",
+      "properties": {
+        "workspaceId": "[parameters('workSpaceId')]",
+        "logs": [
+          {
+            "category": "FrontdoorAccessLog",
+            "enabled": true
+          },
+          {
+            "category": "FrontdoorWebApplicationFirewallLog",
+            "enabled": true
+          }
+        ],
+        "metrics": [
+            {
+            "category": "AllMetrics",
+            "enabled": true
+            }         
+        ]
+      }
+    }
+  ]
+}

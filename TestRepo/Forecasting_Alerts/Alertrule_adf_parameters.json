@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factories_azsuadfforecastprod_externalid": {
+            "value": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-forecast-preprod-01/providers/Microsoft.DataFactory/factories/azsuadfforecastpprod"
+        },
+        "metricalerts_Forecasting_Prod___ADF_Pipeline_Failure_Alert_name": {
+            "value": "Forecasting PreProd - ADF Pipeline Failure Alert"
+        },
+        "actiongroups_sipd_snow_int_externalid": {
+            "value": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-Integration-preprod-001/providers/microsoft.insights/actionGroups/AG_Snow_Int_PreProd"
+        }
+    }
+}

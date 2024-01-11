@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "profiles_azfrontdoor_poc_001_name": {
+            "defaultValue": "azfrontdoor-poc-001",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Cdn/profiles",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[parameters('profiles_azfrontdoor_poc_001_name')]",
+            "location": "Global",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Dev/Test",
+                "ServiceName": "FIELD OPERATIONS PLATFORM Dev/Test"
+            },
+            "sku": {
+                "name": "Standard_AzureFrontDoor"
+            },
+            "kind": "frontdoor",
+            "properties": {
+                "originResponseTimeoutSeconds": 30,
+                "extendedProperties": {}
+            }
+        }
+    ]
+}

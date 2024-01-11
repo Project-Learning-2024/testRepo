@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "frontDoorName": {
+            "value": "azfrontdoor-poc-001"
+        },
+        "backendAddress": {
+            "value": "apim-nfr-poc-001.azure-api.net"
+        },
+        "frontDoorId": {
+            "value": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-devops-nfr-poc-001/providers/Microsoft.Network/frontdoors/azfrontdoor-poc-001"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourcegroups/azsu-rg-es-dev-001/providers/microsoft.operationalinsights/workspaces/poc-loganalytics-integration"
+        },
+        "workspaceName": {
+            "value": "POC-LogAnalytics-Integration" 
+        }
+    }
+}

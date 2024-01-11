@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "NamedValues": {
+      "type": "object"
+    },
+    "PolicyXMLBaseUrl": {
+      "type": "string"
+    }   
+  },
+  "resources": [
+    {
+      "properties": {
+        "tags": [],
+        "secret": false,
+        "displayName": "poc_appointmentFuncApp",
+        "value": "[parameters('NamedValues').poc_appointmentFuncApp]"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/appointmentFuncApp')]",
+      "type": "Microsoft.ApiManagement/service/properties",
+      "apiVersion": "2019-01-01"
+    },
+    {
+      "properties": {
+        "tags": [],
+        "secret": true,
+        "displayName": "poc_appointmentFuncAppKey",
+        "value": "[parameters('NamedValues').poc_appointmentFuncAppKey]"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/poc_appointmentFuncAppKey')]",
+      "type": "Microsoft.ApiManagement/service/properties",
+      "apiVersion": "2019-01-01"
+    },
+    {
+      "properties": {
+        "tags": [
+          "key",
+          "function",
+          "auto"
+        ],
+        "secret": true,
+        "displayName": "poc_azsu-fa-integration-channelrouting-dev001-key",
+        "value": "[parameters('NamedValues').poc_channelRoutingFuncAppKey]"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/poc_azsu-fa-integration-channelrouting-dev001-key')]",
+      "type": "Microsoft.ApiManagement/service/properties",
+      "apiVersion": "2019-01-01"
+    }
+  ]
+}

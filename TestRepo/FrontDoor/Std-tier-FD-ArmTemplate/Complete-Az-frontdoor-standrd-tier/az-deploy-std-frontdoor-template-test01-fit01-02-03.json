@@ -1,0 +1,2666 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "FrontDoor_PrfleName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the frontdoor resource."
+            }
+        },
+        "FD_Default_originHostName": {
+            "type": "string",
+            "metadata": {
+                "description": "The host name of backend(apim) that should be used when connecting from Front Door to the origin."
+            }
+        },
+        "FD_SKUName": {
+            "type": "string",
+            "defaultValue": "Standard_AzureFrontDoor",
+            "allowedValues": [
+                "Standard_AzureFrontDoor",
+                "Premium_AzureFrontDoor"
+            ],
+            "metadata": {
+                "description": "The name of the SKU to use when creating the Front Door profile."
+            }
+        },
+        "FE_CDN_api_test01": {
+            "type": "string"
+        },
+        "FE_CDN_dvlpr_test01": {
+            "type": "string"
+        },
+        "FE_CDN_mngmt_test01": {
+            "type": "string"
+        },
+        "FE_CDN_pilot_test01": {
+            "type": "string"
+        },
+        "FE_CDN_prtl_test01": {
+            "type": "string"
+        },
+        "FE_CDN_scm_test01": {
+            "type": "string"
+        },
+        "FD_rulset_nme_test01": {
+            "type": "string"
+        },
+        "FE_CDN_api_fit01": {
+            "type": "string"
+        },
+        "FE_CDN_dvlpr_fit01": {
+            "type": "string"
+        },
+        "FE_CDN_mngmt_fit01": {
+            "type": "string"
+        },
+        "FE_CDN_pilot_fit01": {
+            "type": "string"
+        },
+        "FE_CDN_prtl_fit01": {
+            "type": "string"
+        },
+        "FE_CDN_scm_fit01": {
+            "type": "string"
+        },
+        "FD_rulset_nme_fit01": {
+            "type": "string"
+        },
+        "FE_CDN_api_fit02": {
+            "type": "string"
+        },
+        "FE_CDN_dvlpr_fit02": {
+            "type": "string"
+        },
+        "FE_CDN_mngmt_fit02": {
+            "type": "string"
+        },
+        "FE_CDN_pilot_fit02": {
+            "type": "string"
+        },
+        "FE_CDN_prtl_fit02": {
+            "type": "string"
+        },
+        "FE_CDN_scm_fit02": {
+            "type": "string"
+        },
+        "FD_rulset_nme_fit02": {
+            "type": "string"
+        },
+        "FE_CDN_api_fit03": {
+            "type": "string"
+        },
+        "FE_CDN_dvlpr_fit03": {
+            "type": "string"
+        },
+        "FE_CDN_mngmt_fit03": {
+            "type": "string"
+        },
+        "FE_CDN_pilot_fit03": {
+            "type": "string"
+        },
+        "FE_CDN_prtl_fit03": {
+            "type": "string"
+        },
+        "FE_CDN_scm_fit03": {
+            "type": "string"
+        },
+        "FD_rulset_nme_fit03": {
+            "type": "string"
+        },
+        "OGnme_api_test01": {
+            "type": "string"
+        },
+        "OGnme_dvlpr_test01": {
+            "type": "string"
+        },
+        "OGnme_mngmt_test01": {
+            "type": "string"
+        },
+        "OGnme_prtl_test01": {
+            "type": "string"
+        },
+        "OGnme_scm_test01": {
+            "type": "string"
+        },
+        "Org_HostName_api_test01": {
+            "type": "string"
+        },
+        "Org_HostName_dvlpr_test01": {
+            "type": "string"
+        },
+        "Org_HostName_mngmt_test01": {
+            "type": "string"
+        },
+        "Org_HostName_prtl_test01": {
+            "type": "string"
+        },
+        "Org_HostName_scm_test01": {
+            "type": "string"
+        },
+        "OGnme_api_fit01": {
+            "type": "string"
+        },
+        "OGnme_dvlpr_fit01": {
+            "type": "string"
+        },
+        "OGnme_mngmt_fit01": {
+            "type": "string"
+        },
+        "OGnme_prtl_fit01": {
+            "type": "string"
+        },
+        "OGnme_scm_fit01": {
+            "type": "string"
+        },
+        "Org_HostName_api_fit01": {
+            "type": "string"
+        },
+        "Org_HostName_dvlpr_fit01": {
+            "type": "string"
+        },
+        "Org_HostName_mngmt_fit01": {
+            "type": "string"
+        },
+        "Org_HostName_prtl_fit01": {
+            "type": "string"
+        },
+        "Org_HostName_scm_fit01": {
+            "type": "string"
+        },
+        "OGnme_api_fit02": {
+            "type": "string"
+        },
+        "OGnme_dvlpr_fit02": {
+            "type": "string"
+        },
+        "OGnme_mngmt_fit02": {
+            "type": "string"
+        },
+        "OGnme_prtl_fit02": {
+            "type": "string"
+        },
+        "OGnme_scm_fit02": {
+            "type": "string"
+        },
+        "Org_HostName_api_fit02": {
+            "type": "string"
+        },
+        "Org_HostName_dvlpr_fit02": {
+            "type": "string"
+        },
+        "Org_HostName_mngmt_fit02": {
+            "type": "string"
+        },
+        "Org_HostName_prtl_fit02": {
+            "type": "string"
+        },
+        "Org_HostName_scm_fit02": {
+            "type": "string"
+        },
+        "OGnme_api_fit03": {
+            "type": "string"
+        },
+        "OGnme_dvlpr_fit03": {
+            "type": "string"
+        },
+        "OGnme_mngmt_fit03": {
+            "type": "string"
+        },
+        "OGnme_prtl_fit03": {
+            "type": "string"
+        },
+        "OGnme_scm_fit03": {
+            "type": "string"
+        },
+        "Org_HostName_api_fit03": {
+            "type": "string"
+        },
+        "Org_HostName_dvlpr_fit03": {
+            "type": "string"
+        },
+        "Org_HostName_mngmt_fit03": {
+            "type": "string"
+        },
+        "Org_HostName_prtl_fit03": {
+            "type": "string"
+        },
+        "Org_HostName_scm_fit03": {
+            "type": "string"
+        },
+        "Routing_RulName_api_test01": {
+            "type": "string"
+        },
+        "Routing_RulName_dvlpr_test01": {
+            "type": "string"
+        },
+        "Routing_RulName_mngmt_test01": {
+            "type": "string"
+        },
+        "Routing_RulName_prtl_test01": {
+            "type": "string"
+        },
+        "Routing_RulName_scm_test01": {
+            "type": "string"
+        },
+        "Routing_RulName_http_to_https_test01": {
+            "type": "string"
+        },
+
+        "Routing_RulName_api_fit01": {
+            "type": "string"
+        },
+        "Routing_RulName_http_to_https_fit01": {
+            "type": "string"
+        },
+        "Routing_RulName_dvlpr_fit01": {
+            "type": "string"
+        },
+        "Routing_RulName_mngmt_fit01": {
+            "type": "string"
+        },
+        "Routing_RulName_prtl_fit01": {
+            "type": "string"
+        },
+        "Routing_RulName_scm_fit01": {
+            "type": "string"
+        },
+        "Routing_RulName_api_fit02": {
+            "type": "string"
+        },
+        "Routing_RulName_http_to_https_fit02": {
+            "type": "string"
+        },
+        "Routing_RulName_dvlpr_fit02": {
+            "type": "string"
+        },
+        "Routing_RulName_mngmt_fit02": {
+            "type": "string"
+        },
+        "Routing_RulName_prtl_fit02": {
+            "type": "string"
+        },
+        "Routing_RulName_scm_fit02": {
+            "type": "string"
+        },
+        "Routing_RulName_api_fit03": {
+            "type": "string"
+        },
+        "Routing_RulName_http_to_https_fit03": {
+            "type": "string"
+        },
+        "Routing_RulName_dvlpr_fit03": {
+            "type": "string"
+        },
+        "Routing_RulName_mngmt_fit03": {
+            "type": "string"
+        },
+        "Routing_RulName_prtl_fit03": {
+            "type": "string"
+        },
+        "Routing_RulName_scm_fit03": {
+            "type": "string"
+        },
+        "FD_Diagsettngs_Name": {
+            "type": "string"
+        },
+        "diagLoglawsubid": {
+            "type": "string"
+        },
+        "diagLoglaw_rg": {
+            "type": "string"
+        },
+        "diagLoglaw_name": {
+            "type": "string"
+        }
+
+    },
+    "variables": {
+        
+        "routingRuleName": "[concat(parameters('FrontDoor_PrfleName'), '-routingRule')]",
+        "backendPoolName": "[concat(parameters('FrontDoor_PrfleName'), '-backendPool')]",
+
+        "FE_CDN_api_test01": "[replace(parameters('FE_CDN_api_test01'), '.', '-')]",
+        "FE_CDN_prtl_test01": "[replace(parameters('FE_CDN_prtl_test01'), '.', '-')]",
+        "FE_CDN_dvlpr_test01": "[replace(parameters('FE_CDN_dvlpr_test01'), '.', '-')]",
+        "FE_CDN_mngmt_test01": "[replace(parameters('FE_CDN_mngmt_test01'), '.', '-')]",
+        "FE_CDN_scm_test01": "[replace(parameters('FE_CDN_scm_test01'), '.', '-')]",
+        "FE_CDN_pilot_test01": "[replace(parameters('FE_CDN_pilot_test01'), '.', '-')]",
+
+        "FE_CDN_api_fit01": "[replace(parameters('FE_CDN_api_fit01'), '.', '-')]",
+        "FE_CDN_prtl_fit01": "[replace(parameters('FE_CDN_prtl_fit01'), '.', '-')]",
+        "FE_CDN_dvlpr_fit01": "[replace(parameters('FE_CDN_dvlpr_fit01'), '.', '-')]",
+        "FE_CDN_mngmt_fit01": "[replace(parameters('FE_CDN_mngmt_fit01'), '.', '-')]",
+        "FE_CDN_scm_fit01": "[replace(parameters('FE_CDN_scm_fit01'), '.', '-')]",
+        "FE_CDN_pilot_fit01": "[replace(parameters('FE_CDN_pilot_fit01'), '.', '-')]",
+
+        "FE_CDN_api_fit02": "[replace(parameters('FE_CDN_api_fit02'), '.', '-')]",
+        "FE_CDN_prtl_fit02": "[replace(parameters('FE_CDN_prtl_fit02'), '.', '-')]",
+        "FE_CDN_dvlpr_fit02": "[replace(parameters('FE_CDN_dvlpr_fit02'), '.', '-')]",
+        "FE_CDN_mngmt_fit02": "[replace(parameters('FE_CDN_mngmt_fit02'), '.', '-')]",
+        "FE_CDN_scm_fit02": "[replace(parameters('FE_CDN_scm_fit02'), '.', '-')]",
+        "FE_CDN_pilot_fit02": "[replace(parameters('FE_CDN_pilot_fit02'), '.', '-')]",
+
+        "FE_CDN_api_fit03": "[replace(parameters('FE_CDN_api_fit03'), '.', '-')]",
+        "FE_CDN_prtl_fit03": "[replace(parameters('FE_CDN_prtl_fit03'), '.', '-')]",
+        "FE_CDN_dvlpr_fit03": "[replace(parameters('FE_CDN_dvlpr_fit03'), '.', '-')]",
+        "FE_CDN_mngmt_fit03": "[replace(parameters('FE_CDN_mngmt_fit03'), '.', '-')]",
+        "FE_CDN_scm_fit03": "[replace(parameters('FE_CDN_scm_fit03'), '.', '-')]",
+        "FE_CDN_pilot_fit03": "[replace(parameters('FE_CDN_pilot_fit03'), '.', '-')]"        
+
+
+    },
+    "resources": [
+
+        {
+            "type": "Microsoft.Cdn/profiles",
+            "apiVersion": "2021-06-01",
+            "name": "[parameters('FrontDoor_PrfleName')]",
+            "location": "global",
+            "sku": {
+                "name": "[parameters('FD_SKUName')]"
+            },
+            "kind": "frontdoor",
+            "properties": {
+                "originResponseTimeoutSeconds": 180
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdEndpoints",
+            "apiVersion": "2021-06-01",
+            "name": "[format('{0}/{1}', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+            "location": "global",
+            "properties": {
+                "enabledState": "Enabled"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ]
+        },                       
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_api_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_api_test01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_dvlpr_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_dvlpr_test01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_mngmt_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_mngmt_test01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_pilot_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_pilot_test01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_prtl_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_prtl_test01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_scm_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_scm_test01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_api_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_api_fit01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_dvlpr_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_dvlpr_fit01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_mngmt_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_mngmt_fit01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_pilot_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_pilot_fit01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_prtl_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_prtl_fit01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_scm_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_scm_fit01')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_api_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_api_fit02')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                                      
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_dvlpr_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"                
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_dvlpr_fit02')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_mngmt_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"                
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_mngmt_fit02')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_pilot_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"                
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_pilot_fit02')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_prtl_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_prtl_fit02')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_scm_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"    
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_scm_fit02')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                     
+                }
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_api_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_api_fit03')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                                      
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_dvlpr_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"                
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_dvlpr_fit03')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_mngmt_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"                
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_mngmt_fit03')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_pilot_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"                
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_pilot_fit03')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_prtl_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_prtl_fit03')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                    
+                }
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', variables('FE_CDN_scm_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"    
+            ],
+            "properties": {
+                "hostName": "[parameters('FE_CDN_scm_fit03')]",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12"                     
+                }
+            }
+        },        
+
+        {
+            "type": "Microsoft.Cdn/profiles/originGroups",
+            "apiVersion": "2021-06-01",
+            "name": "[format('{0}/{1}', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]",
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 3
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/originGroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[format('{0}/{1}/{2}', parameters('FrontDoor_PrfleName'), variables('backendPoolName'), variables('backendPoolName'))]",
+            "properties": {
+                "hostName": "[parameters('FD_Default_originHostName')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('FD_Default_originHostName')]",
+                "priority": 1,
+                "weight": 1000
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/status-0123456789abcdef",
+                    "probeRequestType": "GET",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_test01'), '/',parameters('OGnme_api_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_api_test01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_api_test01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_test01'), '/',parameters('OGnme_dvlpr_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_dvlpr_test01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_dvlpr_test01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_test01'), '/',parameters('OGnme_mngmt_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_mngmt_test01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_mngmt_test01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },         
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_test01'), '/',parameters('OGnme_prtl_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_prtl_test01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_prtl_test01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_test01'), '/',parameters('OGnme_scm_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_scm_test01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_scm_test01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/status-0123456789abcdef",
+                    "probeRequestType": "GET",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_fit01'), '/',parameters('OGnme_api_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_api_fit01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_api_fit01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_fit01'), '/',parameters('OGnme_dvlpr_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_dvlpr_fit01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_dvlpr_fit01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_fit01'), '/',parameters('OGnme_mngmt_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_mngmt_fit01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_mngmt_fit01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },         
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_fit01'), '/',parameters('OGnme_prtl_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_prtl_fit01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_prtl_fit01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_fit01'), '/',parameters('OGnme_scm_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_scm_fit01')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_scm_fit01')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/status-0123456789abcdef",
+                    "probeRequestType": "GET",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_fit02'), '/',parameters('OGnme_api_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_api_fit02')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_api_fit02')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_fit02'), '/',parameters('OGnme_dvlpr_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_dvlpr_fit02')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_dvlpr_fit02')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_fit02'), '/',parameters('OGnme_mngmt_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_mngmt_fit02')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_mngmt_fit02')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },         
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_fit02'), '/',parameters('OGnme_prtl_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_prtl_fit02')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_prtl_fit02')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_fit02'), '/',parameters('OGnme_scm_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_scm_fit02')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_scm_fit02')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/status-0123456789abcdef",
+                    "probeRequestType": "GET",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_api_fit03'), '/',parameters('OGnme_api_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_api_fit03')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_api_fit03')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_dvlpr_fit03'), '/',parameters('OGnme_dvlpr_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_dvlpr_fit03')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_dvlpr_fit03')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_mngmt_fit03'), '/',parameters('OGnme_mngmt_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_mngmt_fit03')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_mngmt_fit03')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },         
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_prtl_fit03'), '/',parameters('OGnme_prtl_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_prtl_fit03')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_prtl_fit03')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 2,
+                    "additionalLatencyInMilliseconds": 0
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Https",
+                    "probeIntervalInSeconds": 30
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/',parameters('OGnme_scm_fit03'), '/',parameters('OGnme_scm_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "hostName": "[parameters('Org_HostName_scm_fit03')]",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "[parameters('Org_HostName_scm_fit03')]",
+                "priority": 1,
+                "weight": 50,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },
+    
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets/rules",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_test01'), '/', parameters('FD_rulset_nme_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "order": 1,
+                "conditions": [],
+                "actions": [
+                    {
+                        "name": "UrlRedirect",
+                        "parameters": {
+                            "typeName": "DeliveryRuleUrlRedirectActionParameters",
+                            "redirectType": "Found",
+                            "destinationProtocol": "Https"
+                        }
+                    }
+                ],
+                "matchProcessingBehavior": "Continue"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets/rules",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_fit01'), '/', parameters('FD_rulset_nme_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "order": 1,
+                "conditions": [],
+                "actions": [
+                    {
+                        "name": "UrlRedirect",
+                        "parameters": {
+                            "typeName": "DeliveryRuleUrlRedirectActionParameters",
+                            "redirectType": "Found",
+                            "destinationProtocol": "Https"
+                        }
+                    }
+                ],
+                "matchProcessingBehavior": "Continue"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets/rules",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_fit02'), '/', parameters('FD_rulset_nme_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "order": 1,
+                "conditions": [],
+                "actions": [
+                    {
+                        "name": "UrlRedirect",
+                        "parameters": {
+                            "typeName": "DeliveryRuleUrlRedirectActionParameters",
+                            "redirectType": "Found",
+                            "destinationProtocol": "Https"
+                        }
+                    }
+                ],
+                "matchProcessingBehavior": "Continue"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/rulesets/rules",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FD_rulset_nme_fit03'), '/', parameters('FD_rulset_nme_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "properties": {
+                "order": 1,
+                "conditions": [],
+                "actions": [
+                    {
+                        "name": "UrlRedirect",
+                        "parameters": {
+                            "typeName": "DeliveryRuleUrlRedirectActionParameters",
+                            "redirectType": "Found",
+                            "destinationProtocol": "Https"
+                        }
+                    }
+                ],
+                "matchProcessingBehavior": "Continue"
+            }
+        },        
+        {
+            "type": "Microsoft.Cdn/profiles/afdEndpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[format('{0}/{1}/{2}', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'), variables('routingRuleName'))]",
+            "properties": {
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]"
+                },
+                "supportedProtocols": [
+                    "Http",
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Enabled",
+                "httpsRedirect": "Enabled"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdEndpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/originGroups/origins', parameters('FrontDoor_PrfleName'), variables('backendPoolName'), variables('backendPoolName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_api_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_test01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_test01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_test01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_test01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_dvlpr_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_test01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_test01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_test01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_mngmt_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_test01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_test01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_test01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_prtl_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_test01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_test01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_test01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_scm_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_test01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_test01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_test01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_http_to_https_test01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_test01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_test01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_test01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_test01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_test01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_test01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_test01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_test01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]"
+                },
+                "ruleSets": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_test01'))]"
+                    }
+                ],
+                "supportedProtocols": [
+                    "Http"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_api_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_dvlpr_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_mngmt_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_prtl_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_scm_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit01'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_http_to_https_fit01'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit01'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit01'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit01'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit01'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]"
+                },
+                "ruleSets": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit01'))]"
+                    }
+                ],
+                "supportedProtocols": [
+                    "Http"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_api_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit02'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit02'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit02'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit02'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_dvlpr_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit02'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit02'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit02'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_mngmt_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit02'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit02'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit02'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_prtl_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit02'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit02'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit02'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_scm_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit02'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit02'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit02'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_http_to_https_fit02'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit02'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit02'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit02'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit02'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit02'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit02'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit02'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit02'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]"
+                },
+                "ruleSets": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit02'))]"
+                    }
+                ],
+                "supportedProtocols": [
+                    "Http"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_api_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit03'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit03'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit03'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_api_fit03'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_dvlpr_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit03'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit03'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_dvlpr_fit03'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_mngmt_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit03'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit03'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_mngmt_fit03'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_prtl_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit03'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit03'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_prtl_fit03'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_scm_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit03'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit03'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), parameters('OGnme_scm_fit03'))]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('FrontDoor_PrfleName'), '/', parameters('FrontDoor_PrfleName'), '/', parameters('Routing_RulName_http_to_https_fit03'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('FrontDoor_PrfleName'), parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('FrontDoor_PrfleName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit03'))]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]",
+                "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit03'))]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_api_fit03'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_pilot_fit03'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_dvlpr_fit03'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_mngmt_fit03'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_prtl_fit03'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('FrontDoor_PrfleName'), variables('FE_CDN_scm_fit03'))]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('FrontDoor_PrfleName'), variables('backendPoolName'))]"
+                },
+                "ruleSets": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/rulesets', parameters('FrontDoor_PrfleName'), parameters('FD_rulset_nme_fit03'))]"
+                    }
+                ],
+                "supportedProtocols": [
+                    "Http"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "HttpsOnly",
+                "linkToDefaultDomain": "Disabled",
+                "httpsRedirect": "Disabled",
+                "enabledState": "Enabled"
+            }
+        }, 
+
+
+        {
+            "type": "Microsoft.Insights/diagnosticSettings",
+            "apiVersion": "2021-05-01-preview",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/', parameters('FrontDoor_PrfleName'))]"
+            ],
+            "scope": "[concat('Microsoft.Cdn/profiles/', parameters('FrontDoor_PrfleName'))]",
+            "name": "[parameters('FD_Diagsettngs_Name')]",
+            "location": "uksouth",
+            "properties": {
+                "workspaceId": "[resourceId(parameters('diagLoglawsubid'), parameters('diagLoglaw_rg'), 'microsoft.operationalinsights/workspaces',parameters('diagLoglaw_name'))]",
+                "logs": [
+                    {
+                        "category": "FrontdoorAccessLog",
+                        "enabled": true
+                    },
+                    {
+                        "category": "FrontdoorWebApplicationFirewallLog",
+                        "enabled": true
+                    },
+                    {
+                        "category": "FrontDoorHealthProbeLog",
+                        "enabled": true
+                    }
+                ],
+                "metrics": [
+                    {
+                        "category": "AllMetrics",
+                        "enabled": true
+                    }
+                ]
+            }
+        }
+    ]
+}

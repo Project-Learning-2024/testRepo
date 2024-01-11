@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionGroupId": {
+            "value": "ACTIONGROUPID"			
+		},
+        "ActionRuleName": {
+            "value": "ACTIONRULENAME"
+        },
+        "Environment": {
+            "value": "ENV"
+        },
+        "evaluationFrequency": {
+            "value": "EVAL_FREQ"
+        },
+        "metricName": {
+            "value": "KV_METRIC_NAME"
+        },
+        "operator": {
+            "value": "OPERATOR"
+        },
+        "ResourceId_KV": {
+            "value": "KV_RESOURCEID"        
+        },
+        "ServiceName": {
+            "value": "SERVICENAME"
+        },
+        "timeAggregation": {
+            "value": "Average"
+        },
+        "windowSize": {
+            "value": "WINDOW_SIZE"
+        },
+        "Alert_Description": {
+            "value": "ALERT_DESCRIPTION"
+        },
+        "AlertSeverity": {
+            "value": ""
+        },
+        "criterionType": {
+            "value": "CRITERION"
+        }
+    }
+}

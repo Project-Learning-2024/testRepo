@@ -1,0 +1,81 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AlertRuleName": {
+            "defaultValue": "500 error code on create workorder_exceeds_10perc_error-FIT03",
+            "type": "string"
+        },
+        "AI_name": {
+            "defaultValue": "azsu-ai-integration-fit-003",
+            "type": "string"
+        },
+        "AG_name": {
+            "defaultValue": "filedplatform-integration",
+            "type": "string"
+        },
+        "alertname": {
+            "type": "string",
+            "defaultValue": "'ukf_CreateWorkOrder'"
+        },
+        "threshold": {
+            "type": "string",
+            "defaultValue": ">10"
+        }     
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/scheduledqueryrules",
+            "apiVersion": "2022-06-15",
+            "name": "[parameters('AlertRuleName')]",
+            "location": "uksouth",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Dev/Test",
+                "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION"
+            },
+            "properties": {
+                "displayName": "[parameters('AlertRuleName')]",
+                "description": "Create WO operations with error code 500 >10% gives error",
+                "severity": 1,
+                "enabled": true,
+                "evaluationFrequency": "PT15M",
+                "scopes": [
+                    "[resourceId('microsoft.insights/components', parameters('AI_name'))]"
+                ],
+                "targetResourceTypes": [
+                    "microsoft.insights/components"
+                ],
+                "windowSize": "PT15M",
+                "criteria": {
+                    "allOf": [
+                   
+                        {
+                            "query": "[concat ('requests | where operation_Name has ', parameters('alertname'), ' | summarize ErrorCount=countif(resultCode==500), TotalRequests=count() by operation_Name | extend FailurePercentage=ErrorCount*100/TotalRequests | where FailurePercentage ', parameters('threshold'))]",
+                            "timeAggregation": "Total",
+                            "metricMeasureColumn": "FailurePercentage",
+                            "dimensions": [],
+                            "operator": "GreaterThan",
+                            "threshold": 10,
+                            "failingPeriods": {
+                                "numberOfEvaluationPeriods": 1,
+                                "minFailingPeriodsToAlert": 1
+                            }    
+                        }
+                    ]
+                },
+                "autoMitigate": false,
+                "actions": {
+                    "actionGroups": [
+                        "[resourceId('microsoft.insights/actiongroups', parameters('AG_name'))]"
+                    ],
+                    "customProperties": {
+                        "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION",
+                        "Environment": "Dev/Test"
+                    }
+                }
+            }
+        }
+    ]
+}

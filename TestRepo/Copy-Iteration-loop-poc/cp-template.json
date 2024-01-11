@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "FA_name": {
+            "type": "array",
+            "defaultValue": [
+                "azsu-fa-nfr-poc-002",
+                "azsu-fa-sb-poc-001"
+            ]
+        }
+    },
+    "variables": {
+        "copy": [
+            {
+                "name": "FA-Names",
+                "count": "[length(parameters('FA_name'))]",
+                "input": {
+                    "name": "[concat('myDataDisk',parameters('FA_name')[copyIndex('FA-Names')])]",
+                    "mode": "serial"
+                    
+                }
+            }
+        ]
+    },
+    "resources": [],
+    "outputs": {
+        "arrayResult": {
+            "type": "array",
+            "value": "[variables('FA-Names')]"
+        }
+    }
+}

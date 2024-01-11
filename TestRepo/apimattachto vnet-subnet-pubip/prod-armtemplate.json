@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "service_Apim_name": {
+            "type": "String"
+        },
+        "vnet_snet_id": {
+            "type": "String"
+        },
+        "pubIP_id": {
+            "type": "String"
+        }        
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2022-04-01-preview",
+            "name": "[parameters('service_Apim_name')]",
+            "location": "UK South",
+            "sku": {
+                "name": "Premium",
+                "capacity": 2
+            },           
+            "properties": {
+                "publisherEmail": "suresh.s@centrica.com",
+                "publisherName": "Centrica",
+                "notificationSenderEmail": "suresh.s@centrica.com",
+                "hostnameConfigurations": [
+                    {
+                        "type": "Proxy",
+                        "hostName": "[concat(parameters('service_Apim_name'), '.azure-api.net')]",
+                        "negotiateClientCertificate": false,
+                        "defaultSslBinding": true,
+                        "certificateSource": "BuiltIn"
+                    }
+                ],
+                "virtualNetworkConfiguration": {
+                    "subnetResourceId": "[parameters('vnet_snet_id')]"
+                },                
+                "virtualNetworkType": "External",
+                "disableGateway": false,
+                "apiVersionConstraint": {},
+                "publicIpAddressId": "[parameters('pubIP_id')]",                
+                "publicNetworkAccess": "Enabled"
+            }
+        }
+    ]
+}

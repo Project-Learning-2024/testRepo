@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rout_tblnme": {
+            "value": "azsu-rt-fw-nfrpoc-001"
+        },
+        "nextHopType": {
+            "value": "VirtualAppliance"
+        },
+        "nextHopIpAddress": {
+            "value": "10.39.2.4"
+        },
+        "location": {
+            "value": "uksouth"
+        }                         
+    }
+}

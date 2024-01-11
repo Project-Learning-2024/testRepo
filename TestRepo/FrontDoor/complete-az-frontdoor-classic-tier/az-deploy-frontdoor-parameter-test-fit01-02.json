@@ -1,0 +1,189 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "frontDoorName": {
+            "value": "$()"
+        },
+        "backendAddress_test01": {
+            "value": "$()"
+        },
+        "backendAddress_fit01": {
+            "value": "$()"
+        },        
+        "Diagsettngs_Name": {
+            "value": "AzureFrontDoorDiagnosticsLogsToWorkspace"
+        },
+        "FE_customDomainName_api_test01": {
+            "value": "null"
+        },
+        "FE_customDomainName_prtl_test01": {
+            "value": "null"
+        },
+        "FE_customDomainName_dvlpr_test01": {
+            "value": "null"
+        },
+        "FE_customDomainName_mngmt_test01": {
+            "value": "null"
+        },
+        "FE_customDomainName_scm_test01": {
+            "value": "null"
+        },
+        "FE_customDomainName_pilot_test01": {
+            "value": "null"
+        },
+        "BE_customDomainName_prtl_test01": {
+            "value": "null"
+        },
+        "BE_customDomainName_api_test01": {
+            "value": "null"
+        },
+        "BE_customDomainName_dvlpr_test01": {
+            "value": "null"
+        },
+        "BE_customDomainName_mngmt_test01": {
+            "value": "null"
+        },
+        "BE_customDomainName_scm_test01": {
+            "value": "null"
+        },
+        "BE_HostName_prtl_test01": {
+            "value": "null"
+        },
+        "BE_HostName_api_test01": {
+            "value": "null"
+        },
+        "BE_HostName_dvlpr_test01": {
+            "value": "null"
+        },
+        "BE_HostName_mngmt_test01": {
+            "value": "null"
+        },
+        "BE_HostName_scm_test01": {
+            "value": "null"
+        },
+        "Routing_RulName_api_test01": {
+            "value": "null"
+        },
+        "Routing_RulName_dvlpr_test01": {
+            "value": "null"
+        },
+        "Routing_RulName_mngmt_test01": {
+            "value": "null"
+        },
+        "Routing_RulName_prtl_test01": {
+            "value": "null"
+        },
+        "Routing_RulName_scm_test01": {
+            "value": "null"
+        },
+        "Routing_RulName_http_to_https_test01": {
+            "value": "null"
+        },
+        "FE_customDomainName_api_fit01": {
+            "value": "null"
+        },         
+        "FE_customDomainName_pilot_fit01": {
+            "value": "null"
+        }, 
+        "FE_customDomainName_prtl_fit01": {
+            "value": "$()"
+        },
+        "FE_customDomainName_dvlpr_fit01": {
+            "value": "$()"
+        },
+        "FE_customDomainName_mngmt_fit01": {
+            "value": "$()"
+        },
+        "FE_customDomainName_scm_fit01": {
+            "value": "$()"
+        },
+        "BE_customDomainName_prtl_fit01": {
+            "value": "$()"
+        },
+        "BE_customDomainName_api_fit01": {
+            "value": "$()"
+        },
+        "BE_customDomainName_dvlpr_fit01": {
+            "value": "$()"
+        },
+        "BE_customDomainName_mngmt_fit01": {
+            "value": "$()"
+        },
+        "BE_customDomainName_scm_fit01": {
+            "value": "$()"
+        },
+        "BE_HostName_prtl_fit01": {
+            "value": "$()"
+        },
+        "BE_HostName_api_fit01": {
+            "value": "$()"
+        },
+        "BE_HostName_dvlpr_fit01": {
+            "value": "$()"
+        },
+        "BE_HostName_mngmt_fit01": {
+            "value": "$()"
+        },
+        "BE_HostName_scm_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_api_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_dvlpr_fit01": {
+            "value": "$()"
+        }, 
+        "Routing_RulName_mngmt_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_prtl_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_scm_fit01": {
+            "value": "$()"
+        },
+        "Routing_RulName_http_to_https_fit01": {
+            "value": "$()"
+        },
+        "FE_customDomainName_api_fit02": {
+            "value": "$()"
+        },
+        "FE_customDomainName_pilot_fit02": {
+            "value": "$()"
+        },
+        "FE_customDomainName_prtl_fit02": {
+            "value": "$()"
+        },
+        "FE_customDomainName_dvlpr_fit02": {
+            "value": "$()"
+        },
+        "FE_customDomainName_mngmt_fit02": {
+            "value": "$()"
+        },
+        "FE_customDomainName_scm_fit02": {
+            "value": "$()"
+        },        
+        "BE_customDomainName_api_fit02": {
+            "value": "$()"
+        },
+        "BE_HostName_api_fit02": {
+            "value": "$()"
+        },
+        "Routing_RulName_api_fit02": {
+            "value": "$()"
+        },
+        "Routing_RulName_http_to_https_fit02": {
+            "value": "$()"
+        },                        
+        "diagLoglawsubid": {
+            "value": "a2a057a9-c6d7-42cf-b5eb-c7b69aad9042"
+        },
+        "diagLoglaw_rg": {
+            "value": "azsu-rg-coreloganalyticsprod-sipd-001"
+        },
+        "diagLoglaw_name": {
+            "value": "null"
+        }        
+    }
+}

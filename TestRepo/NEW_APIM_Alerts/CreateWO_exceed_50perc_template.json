@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "scheduledqueryrules_500_error_code_on_create_workorder_exceeds_50perc_critical_FIT03_name": {
+            "defaultValue": "500 error code on create workorder_exceeds_50perc_critical-FIT03",
+            "type": "String"
+        },
+        "components_azsu_ai_integration_fit_003_externalid": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-fit-003/providers/microsoft.insights/components/azsu-ai-integration-fit-003",
+            "type": "String"
+        },
+        "actiongroups_filedplatform_integration_externalid": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-fit-003/providers/microsoft.insights/actiongroups/filedplatform-integration",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/scheduledqueryrules",
+            "apiVersion": "2022-06-15",
+            "name": "[parameters('scheduledqueryrules_500_error_code_on_create_workorder_exceeds_50perc_critical_FIT03_name')]",
+            "location": "uksouth",
+            "tags": {
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Dev/Test",
+                "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION"
+            },
+            "properties": {
+                "displayName": "[parameters('scheduledqueryrules_500_error_code_on_create_workorder_exceeds_50perc_critical_FIT03_name')]",
+                "description": "Create WO operations with error code 500 >50% gives critical",
+                "severity": 0,
+                "enabled": true,
+                "evaluationFrequency": "PT15M",
+                "scopes": [
+                    "[parameters('components_azsu_ai_integration_fit_003_externalid')]"
+                ],
+                "targetResourceTypes": [
+                    "microsoft.insights/components"
+                ],
+                "windowSize": "PT15M",
+                "criteria": {
+                    "allOf": [
+                   
+                        {
+                            "query": "requests\n| where operation_Name has \"ukf_createworkorder\"\n| summarize ErrorCount=countif(resultCode==500), TotalRequests=count() by operation_Name\n| extend FailurePercentage=ErrorCount*100/TotalRequests\n| where FailurePercentage > 50\n",
+                            "timeAggregation": "Total",
+                            "metricMeasureColumn": "FailurePercentage",
+                            "dimensions": [],
+                            "operator": "GreaterThan",
+                            "threshold": 50,
+                            "failingPeriods": {
+                                "numberOfEvaluationPeriods": 1,
+                                "minFailingPeriodsToAlert": 1
+                            }    
+                        }
+                    ]
+                },
+                "autoMitigate": false,
+                "actions": {
+                    "actionGroups": [
+                        "[parameters('actiongroups_filedplatform_integration_externalid')]"
+                    ],
+                    "customProperties": {
+                        "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION",
+                        "Environment": "Dev/Test"
+                    }
+                }
+            }
+        }
+    ]
+}

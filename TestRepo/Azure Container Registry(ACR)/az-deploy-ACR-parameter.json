@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "registryName": {
+      "value": "azsuacrnfrpocHA001"
+    },
+    "registryLocation": {
+      "value": "uksouth"
+    },
+    "registrySku": {
+      "value": "Premium"
+    },
+    "adminUserEnabled": {
+      "value": false
+    },
+    "acr_retentiondays": {
+      "value": 7
+    }    
+  }
+}

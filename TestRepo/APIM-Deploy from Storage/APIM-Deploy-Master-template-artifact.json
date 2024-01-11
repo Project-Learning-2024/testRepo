@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "ApimServiceName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the API Management"
+        }
+      },
+          
+      "LinkedTemplatesBaseUrl": {
+        "type": "string",
+        "metadata": {
+          "description": "Base URL of the repository that contains the generated templates"
+        }
+      },
+      "NamedValues": {
+        "type": "object",
+        "metadata": {
+          "description": "Named values"
+        }
+      }
+    },
+    "variables":{
+      "artfct_pth": "[concat(parameters('LinkedTemplatesBaseUrl'), '/APIM-named-values-template.json')]"
+  
+    },
+  
+    "resources": [
+      {
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "relativePath": "APIM-Deploy from Storage/APIM-named-values-template.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "ApimServiceName": {
+              "value": "[parameters('ApimServiceName')]"
+            },
+            "NamedValues": {
+              "value": "[parameters('NamedValues')]"
+            }         
+          }
+        },
+        "name": "namedValuesTemplate-20221130-130911-9797",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2020-06-01",
+        "dependsOn": []
+      }
+    ]
+}

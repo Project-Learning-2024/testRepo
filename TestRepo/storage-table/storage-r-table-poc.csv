@@ -1,0 +1,4 @@
+postalSector,workOrderType,jobType,landlord,channel,activationDate
+XYZ12,FV5;Repair;true;Online,Repair,true,Online,2020-04-01T18:30:00Z
+XYZ12,FV6;Repair;false;Online,Repair,false,Online,2020-04-01T18:30:00Z
+XYZ12,AV7;Repair;false;Online,Repair,false,Online,2020-04-01T18:30:00Z

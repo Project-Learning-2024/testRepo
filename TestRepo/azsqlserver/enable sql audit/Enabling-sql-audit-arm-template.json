@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverName": {
+            "defaultValue": "azsusqlserver-poc-001",
+            "type": "String"
+        },
+        "workspaceName": {
+            "defaultValue": "POC-LogAnalytics-Integration",
+            "type": "String"
+        },
+        "workspaceName1": {
+            "defaultValue": "azsu-d-law-sipd-001",
+            "type": "String"
+        },        
+        "dbName": {
+            "defaultValue": "azsusqldbpoc-001",
+            "type": "String"
+        },         
+        "logAnalyticsWorkspaceResourceId": {
+            "defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourcegroups/azsu-rg-es-dev-001/providers/microsoft.operationalinsights/workspaces/poc-loganalytics-integration",
+            "type": "String"
+        },
+        "logAnalyticsWorkspaceResourceId1": {
+            "defaultValue": "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001",
+            "type": "String"
+        }                           
+    },
+    "variables": {},
+    "resources": [
+        {
+        "type": "Microsoft.Sql/servers/auditingSettings",
+        "apiVersion": "2017-03-01-preview",
+        "name": "[concat(parameters('serverName'),'/Default')]",
+        "properties": {
+            "state": "Enabled",
+            "retentionDays": 0,
+            "auditActionsAndGroups": [
+            "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+            "FAILED_DATABASE_AUTHENTICATION_GROUP",
+            "BATCH_COMPLETED_GROUP"
+            ],
+            "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000",
+            "isAzureMonitorTargetEnabled": true
+        }
+        },
+        {
+            "type": "Microsoft.Sql/servers/providers/diagnosticSettings",
+            "name": "[concat(parameters('serverName'),'/microsoft.insights/diagnosticSettings/', parameters('workspaceName1'))]",
+            "apiVersion": "2021-05-01-preview",
+            "properties": {
+            "name": "[parameters('workspaceName1')]",
+            "workspaceId": "[parameters('logAnalyticsWorkspaceResourceId1')]",
+            "logs": [
+                {
+                "category": "SQLSecurityAuditEvents",
+                "enabled": true
+                }
+            ]
+            }
+        }        
+    ]
+}

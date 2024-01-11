@@ -1,0 +1,112 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "uksouth"
+        },
+        "networkInterfaceName1": {
+            "value": ""
+        },
+        "enableAcceleratedNetworking": {
+            "value": true
+        },
+        "networkSecurityGroupName": {
+            "value": ""
+        },
+        "networkSecurityGroupRules": {
+            "value": []
+        },
+        "virtualMachineName": {
+            "value": ""
+        },
+        "virtualMachineName1": {
+            "value": ""
+        },
+        "vmimge_sku": {
+            "value": "2022-datacenter-core-g2"
+        },        
+        
+        "virtualMachineComputerName1": {
+            "value": ""
+        },
+        "virtualMachineRG": {
+            "value": ""
+        },
+        "osDiskType": {
+            "value": "StandardSSD_ZRS"
+        },
+        "osDiskDeleteOption": {
+            "value": "Delete"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s_v2"
+        },
+        "nicDeleteOption": {
+            "value": "Delete"
+        },
+        "hibernationEnabled": {
+            "value": false
+        },
+        "adminUsername": {
+            "value": "nfrdev"
+        },
+        "adminPassword": {
+            "value": ""
+        },
+        "patchMode": {
+            "value": "AutomaticByOS"
+        },
+        "enableHotpatching": {
+            "value": false
+        },
+        "securityType": {
+            "value": "TrustedLaunch"
+        },
+        "secureBoot": {
+            "value": true
+        },
+        "vTPM": {
+            "value": true
+        },
+        "virtualMachine1Zone": {
+            "value": "1"
+        },
+        "jmpbx_SubnetName": {
+            "value": ""
+        },
+        "vnetName": {
+            "value": ""
+        },
+        "SubnetAddressPrefix": {
+            "value": ""
+        },
+        "cs_stracct_nme": {
+            "value": ""
+        },
+        "cs_stracct_cntnrnme": {
+            "value": ""
+        },
+        "cs_linkdfilesastoken": {
+            "value": ""
+        },
+        "autoShutdownStatus": {
+            "value": "Enabled"
+        },
+        "autoShutdownTime": {
+            "value": "18:00"
+        },
+        "autoShutdownTimeZone": {
+            "value": "GMT Standard Time"
+        },
+        "autoShutdownNotificationStatus": {
+            "value": "Enabled"
+        },
+        "autoShutdownNotificationLocale": {
+            "value": "en"
+        },
+        "autoShutdownNotificationEmail": {
+            "value": "Surendranath.RJ@centrica.com"
+        }                                 
+    }
+}

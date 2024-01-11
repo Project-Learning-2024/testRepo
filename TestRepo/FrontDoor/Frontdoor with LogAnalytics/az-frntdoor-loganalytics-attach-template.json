@@ -1,0 +1,70 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"frontDoorName": {
+			"defaultValue": "azfrontdoor-poc-001",
+			"type": "string"
+		},
+		"backendAddress": {
+			"defaultValue": "apim-nfr-poc-001.azure-api.net",
+			"type": "string"
+		},
+		"frontDoorId": {
+			"defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-devops-nfr-poc-001/providers/Microsoft.Network/frontdoors/azfrontdoor-poc-001",
+			"type": "string"
+		},
+		"workspaceId": {
+			"defaultValue": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourcegroups/azsu-rg-es-dev-001/providers/microsoft.operationalinsights/workspaces/poc-loganalytics-integration",
+			"type": "string"
+		},
+		"workspaceName": {
+			"defaultValue": "POC-LogAnalytics-Integration",
+			"type": "string"
+		}
+	},
+	"variables": {
+		"frontEndEndpointName": "[concat(parameters('frontDoorName'), '-frontEndEndpoint')]",
+		"loadBalancingSettingsName": "[concat(parameters('frontDoorName'), '-loadBalancingSettings')]",
+		"healthProbeSettingsName": "[concat(parameters('frontDoorName'), '-healthProbeSettings')]",
+		"routingRuleName": "[concat(parameters('frontDoorName'), '-routingRule')]",
+		"backendPoolName": "[concat(parameters('frontDoorName'), '-backendPool')]"
+	},
+	"resources": [
+		{
+			"type": "Microsoft.Network/frontdoors/providers/diagnosticsettings",
+			"name": "[concat(parameters('frontDoorName'),'/Microsoft.OperationalInsights/workspaces/',parameters('workspaceName'))]",
+			"apiVersion": "2016-09-01",
+			"location": "uksouth",
+			"properties": {
+				"workspaceId": "[parameters('workspaceId')]",
+				"logs": [{
+						"category": "FrontdoorAccessLog",
+						"enabled": true,
+						"retentionPolicy": {
+							"enabled": true,
+							"days": 0
+						}
+					},
+					{
+						"category": "FrontdoorWebApplicationFirewallLog",
+						"enabled": true,
+						"retentionPolicy": {
+							"enabled": true,
+							"days": 0
+						}
+					}
+				],
+				"metrics": [{
+					"category": "AllMetrics",
+					"timeGrain": "PT1M",
+					"enabled": true,
+					"retentionPolicy": {
+						"enabled": false,
+						"days": 0
+					}
+				}]
+			}
+		}
+	]
+}

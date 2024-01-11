@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "smartdetectoralertrules_failure_anomalies___azsu_ai_integration_smt_001_name": {
+            "defaultValue": "failure anomalies - test",
+            "type": "String"
+        },
+        "components_azsu_ai_integration_smt_001_externalid": {
+            "defaultValue": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-integration-smt-001/providers/microsoft.insights/components/azsu-ai-integration-smt-001",
+            "type": "String"
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "defaultValue": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-integration-preprod-001/providers/microsoft.insights/actiongroups/application insights smart detection",
+            "type": "String"
+        },
+        "actiongroups_ag_sipd_snow_preprod_externalid": {
+            "defaultValue": "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/azsu-rg-integration-preprod-001/providers/microsoft.insights/actiongroups/ag_sipd_snow_preprod",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___azsu_ai_integration_smt_001_name')]",
+            "location": "global",
+            "tags": {
+                "Accountable": "Pre-Production",
+                "CostCode": "D.4993-01-R01",
+                "Environment": "Preproduction",
+                "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION"
+            },
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[parameters('components_azsu_ai_integration_smt_001_externalid')]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+						"[parameters('actiongroups_application_insights_smart_detection_externalid')]",
+						"[parameters('actiongroups_ag_sipd_snow_preprod_externalid')]"
+                    ],
+                    "customProperties": {
+                        "ServiceName": "FIELD OPERATIONS - AZURE INTEGRATION",
+                        "Environment": "Preproduction"
+                    }				
+                }
+            }
+        }
+    ]
+}

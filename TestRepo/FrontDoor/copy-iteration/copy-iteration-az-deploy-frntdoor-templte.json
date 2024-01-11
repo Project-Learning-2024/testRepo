@@ -1,0 +1,299 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "frontDoorName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the frontdoor resource."
+      }
+    },
+    "backendAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "The hostname of the backend. Must be an IP address or FQDN."
+      }
+    },
+    "workspaceId": {
+        "type": "string"
+    },
+    "Diagsettngs_Name": {
+        "type": "string"
+    },
+    "FE_customDomainName_api": {
+      "type": "string"
+    },
+    "FE_customDomainName_prtl": {
+      "type": "string"
+    },
+    "FE_customDomainName_dvlpr": {
+      "type": "string"
+    },
+    "FE_customDomainName_mngmt": {
+      "type": "string"
+    },
+    "FE_customDomainName_scm": {
+      "type": "string"
+    },
+    "FE_customDomainName_pilot": {
+      "type": "string"
+    },
+    "BE_customDomainName_prtl": {
+      "type": "string"
+    },
+    "BE_customDomainName_api": {
+      "type": "string"
+    },
+    "BE_customDomainName_dvlpr": {
+      "type": "string"
+    },
+    "BE_customDomainName_mngmt": {
+      "type": "string"
+    },
+    "BE_customDomainName_scm": {
+      "type": "string"
+    },    
+    "BE_HostName_prtl": {
+      "type": "string"
+    },
+    "BE_HostName_api": {
+      "type": "string"
+    },
+    "BE_HostName_dvlpr": {
+      "type": "string"
+    },
+    "BE_HostName_mngmt": {
+      "type": "string"
+    },
+    "BE_HostName_scm": {
+      "type": "string"
+    }                                      
+  },
+  "variables": {
+    "frontEndEndpointName": "[concat(parameters('frontDoorName'), '-frontEndEndpoint')]",
+    "loadBalancingSettingsName": "[concat(parameters('frontDoorName'), '-loadBalancingSettings')]",
+    "healthProbeSettingsName": "[concat(parameters('frontDoorName'), '-healthProbeSettings')]",
+    "loadBalancingSettingsName_prtl": "[concat(parameters('frontDoorName'), '-loadBalancingSettings-prtl')]",
+    "healthProbeSettingsName_prtl": "[concat(parameters('frontDoorName'), '-healthProbeSettings-prtl')]",      
+    "loadBalancingSettingsName_api": "[concat(parameters('frontDoorName'), '-loadBalancingSettings_api')]",
+    "healthProbeSettingsName_api": "[concat(parameters('frontDoorName'), '-healthProbeSettings_api')]",    
+    "routingRuleName": "[concat(parameters('frontDoorName'), '-routingRule')]",
+    "backendPoolName": "[concat(parameters('frontDoorName'), '-backendPool')]",
+    "FE_customDomainName_api": "[replace(parameters('FE_customDomainName_api'), '.', '-')]",
+    "FE_customDomainName_prtl": "[replace(parameters('FE_customDomainName_prtl'), '.', '-')]",
+    "FE_customDomainName_dvlpr": "[replace(parameters('FE_customDomainName_dvlpr'), '.', '-')]",
+    "FE_customDomainName_mngmt": "[replace(parameters('FE_customDomainName_mngmt'), '.', '-')]",
+    "FE_customDomainName_scm": "[replace(parameters('FE_customDomainName_scm'), '.', '-')]",
+    "FE_customDomainName_pilot": "[replace(parameters('FE_customDomainName_pilot'), '.', '-')]"        
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/frontDoors",
+      "apiVersion": "2020-05-01",
+      "name": "[parameters('frontDoorName')]",
+      "location": "global",
+      "properties": {
+        "enabledState": "Enabled",
+        "frontendEndpoints": [
+          {
+            "name": "[variables('frontEndEndpointName')]",
+            "properties": {
+              "hostName": "[concat(parameters('frontDoorName'), '.azurefd.net')]",
+              "sessionAffinityEnabledState": "Disabled"
+            }
+          },
+          {
+            "name": "[variables('FE_customDomainName_api')]",
+            "properties": {
+              "hostName": "[parameters('FE_customDomainName_api')]",
+              "sessionAffinityEnabledState": "Disabled"
+            }
+          },
+          {
+            "name": "[variables('FE_customDomainName_prtl')]",
+            "properties": {
+              "hostName": "[parameters('FE_customDomainName_prtl')]",
+              "sessionAffinityEnabledState": "Disabled"
+            }
+          },
+          {
+            "name": "[variables('FE_customDomainName_dvlpr')]",
+            "properties": {
+              "hostName": "[parameters('FE_customDomainName_dvlpr')]",
+              "sessionAffinityEnabledState": "Disabled"
+            }
+          },
+          {
+            "name": "[variables('FE_customDomainName_mngmt')]",
+            "properties": {
+              "hostName": "[parameters('FE_customDomainName_mngmt')]",
+              "sessionAffinityEnabledState": "Disabled"
+            }
+          }, 
+          {
+            "name": "[variables('FE_customDomainName_scm')]",
+            "properties": {
+              "hostName": "[parameters('FE_customDomainName_scm')]",
+              "sessionAffinityEnabledState": "Disabled"
+            }
+          },
+          {
+            "name": "[variables('FE_customDomainName_pilot')]",
+            "properties": {
+              "hostName": "[parameters('FE_customDomainName_pilot')]",
+              "sessionAffinityEnabledState": "Disabled"
+            }
+          }                                         
+        ],
+        "loadBalancingSettings": [
+          {
+            "name": "[variables('loadBalancingSettingsName')]",
+            "properties": {
+              "resourceState": "Enabled",
+              "sampleSize": 4,
+              "successfulSamplesRequired": 2,
+              "additionalLatencyMilliseconds": 0
+            }
+          },
+          {
+            "name": "[variables('loadBalancingSettingsName_prtl')]",
+            "properties": {
+              "resourceState": "Enabled",
+              "sampleSize": 4,
+              "successfulSamplesRequired": 2,
+              "additionalLatencyMilliseconds": 0
+            }
+          }                                      
+        ],
+        "healthProbeSettings": [
+          {
+            "name": "[variables('healthProbeSettingsName')]",
+            "properties": {
+              "resourceState": "Enabled",
+              "path": "/",
+              "protocol": "Https",
+              "healthProbeMethod": "Head",
+              "intervalInSeconds": 30,
+              "enabledState": "Disabled"
+              
+            }
+          },
+          {
+            "name": "[variables('healthProbeSettingsName_prtl')]",
+            "properties": {
+              "resourceState": "Enabled",
+              "path": "/",
+              "protocol": "Https",
+              "healthProbeMethod": "Head",
+              "intervalInSeconds": 30,
+              "enabledState": "Enabled"
+              
+            }
+          }          
+        ],
+        "backendPools": [
+          {
+            "name": "[variables('backendPoolName')]",
+            "properties": {
+              "backends": [
+                {
+                  "address": "[parameters('backendAddress')]",
+                  "backendHostHeader": "[parameters('backendAddress')]",
+                  "httpPort": 80,
+                  "httpsPort": 443,
+                  "weight": 50,
+                  "priority": 1,
+                  "enabledState": "Enabled"
+                }
+              ],
+              "loadBalancingSettings": {
+                "id": "[resourceId('Microsoft.Network/frontDoors/loadBalancingSettings', parameters('frontDoorName'), variables('loadBalancingSettingsName'))]"
+              },
+              "healthProbeSettings": {
+                "id": "[resourceId('Microsoft.Network/frontDoors/healthProbeSettings', parameters('frontDoorName'), variables('healthProbeSettingsName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('BE_customDomainName_prtl')]",
+            "properties": {
+              "backends": [
+                {
+                  "address": "[parameters('BE_HostName_prtl')]",
+                  "backendHostHeader": "[parameters('BE_HostName_prtl')]",
+                  "httpPort": 80,
+                  "httpsPort": 443,
+                  "weight": 50,
+                  "priority": 1,
+                  "enabledState": "Enabled"
+                }
+              ],
+              "loadBalancingSettings": {
+                "id": "[resourceId('Microsoft.Network/frontDoors/loadBalancingSettings', parameters('frontDoorName'), variables('loadBalancingSettingsName_prtl'))]"
+              },
+              "healthProbeSettings": {
+                "id": "[resourceId('Microsoft.Network/frontDoors/healthProbeSettings', parameters('frontDoorName'), variables('healthProbeSettingsName_prtl'))]"
+              }
+            }
+          }          
+        ],
+        "routingRules": [
+          {
+            "name": "[variables('routingRuleName')]",
+            "properties": {
+              "frontendEndpoints": [
+                {
+                  "id": "[resourceId('Microsoft.Network/frontDoors/frontEndEndpoints', parameters('frontDoorName'), variables('frontEndEndpointName'))]"
+                }                                                                    
+              ],
+              "acceptedProtocols": [
+                "Http",
+                "Https"
+              ],
+              "patternsToMatch": [
+                "/*"
+              ],
+              "routeConfiguration": {
+                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+                "forwardingProtocol": "MatchRequest",
+                "backendPool": {
+                  "id": "[resourceId('Microsoft.Network/frontDoors/backEndPools', parameters('frontDoorName'), variables('backendPoolName'))]"
+                }
+              },
+              "enabledState": "Enabled"
+            }
+          }
+        ]
+      }
+    },   
+    {
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "dependsOn": [
+          "[resourceId('Microsoft.Network/frontdoors/', parameters('frontDoorName'))]"
+      ],      
+      "scope": "[concat('Microsoft.Network/frontdoors/', parameters('frontDoorName'))]",
+      "name": "[parameters('Diagsettngs_Name')]",
+      "location": "uksouth",
+      "properties": {
+        "workspaceId": "[parameters('workSpaceId')]",
+        "logs": [
+          {
+            "category": "FrontdoorAccessLog",
+            "enabled": true
+          },
+          {
+            "category": "FrontdoorWebApplicationFirewallLog",
+            "enabled": true
+          }
+        ],
+        "metrics": [
+            {
+            "category": "AllMetrics",
+            "enabled": true
+            }         
+        ]
+      }
+    }
+  ]
+}

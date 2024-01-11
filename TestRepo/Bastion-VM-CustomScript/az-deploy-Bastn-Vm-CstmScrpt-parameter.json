@@ -1,0 +1,235 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "pip_name": {
+            "value": ""
+        },       
+        "domainNameLabel": {
+            "value": ""
+        },        
+        "vnetName": {
+            "value": ""
+        },
+        "SubnetAddressPrefix": {
+            "value": ""
+        },        
+        "bastionHostName": {
+            "value": ""
+        },
+        "Bstn_sku": {
+            "value": ""
+        },
+        "bstn_nsgName": {
+            "value": ""
+        },
+        "bstn_nsg_rules": {
+            "value": [
+                {
+                    "name": "GatewayManager",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "GatewayManager",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443"
+                    }
+                },
+                {
+                    "name": "HTTPS",
+                    "properties": {
+                        "priority": 320,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "Internet",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443"
+                    }
+                },
+                {
+                    "name": "LoadBalancer",
+                    "properties": {
+                        "priority": 340,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "AzureLoadBalancer",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443"
+                    }
+                },
+                {
+                    "name": "Bastnhostcommunication",
+                    "properties": {
+                        "priority": 360,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "destinationPortRange": [
+                            "8080",
+                            "5701"
+                        ]
+                    }
+                },
+                {
+                    "name": "sshrdp",
+                    "properties": {
+                        "priority": 100,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "destinationPortRange": [
+                            "22",
+                            "3389"
+                        ]
+                    }
+                },
+                {
+                    "name": "AzCloud",
+                    "properties": {
+                        "priority": 110,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "AzureCloud",
+                        "destinationPortRange": "443"
+                    }
+                },
+                {
+                    "name": "Bastnhostcommunicationob",
+                    "properties": {
+                        "priority": 120,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "VirtualNetwork",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "VirtualNetwork",
+                        "destinationPortRange": [
+                            "8080",
+                            "5701"
+                        ]
+                    }
+                },
+                {
+                    "name": "AllowGetSessionInformationout",
+                    "properties": {
+                        "priority": 150,
+                        "protocol": "Tcp",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "Internet",
+                        "destinationPortRange": [
+                            "80",
+                            "443"
+                        ]
+                    }
+                }                                                                
+            ]
+        },
+        "LinkedcustmscrptfileUrl": {
+            "value": ""
+        },
+        "jmpbxSubnetAddressPrefix": {
+            "value": ""
+        },         
+        "location": {
+            "value": "uksouth"
+        },
+        "networkInterfaceName1": {
+            "value": ""
+        },
+        "enableAcceleratedNetworking": {
+            "value": true
+        },
+        "networkSecurityGroupName": {
+            "value": "azsu-nfr-test-poc-nsg"
+        },
+        "networkSecurityGroupRules": {
+            "value": []
+        },
+        "virtualMachineName": {
+            "value": ""
+        },
+        "virtualMachineName1": {
+            "value": ""
+        },
+        "vmimge_sku": {
+            "value": "2022-datacenter-azure-edition"
+        },        
+        
+        "virtualMachineComputerName1": {
+            "value": ""
+        },
+        "virtualMachineRG": {
+            "value": ""
+        },
+        "osDiskType": {
+            "value": "StandardSSD_ZRS"
+        },
+        "osDiskDeleteOption": {
+            "value": "Delete"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s_v2"
+        },
+        "nicDeleteOption": {
+            "value": "Delete"
+        },
+        "hibernationEnabled": {
+            "value": false
+        },
+        "adminUsername": {
+            "value": "nfrdev"
+        },
+        "adminPassword": {
+            "value": "Sipdcentrica@20112023"
+        },
+        "patchMode": {
+            "value": "AutomaticByOS"
+        },
+        "enableHotpatching": {
+            "value": false
+        },
+        "securityType": {
+            "value": "TrustedLaunch"
+        },
+        "secureBoot": {
+            "value": true
+        },
+        "vTPM": {
+            "value": true
+        },
+        "virtualMachine1Zone": {
+            "value": "1"
+        },
+        "jmpbx_SubnetName": {
+            "value": ""
+        },
+        "cs_stracct_nme": {
+            "value": ""
+        },
+        "cs_stracct_cntnrnme": {
+            "value": ""
+        },
+        "cs_linkdfilesastoken": {
+            "value": ""
+        }                                              
+    }
+}

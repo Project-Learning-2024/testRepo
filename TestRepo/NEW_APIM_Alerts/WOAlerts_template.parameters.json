@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ActionGroupId": {
+            "value": "actiongroupid"
+        },
+        "ResourceId": {
+            "value": "resourceid"
+        },
+        "AlertName": {
+            "value": "Rule_Name"
+        },
+        "Alert_Description": {
+            "value": "description"
+        },
+        "AlertSeverity": {
+            "value": ""
+        },
+        "threshold": {
+            "value": ""
+        },
+        "operator": {
+            "value": ""
+        },
+        "evaluationFrequency": {
+            "value": "eval_freq"
+        },
+        "timeAggregation": {
+            "value": "time_aggrtion"
+        },
+        "windowSize": {
+            "value": "window_size"
+        },
+        "ServiceName": {
+            "value": "servicename" 
+        },        
+        "Environment": {
+            "value": "env" 
+        }
+    }
+    

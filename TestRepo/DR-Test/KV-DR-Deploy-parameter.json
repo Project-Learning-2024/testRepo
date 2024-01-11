@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceLocation": {
+      "value": "UK West"
+    },
+    "keyVaultName": {
+      "value": "azsukeyvfrcastdr-poc-01"
+    },
+    "tenantId": {
+      "value": "a603898f-7de2-45ba-b67d-d35fb519b2cf"
+    },
+    "objectId": {
+      "value": "41f76411-08b2-473c-8069-03b5521fb4fc"
+    },
+    "diagLoglawsubid": {
+      "value": "a2a057a9-c6d7-42cf-b5eb-c7b69aad9042"
+    },
+    "diagLoglaw_rg": {
+      "value": "azsu-rg-coreloganalyticsprod-sipd-001"
+    },
+    "diagLoglaw_name": {
+      "value": "azsu-d-law-sipd-001"
+    }
+  }
+}

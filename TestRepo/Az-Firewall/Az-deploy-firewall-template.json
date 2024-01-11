@@ -1,0 +1,81 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "resourceGroup": {
+            "type": "string"
+        },
+        "azureFirewallName": {
+            "type": "string"
+        },
+        "azureFirewallTier": {
+            "type": "string"
+        },
+        "vnet_nme": {
+            "type": "string"
+        },
+        "zones": {
+            "type": "array"
+        },
+        "fw_snet_nme": {
+            "type": "string"
+        },
+        "pip_nme": {
+            "type": "string"
+        },
+        "fwplcy_nme": {
+            "type": "string"
+        }        
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2022-07-01",
+            "type": "Microsoft.Network/firewallPolicies",
+            "resources": [],
+            "properties": {
+                "sku": {
+                    "tier": "Standard"
+                }
+            },
+            "name": "[parameters('fwplcy_nme')]",
+            "location": "[parameters('location')]",
+            "tags": {}
+        },
+        {
+            "apiVersion": "2020-05-01",
+            "type": "Microsoft.Network/azureFirewalls",
+            "name": "[parameters('azureFirewallName')]",
+            "location": "[parameters('location')]",
+            "zones": "[parameters('zones')]",
+            "dependsOn": [
+                "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/firewallPolicies', parameters('fwplcy_nme'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[parameters('pip_nme')]",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet_nme'), parameters('fw_snet_nme'))]"
+                            },
+                            "publicIpAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pip_nme'))]"
+                            }
+                        }
+                    }
+                ],
+                "sku": {
+                    "tier": "[parameters('azureFirewallTier')]"
+                },
+                "firewallPolicy": {
+                    "id": "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/firewallPolicies', parameters('fwplcy_nme'))]"
+                }
+            },
+            "tags": {}
+        }
+    ]
+}

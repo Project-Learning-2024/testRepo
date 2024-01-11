@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alertName": {
+            "value": "Rostering Poc - adf pipeline failure alert"
+        },
+        "alertDescription": {
+            "value": "New metric alert created via template -adf pipeline failure alert"
+        },
+        "alertSeverity": {
+            "value": 2
+        },
+        "isEnabled": {
+            "value": true
+        },
+        "resourceId": {
+            "value": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-rostering-es-001/providers/Microsoft.DataFactory/factories/azsuadfrosteringes001"
+        },
+        "metricName": {
+            "value": "PipelineFailedRuns"
+        },
+        "operator": {
+          "value": "GreaterThan"
+        },
+        "threshold": {
+            "value": "0"
+        },
+        "timeAggregation": {
+            "value": "Total"
+        },
+        "actionGroupId": {
+            "value": "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-rostering-es-001/providers/microsoft.insights/actionGroups/test action"
+        }
+    }
+}

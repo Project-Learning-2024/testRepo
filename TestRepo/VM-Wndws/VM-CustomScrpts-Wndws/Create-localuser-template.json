@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vm_nme": {
+        "type": "string"
+        },
+        "vm_usrnme": {
+        "type": "string"
+        },
+        "vm_pwd": {
+        "type": "secureString"
+        }                
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "[format('{0}/{1}', parameters('vm_nme'), 'enablevmAccess')]",
+            "apiVersion":"2023-03-01",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "uksouth",
+            "properties": {
+                "type": "VMAccessAgent",
+                "publisher": "Microsoft.Compute",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "userName": "[parameters('vm_usrnme')]"
+                },
+                "protectedSettings": {
+                    "password": "[parameters('vm_pwd')]"
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
