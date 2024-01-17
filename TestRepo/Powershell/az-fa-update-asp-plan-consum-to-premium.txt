@@ -1,0 +1,4 @@
+az functionapp update --name "azsufanftest01" --resource-group "azsu-rg-rostering-nfrtest-172" --plan "azsuaspnft03" --force
+
+error:
+You are trying to move to a plan that is not a Consumption or an Elastic Premium plan. Currently the switch is only allowed between a Consumption or an Elastic Premium plan.

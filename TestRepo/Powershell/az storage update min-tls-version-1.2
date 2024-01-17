@@ -1,0 +1,11 @@
+Before updating validate storage kind 
+az storage account update 
+
+$rg = "azwu-rg-forecast-dr-001"
+$sa_list = @( "azwustrfoforcstdr1001" )
+
+foreach($sa in $sa_list){
+Write-Host "Updating min-tls-version $sa"
+az storage account update --name $sa --resource-group $rg --min-tls-version TLS1_2
+}
+az storage account update --name <storage-account>  --resource-group <resource-group> --kind StorageV2 --location <location> --min-tls-version TLS1_2

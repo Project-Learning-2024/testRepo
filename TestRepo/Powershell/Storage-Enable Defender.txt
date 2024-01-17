@@ -1,0 +1,17 @@
+$rg = "azsu-rg-rostering-prod-001"
+
+$Roster_rg_salist = @("azsusacapmanlogprod001",
+"azsusacapmanattprod001",
+"azsusacapmanarmprod001",
+"sipdazsusqlscanlogs",
+"azsusarostercsvprod001",
+"azsusacapmandiagprod001",
+"azsusarosteringfaprod001",
+"azsusacapmanadfprod001"
+)
+
+foreach ($SA in $Roster_rg_salist)
+{
+echo "Enabling defender for $SA"
+az security atp storage update --resource-group $rg --storage-account $SA --is-enabled true
+}

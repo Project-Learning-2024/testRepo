@@ -1,0 +1,9 @@
+scan
+
+
+Get-AzSqlDatabaseVulnerabilityAssessmentRuleBaseline -ResourceGroupName "azsu-rg-datamasking-poc-001" -ServerName "azsusqldbdatamaskpoc001" -DatabaseName "master" -RuleId "VA2065"
+
+Start-AzSqlDatabaseVulnerabilityAssessmentScan -ResourceGroupName "azsu-rg-datamasking-poc-001" -ServerName "azsusqldbdatamaskpoc001" -DatabaseName "master"
+
+Start-AzSqlDatabaseVulnerabilityAssessmentScan -ResourceGroupName "azsu-rg-datamasking-poc-001" -ServerName "azsusqldbdatamaskpoc001" -DatabaseName "azsusqldbdatamaskpoc001"
+

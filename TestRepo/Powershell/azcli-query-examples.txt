@@ -1,0 +1,13 @@
+https://stackoverflow.com/questions/76189228/cant-use-contains-filtering-query-in-azure-cli
+
+ az group list --query "[?contains(name,'se')].{Name:name,Id:id,ProvisioningState:ProvisioningState,ManagedBy:managedBy,Location:location,Tags:tags,Type:type }"
+
+az group list --query "[?contains(name,'se')].{Name: name}" 
+
+
+https://stackoverflow.com/questions/54184397/filter-on-nested-array-with-jmespath-using-az-cli
+
+https://stackoverflow.com/questions/67177691/jmespath-query-on-combining-search-with-and-contains-keyword-in-azure-cloudshe
+
+[?storageProfile.osDisk.osType=='Windows' && contains(name,'db')].name
+

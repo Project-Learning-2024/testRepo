@@ -1,0 +1,3 @@
+$hostConfiguration = '[{\"hostName\":\"api-fit03.test.fieldops.centrica.com\",\"type\":\"Proxy\",\"keyVaultId\":\"https:\/\/azsukvintegrationtest001.vault.azure.net\/secrets\/fieldopsnonprod\/9ec2f753bc194ca3b9713da927e34a4f\"}]'
+
+az apim update --name "fieldopsfit003" --resource-group "azsu-rg-Integration-FIT-003" --set hostnameConfigurations=$hostConfiguration

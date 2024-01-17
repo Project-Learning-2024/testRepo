@@ -1,0 +1,18 @@
+$rg = "azsu-rg-integration-fit-004"
+
+$lga_nme_list = @( "azsu-la-intworkday-returnfromleave-fit-004",
+"azsu-la-intworkday-rejectedtimeoff-fit-004",
+"azsu-la-intworkday-leaveofabsence-fit-004" )
+
+
+$diag_sttng_nme = "AzureLogicAppDiagnoticsLogsToWorkspace"
+$metric = @()
+$log = @()
+$category_list = Get-AzDiagnosticSettingCategory -ResourceId "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-Integration-Dev-001/providers/Microsoft.Logic/workflows/az-la-demo"
+
+$category_list | ForEach-Object {if($_.CategoryType -eq "Metrics"){$metric+=New-AzDiagnosticSettingMetricSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false} else{$log+=New-AzDiagnosticSettingLogSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false}}
+
+foreach($lga_nme in $lga_nme_list){
+Write-Host "Updating diag setting $lga_nme"
+New-AzDiagnosticSetting -Name $diag_sttng_nme -ResourceId "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/$rg/providers/Microsoft.Logic/workflows/$lga_nme" -WorkspaceId "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001" -Log $log -Metric $metric
+}

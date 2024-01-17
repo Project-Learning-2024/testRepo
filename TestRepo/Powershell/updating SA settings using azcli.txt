@@ -1,0 +1,18 @@
+workex
+
+merge to master
+
+portal, resource, schedule,(FA) core (SA)
+line 95 in resource mgmt and 141 is in portalARM - FA line 180 in Schedule
+
+line 739 - SA 
+
+Get-AzStorageAccount -Name "ukfintegrationpartsorder" -ResourceGroupName "azsu-ev-rg-dev-003"
+
+az storage account update -g "azsu-ev-rg-dev-003" -n "ukfintegrationpartsorder" --https-only true
+{
+  "name": "{StorageAccountName}",
+  "enableHttpsTrafficOnly": true,
+  "type": "Microsoft.Storage/storageAccounts"
+  ...
+}

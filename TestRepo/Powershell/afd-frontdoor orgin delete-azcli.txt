@@ -1,0 +1,9 @@
+az afd origin delete --origin-group-name --origin-name --profile-name --resource-group --yes 
+
+az afd origin delete --profile-name "azfrontdoor-patchpoc-001" --origin-group-name "patchpoc-backendPool-001" --origin-name "apim-nfr-poc-001.azure-api.net" -g "azsu-rg-patchpoc-001" --yes y
+
+
+https://josh-ops.com/posts/azure-frontdoor-preview-experience/
+
+
+f9205e3e-a8e7-4e08-b7e5-5bff54890e49

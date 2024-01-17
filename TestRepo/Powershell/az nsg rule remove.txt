@@ -1,0 +1,15 @@
+test apim
+ add management custdomaain
+ 
+ nsg rule fro zscaler has to remove fromtest
+ 
+ 
+ allow specific frontdoor in apim
+ 
+ 
+ az network nsg rule delete -g MyResourceGroup --nsg-name MyNsg -n MyNsgRule
+ 
+  az network nsg rule delete -g "azsu-rg-es-dev-001" --nsg-name "poc-nsg-01" -n "web-rule"
+  
+  
+  az network nsg rule delete -g "azsu-rg-Integration-Test-001" --nsg-name "azsu-nsg-integration-apim-test-001" -n "DevOps_Support_Zscaler_VPN"

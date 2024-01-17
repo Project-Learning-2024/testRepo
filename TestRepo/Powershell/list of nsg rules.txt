@@ -1,0 +1,96 @@
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "$(rule_name3)" -Access "Allow" -Protocol "Tcp" -Direction "Inbound" -Priority 120 -SorceAddressPrefix "ApiManagement" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "3443" | Set-AzNetworkSecurityGroup
+
+Select-AzSubscription -SubscriptionID $(subscriptionId)
+$rule1 = Set-AzNetworkSecurityRuleConfig -Name "ClientCommunicationToAPIManagementInbound" -Access Allow -Protocol Tcp -Direction Inbound -Priority 100 -SourceAddressPrefix "Internet" -SourcePortRange * -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "80"
+
+$rule2 = Set-AzNetworkSecurityRuleConfig -Name "$(rule_name2)" -Access Allow -Protocol Tcp -Direction Inbound -Priority 110 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix VirtualNetwork -DestinationPortRange "$(nsg-dpr-02)"
+
+$nsg = Set-AzNetworkSecurityGroup -ResourceGroupName "$(resourceGroupName)" -Location "$(location)" -Name "$(nsg_name)" -SecurityRules $rule1,$rule2
+
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "ClientCommunicationToAPIManagementInbound" -Access "Allow" -Protocol "Tcp" -Direction "Inbound" -Priority 100 -SourceAddressPrefix "Internet" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "80" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "SecureClientCommunicationToAPIManagementInbound" -Access "Allow" -Protocol "Tcp" -Direction "Inbound" -Priority 110 -SourceAddressPrefix "Internet" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "443" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DependencyOnRedisCacheInbound" -Access "Allow" -Protocol "Tcp" -Direction "Inbound" -Priority 130 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "6381","6383" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "AzureInfrastructureLoadBalancer" -Access "Allow" -Protocol "Tcp" -Direction "Inbound" -Priority 65001 -SourceAddressPrefix "AzureLoadBalancer" -SourcePortRange "*" -DestinationAddressPrefix "*" -DestinationPortRange "*" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "AllowAzureLoadBalancerInBound" -Access "Allow" -Protocol "Tcp" -Direction "Inbound" -Priority 180 -SourceAddressPrefix "AzureLoadBalancer" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "*" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DependencyOnAzureSQLOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 140 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "Sql" -DestinationPortRange "1433" | Set-AzNetworkSecurityGroup
+
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DependencyForLogToEventHubPolicyOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 150 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "EventHub" -DestinationPortRange "5671" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DependencyOnRedisCacheOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 160 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "6381","6383" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DependencyOnAzureFileShareForGitOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 170 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "Storage" -DestinationPortRange "445" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "PublishDiagnosticLogsAndMetricsOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 185 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "AzureMonitor" -DestinationPortRange "443","12000","1886" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "ConnectToSmtpRelayForSendingEmailsOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 190 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "Internet" -DestinationPortRange "25","587","25028" | Set-AzNetworkSecurityGroup
+
+
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "AuthenticateToAzureActiveDirectoryOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 200 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "AzureActiveDirectory" -DestinationPortRange "80","443" | Set-AzNetworkSecurityGroup
+
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DependencyOnAzureStorageOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 100 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "Storage" -DestinationPortRange "443" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "PublishMonitoringLogsOutbound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 300 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "AzureCloud" -DestinationPortRange "443" | Set-AzNetworkSecurityGroup
+
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "AllowVnetInBound" -Access "Allow" -Protocol "Tcp" -Direction "Inbound" -Priority 65000 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "*" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DenyAllInBound" -Access "Deny" -Protocol "Tcp" -Direction "Inbound" -Priority 65000 -SourceAddressPrefix "*" -SourcePortRange "*" -DestinationAddressPrefix "*" -DestinationPortRange "*" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "AllowVnetOutBound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 65000 -SourceAddressPrefix "VirtualNetwork" -SourcePortRange "*" -DestinationAddressPrefix "VirtualNetwork" -DestinationPortRange "*" | Set-AzNetworkSecurityGroup
+
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "AllowInternetOutBound" -Access "Allow" -Protocol "Tcp" -Direction "Outbound" -Priority 65001 -SourceAddressPrefix "*" -SourcePortRange "*" -DestinationAddressPrefix "Internet" -DestinationPortRange "*" | Set-AzNetworkSecurityGroup
+
+Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)" | Add-AzNetworkSecurityRuleConfig -Name "DenyAllOutBound" -Access "Deny" -Protocol "Tcp" -Direction "Outbound" -Priority 65000 -SourceAddressPrefix "*" -SourcePortRange "*" -DestinationAddressPrefix "*" -DestinationPortRange "*" | Set-AzNetworkSecurityGroup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Please try the following:
+
+$NSG = Get-AzNetworkSecurityGroup -Name "$(nsg_name)" -ResourceGroupName "$(resourceGroupName)"
+
+$Params = @{
+  'Name'                     = "$(rule_name1)"
+  'NetworkSecurityGroup'     = $NSG
+  'Protocol'                 = 'TCP'
+  'Direction'                = 'Inbound'
+  'Priority'                 = 100
+  'SourceAddressPrefix'      = "Internet"
+  'SourcePortRange'          = '*'
+  'DestinationAddressPrefix' = "VirtualNetwork"
+  'DestinationPortRange'     = 80
+  'Access'                   = 'Allow'
+}
+
+Add-AzNetworkSecurityRuleConfig @Params | Set-AzNetworkSecurityGroup
+
+$nsg_item = Get-AzureRmNetworkSecurityGroup -Name "apim-integration" -ResourceGroupName azsu-rg-es-dev-001
+
+Remove-AzureRmNetworkSecurityRuleConfig -Name $rule -NetworkSecurityGroup $nsg_item | Set-AzureRmNetworkSecurityGroup
+
+
+Remove-AzNetworkSecurityRuleConfig -Name "rdp-rule" -NetworkSecurityGroup "$(nsg_name)"
+
+Get-AzureNetworkSecurityGroup -Name "apim-integration" | Remove-AzureNetworkSecurityRule -Name "rdp-rule" | Set-AzNetworkSecurityGroup
+
+$nsg_item = Get-AzureRmNetworkSecurityGroup -Name  $NSG -ResourceGroupName $ResourceGroupName

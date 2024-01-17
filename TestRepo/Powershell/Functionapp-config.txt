@@ -1,0 +1,109 @@
+App setting update
+
+$resourceGroupName = "azsu-rg-devops-nfr-poc-001"
+$funapp ="azsuwebapp-nfr-poc-001"
+write-host $funapp
+ForEach ($item in $funapp) {
+
+Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $item -AppSettings  @{"appdynamics.controller.hostName" = "centricapreprod.saas.appdynamics.com"}
+Set-AzWebApp -ResourceGroupName $resourceGroupName  -Name $item -AppSettings @{"appdynamics.controller.port" = "443"}
+}
+
+============================================================
+
+filter resource name
+
+$resourceGroupName = "azsu-rg-rostering-preprod-001"
+$test = (Get-AzWebApp -ResourceGroupName $resourceGroupName  | Where-Object {$_. Kind -eq "app" -And $_. Kind -eq "Api"})
+
+$test
+$webtest = $test.name
+
+$webtest
+
+========================================================================
+
+Update FA setting
+
+$resourceGroupName = "azsu-rg-Integration-ha-preprod-001"
+$test = Get-AzFunctionApp -ResourceGroupName $resourceGroupName
+$funapp=$test.name
+ForEach ($item in $funapp) {
+Update-AzFunctionAppSetting -Name $item -ResourceGroupName $resourceGroupName -AppSetting @{"appdynamics.controller.hostName" = "centricapreprod.saas.appdynamics.com"}
+
+Update-AzFunctionAppSetting -Name $item -ResourceGroupName $resourceGroupName -AppSetting @{"appdynamics.controller.port" = "443"}
+
+Update-AzFunctionAppSetting -Name $item -ResourceGroupName $resourceGroupName -AppSetting @{"appdynamics.agent.accountName" = "centricapreprod"}
+
+Update-AzFunctionAppSetting -Name $item -ResourceGroupName $resourceGroupName -AppSetting @{"appdynamics.agent.accountAccessKey" = "89ac6757-4e6e-452f-a7bb-adb78fc76173"}
+Update-AzFunctionAppSetting -Name $item -ResourceGroupName $resourceGroupName -AppSetting @{"appdynamics.agent.applicationName" = "FIELD OPERATIONS-PREPROD"}
+
+Update-AzFunctionAppSetting -Name $item -ResourceGroupName $resourceGroupName -AppSetting @{"appdynamics.controller.ssl.enabled" = "True"}
+
+Restart-AzFunctionApp -Name $item -ResourceGroupName $resourceGroupName -Force
+}
+
+write-host $funapp
+===========================================================================
+
+Add Dynamic Extension into Functionapp
+
+
+$resourceGroupName = "azsu-rg-Integration-ha-preprod-001"
+$test = Get-AzFunctionApp -ResourceGroupName $resourceGroupName
+$funapp=$test.name
+ForEach ($item in $funapp) {
+
+New-AzResource -ResourceType "Microsoft.Web/sites/siteextensions" -ResourceGroupName $resourceGroupName -Name "$item/AppDynamics.WindowsAzure.SiteExtension.4.5.Release" -ApiVersion "2022-03-01" -Force
+
+Restart-AzFunctionApp -Name $item -ResourceGroupName $resourceGroupName -Force
+}
+
+write-host $funapp
+
+
+=======================================================================
+
+webapp config app setting update
+
+$resourceGroupName = "azsu-rg-devops-nfr-poc-001"
+ $AppName ="azsuwebapp-nfr-poc-001"
+
+ $settings = @("appdynamics.controller.hostName" = "centricapreprod.saas.appdynamics.com","appdynamics.controller.port" = "443","appdynamics.agent.accountName" = "centricapreprod","appdynamics.agent.accountAccessKey" = "89ac6757-4e6e-452f-a7bb-adb78fc76173","appdynamics.agent.applicationName" = "FIELD OPERATIONS-PREPROD","appdynamics.controller.ssl.enabled" = "True"
+)
+
+az webapp config appsettings set -g $resourceGroupName -n $AppName --settings  @settings
+
+==============================================================================
+
+$resourceGroupName = "azsu-rg-rostering-test-073"
+$test = "azsuwebjobsrostert073"
+$funapp=$test
+ForEach ($item in $funapp) {
+
+New-AzResource -ResourceType "Microsoft.Web/sites/siteextensions" -ResourceGroupName $resourceGroupName -Name "$item/AppDynamics.WindowsAzure.SiteExtension.4.5.Release" -ApiVersion "2022-03-01" -Force
+
+az webapp restart  --name $AppName --resource-group $resourceGroupName 
+}
+
+write-host $funapp
+======================================================================
+FA FTP config update
+
+az account set --subscription "0ec5a677-b1f1-4f19-979a-085f7cf3d97e"
+$rg = "azsu-rg-we-field-sit-001"
+$FA_list = @( "ukf-we-wa-sit-startofday",
+"ukf-we-wa-sit-shifttocalendar",
+"ukf-we-wa-sit-sharingcleanup",
+"ukf-we-wa-sit-partcollectionnotification",
+"ukf-we-wa-sit-partcollection",
+"ukf-we-wa-sit-noworkexception",
+"ukf-we-wa-sit-lunch",
+"ukf-we-wa-sit-bookingstatustrace",
+"ukf-we-wa-sit-001" )
+foreach($FA in $FA_list){
+Write-Host "Updating FTPS $FA"
+az functionapp config set -g "$rg" -n "$FA" --ftps-state=Disabled
+}
+
+===========================================================

@@ -1,0 +1,27 @@
+Set-AzContext -Subscription "ef8cfd30-5d36-4db7-94b1-b756c8f9b67c"
+Set-AzSqlServerAudit -ResourceGroupName "azsu-rg-rostering-test-bmh" -ServerName "azsusqlservercapmant080" -LogAnalyticsTargetState Enabled -WorkspaceResourceId "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"
+
+remove
+
+Remove-AzSqlServerAudit -ResourceGroupName "azsu-rg-devops-nfr-poc-001" -ServerName "azsusqlserver-poc-001"
+
+
+=========================================================
+
+
+azcli
+
+
+when doing first time ..it is created along with SA automatically..
+
+az sql server audit-policy update -g "azsu-rg-nfrpoc-001" -n "azsusqlservercapmannfrt234" --state Enabled --lats Enabled --lawri "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"
+
+
+sql db audit
+
+az sql db list --resource-group "azsu-rg-devops-nfr-poc-001" --server "azsusqlserver-nfr-poc-002" --query "[].name"
+
+az sql db audit-policy update -g "azsu-rg-devops-nfr-poc-001" -s "azsusqlserver-nfr-poc-002" -n "master" --state Enabled --lats Enabled --lawri "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"
+
+az sql db audit-policy update -g "azsu-rg-nfrpoc-001" -s "azsusqlservercapmannfrt234" -n "master" --state Enabled --lats Enabled --lawri "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"
+

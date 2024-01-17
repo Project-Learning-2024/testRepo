@@ -1,0 +1,197 @@
+az account set --subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$FA_list = @(azsu-fa-integration-workorderstatuscomms-dev001)
+foreach($FA in $FA_list){
+Write-Host "Changing HTTPS" $FA
+az functionapp update  --name "$FA" --resource-group "azsu-rg-es-dev-001" --set httpsOnly=true ftpsState=Disabled
+}
+
+
+az functionapp config appsettings list --name "azsu-fa-nfr-poc-002" --resource-group "azsu-rg-es-dev-001"
+
+az functionapp config show --name "azsu-fa-nfr-poc-002" --resource-group "azsu-rg-es-dev-001"
+
+az functionapp config set -g "azsu-rg-es-dev-001" -n "azsu-fa-nfr-poc-002" --ftps-state=Disabled
+
+
+"azsu-fa-integration-workorderwrapper-fit-004",
+"azsu-fa-integration-workorderstatuscomms-fit-004",
+"azsu-fa-integration-workorderstatus-fit-004",
+"azsu-fa-integration-referencedata-fit-004",
+"azsu-fa-integration-productspublisher-fit-004",
+"azsu-fa-integration-productsbackfill-fit-004",
+"azsu-fa-integration-partsorderstatus-fit-004",
+"azsu-fa-integration-partsorder-fit-004",
+"azsu-fa-integration-comms-fit-004",
+"azsu-fa-integration-channelrouting-fit-004"
+
+
+"azsu-fa-integration-workorderwrapper-fit-005",
+"azsu-fa-integration-workorderstatuscomms-fit-005",
+"azsu-fa-integration-workorderstatus-fit-005",
+"azsu-fa-integration-referencedata-fit-005",
+"azsu-fa-integration-productspublisher-fit-005",
+"azsu-fa-integration-productsbackfill-fit-005",
+"azsu-fa-integration-partsorderstatus-fit-005",
+"azsu-fa-integration-partsorder-fit-005",
+"azsu-fa-integration-comms-fit-005",
+"azsu-fa-integration-channelrouting-fit-005"
+
+
+"azsu-fa-integration-workorderstatuscomms-dev001"
+"azsu-fa-integration-workorderstatus-dev-001",
+"azsu-fa-integration-workday-dev001",
+"azsu-fa-integration-comms-dev001",
+"azsu-fa-integ-sbdeadletterretry-dev-001",
+"azsu-fa-integ-deadletterpurger-dev-001",
+"azsu-fa-integration-partsorderstatus-dev001",
+"azsu-fa-integration-partsorder-dev001"
+
+az functionapp update  --name "$FA" --resource-group "azsu-rg-integration-fit-005" --set httpsOnly=true
+
+az account set --subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$FA_list = @( "azsu-fa-integration-workorderstatuscomms-dev001"
+"azsu-fa-integration-workorderstatus-dev-001",
+"azsu-fa-integration-workday-dev001",
+"azsu-fa-integration-comms-dev001",
+"azsu-fa-integ-sbdeadletterretry-dev-001",
+"azsu-fa-integ-deadletterpurger-dev-001",
+"azsu-fa-integration-partsorderstatus-dev001",
+"azsu-fa-integration-partsorder-dev001"
+ )
+foreach($FA in $FA_list){
+Write-Host "Updating HTTPS and FTPS $FA"
+az functionapp config set -g "azsu-rg-integration-dev-001" -n "$FA" --ftps-state=Disabled
+}
+
+$FA = "azsu-fa-intworkday-fit-001"
+$rg = "azsu-rg-integration-fit-001"
+az functionapp update  --name $FA --resource-group $rg --set httpsOnly=true
+az functionapp config set -g $rg -n $FA --ftps-state=Disabled
+
+
+rg = "azsu-rg-integration-dev-001"
+
+"toverifyworkorder",
+"toverifytest",
+"testconsumptionscale",
+"demofunctioapp",
+
+rg = "azsu-rg-we-bge-001"
+
+"ukf-we-wa-bge-partcollection",
+"ukf-we-wa-bge-lunch",
+"ukf-we-wa-bge-001"
+
+rg = "azsu-rg-intworkday-dev-001"
+
+"azsu-fa-intworkday-workorderwrapper-dev-001",
+"azsu-fa-intworkday-wd-dev-001"
+
+rg = "azsu-rg-integration-walkme-001"
+
+"azsu-fa-intworkday-walkme-001"
+c-----
+
+rg = "azsu-rg-integration-training-001"
+
+"azsu-fa-intworkday-training-001"
+
+rg = "azsu-rg-integration-landlord-dev01"
+
+"azsu-fa-integration-workorderwrapper-landlord-dev01",
+"azsu-fa-integration-workorderstatus-landlord-dev01",
+"azsu-fa-integration-referencedata-landlord-dev-001",
+"azsu-fa-integ-sbdeadletterretry-landlord-dev-001"
+
+
+rg = "azsu-rg-intbge-fit-001"
+
+"azsu-fa-intbge-wrapper-fit-001",
+"azsu-fa-intbge-workorderwrapper-fit-001",
+"azsu-fa-intbge-workorderstatuscomms-fit-001",
+"azsu-fa-intbge-workorderstatuschange-fit-001",
+"azsu-fa-intbge-workorderstatus-fit-001",
+"azsu-fa-intbge-referencedata-fit-001",
+"azsu-fa-intbge-productspublisher-fit-001",
+"azsu-fa-intbge-productsbackfill-fit-001",
+"azsu-fa-intbge-partsorderstatus-fit-001",
+"azsu-fa-intbge-partsorder-fit-001",
+"azsu-fa-intbge-comms-fit-001",
+"azsu-fa-intbge-channelrouting-fit-001"
+-c--------------
+rg = "azsu-rg-evsquad-test-001"
+
+"azsu-fa-ev-wrapper-test-001",
+"azsu-fa-ev-opportunitystatus-test-001"
+-c-----------------------
+rg = "azsu-rg-evsquad-dev-001"
+
+"azsu-fa-ev-wrapper-dev-001",
+"azsu-fa-ev-workorderwrapper-dev-001",
+"azsu-fa-ev-workorderstatuschange-dev-001",
+"azsu-fa-ev-statuschange-dev-001",
+"azsu-fa-ev-partsorderpublisher-dev-001",
+"azsu-fa-ev-opportunitystatus-dev-001",
+"azsu-fa-ev-channelrouting-dev-001"
+
+rg = "azsu-rg-datapoc-test-001"
+
+"azsu-fn-flatfiledatamovement-dev-001"
+
+rg = "azsu-rg-datamigration-test-001"
+
+"azsu-fa-datamigration-test-001"
+
+rg = "azsu-rg-datamigration-dev-001"
+
+"azsu-fa-datamigration-dev-001"
+
+rg = "azsu-ev-rg-dev-003"
+
+"ukf-we-wa-devev-001"
+
+
+
+------------------------------------------------------------------
+
+
+preprod subsfa
+
+rg = "azsu-rg-integration-smt-001"
+
+"azsu-fa-integration-workorderwrapper-smt-001",
+"azsu-fa-integration-workorderstatuschange-smt-001",
+"azsu-fa-integration-workorderstatus-smt-001",
+"azsu-fa-integration-referencedata-smt-001",
+"azsu-fa-integration-productspublisher-smt-001",
+"azsu-fa-integration-productsbackfill-smt-001",
+"azsu-fa-integration-partsorderstatus-smt-001",
+"azsu-fa-integration-partsorder-smt-001",
+"azsu-fa-integration-comms-smt-001",
+"azsu-fa-integration-channelrouting-smt-001"
+
+
+rg = "azsu-rg-integration-preprod-001"
+
+"azsu-fa-intworkday-preprod-001"
+
+rg = "azsu-rg-integration-datamigration-workorder-preprod-001"
+
+"azsu-fa-intdatamigration-workorderwrapper-preprod-001"
+
+
+
+----------------------------------------------------------------------------------------------------------
+
+prod subfa
+
+rg = "azsu-rg-integration-prod-001"
+
+"azsu-fa-intworkday-prod-001",
+"azsu-fa-integration-wrapper-prod-001",
+"azsu-fa-integration-workorderstatuscomms-prod-001",
+"azsu-fa-integration-workorderstatus-prod-001",
+"azsu-fa-integration-statuschange-prod-001",
+"azsu-fa-integration-partsorderstatus-prod-001",
+"azsu-fa-integration-partsorder-prod-001",
+"azsu-fa-integration-comms-prod-001"

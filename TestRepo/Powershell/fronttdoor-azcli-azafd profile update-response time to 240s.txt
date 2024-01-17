@@ -1,0 +1,1 @@
+az afd profile update --profile-name "azfrontdoor-patchpoc-001" --resource-group azsu-rg-patchpoc-001 --origin-response-timeout-seconds 240

@@ -1,0 +1,1 @@
+az monitor metrics alert update --name "test_action1" --resource-group "azsu-rg-rostering-es-001" --add-action "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-devops-nfr-poc-001/providers/microsoft.insights/actionGroups/AG_snow_poc"

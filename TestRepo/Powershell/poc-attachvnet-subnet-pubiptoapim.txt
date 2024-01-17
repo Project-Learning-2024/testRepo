@@ -1,0 +1,157 @@
+POC-LogAnalytics-Integration
+
+Get-AzPublicIpAddress -Name "Test-pub-ip"
+fieldopstest001
+resource id - /subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-es-dev-001/providers/Microsoft.ApiManagement/service/Apimtiertestpoc
+
+rg - azsu-rg-integration-test-001
+
+vnet - azsu-vnet-integration-test-001
+/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-es-dev-001/providers/Microsoft.ApiManagement/service/Apimtiertestpoc
+
+$pubIP = "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-es-dev-001/providers/Microsoft.Network/publicIPAddresses/Test-pub-ip"
+
+/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-test-001/providers/Microsoft.Network/publicIPAddresses/azsu-pubIP-integration-test-001
+
+$apim.PublicIpAddressId = $pubIP
+
+$apim.PublicIpAddressId = $pubIP
+
+customPropertiesNew=$(az apim show -n $APIM_NAME -g $APIM_RG --query customProperties | jq '."Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2" = "True"')
+
+az apim update -n $APIM_NAME -g $APIM_RG --set customProperties="$customPropertiesNew"
+
+
+
+
+Login-AzureRmAccount
+ 
+$Subscriptions = Get-AzureRmSubscription
+$Subscriptions | Format-Table -Property Name, SubscriptionId, State
+ 
+$SubscriptionID = Read-Host "Provide ID of the subscription"
+Try
+{
+    $Sub = Get-AzureRmSubscription -SubscriptionId $SubscriptionID -ErrorAction Stop| Select-AzureRmSubscription
+         
+}
+Catch
+{
+    Write-Host "Subscription with ID $SubscriptionID can no be found, script will be stopped!" -ForegroundColor Red
+    Break;
+}
+ 
+$ResourceGroupName = Read-Host "Provide name of the resource group"
+$ResourceName = Read-Host "Provide name of the resource"
+ 
+Try
+{
+    $RespurceType = (Get-AzureRmResource -ResourceName $ResourceName -ResourceGroupName $ResourceGroupName).ResourceType
+}
+Catch
+{
+    Write-Error "Resource $ResourceName can not be found under resource group $ResourceGroupName"
+    Break;
+}
+ 
+$ProviderNamespace = $RespurceType.Split("/")[0]
+$ResourceTypeName = $RespurceType.Split("/")[1]
+ 
+$APIVersions = ((Get-AzureRmResourceProvider -ProviderNamespace $ProviderNamespace).ResourceTypes | Where-Object ResourceTypeName -eq $ResourceTypeName).ApiVersions
+ 
+Write-Output "Resource name: " $ResourceName
+Write-Output "-----------------------------"
+Write-Output "Provider namespace: " $ProviderNamespace
+Write-Output "-----------------------------"
+Write-Output "Resource type: " $ResourceTypeName
+Write-Output "-----------------------------"
+Write-Output "Available API versions: " $APIVersions
+
+
+Get-AzureRmResource -ResourceName "fieldopstest001" -ResourceGroupName "azsu-rg-integration-test-001").ResourceType
+
+
+((Get-AzResourceProvider -ProviderNamespace Microsoft.ApiManagement).ResourceTypes | Where-Object ResourceTypeName -eq service).ApiVersions
+
+$DebugPreference='Continue'
+(Get-AzResource -ResourceName "fieldopstest001" -ResourceGroupName "azsu-rg-integration-test-001").Absolute Uri
+
+$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName "azsu-rg-integration-test-001" -ServiceName "fieldopstest001"
+Set-AzApiManagementApiVersionSet -Context $ApiMgmtContext -ApiVersionSetId "query-verion-set" -Scheme Header -HeaderName "api-version" -Description "Azure version header string"
+
+
+$apim_resourceID = "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-es-dev-001/providers/Microsoft.ApiManagement/service/Apimtiertestpoc"
+
+GET https://management.azure.com/{$apim_resourceID}?api-version=2021-04-01
+
+
+az apim api versionset show --resource-group "azsu-rg-integration-test-001" --service-name "fieldopstest001" --version-set-id MyVersionSetId
+
+az apim api versionset list --resource-group "azsu-rg-integration-test-001" --service-name "fieldopstest001"
+
+$apim = Get-AzApiManagement -ResourceGroupName "azsu-rg-datamigration-dev-001" -Name "datamigrationdev001"
+
+
+$apim = Get-AzApiManagement -ResourceGroupName "azsu-rg-Integration-FIT-001" -Name "fieldopsfit001"
+
+
+$virtualNetwork = New-AzApiManagementVirtualNetwork -SubnetResourceId "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-Integration-FIT-001/providers/Microsoft.Network/virtualNetworks/azsu-vnet-integration-fit-001/subnets/azsu-sub-integration-fit-001"
+Get-AzApiManagement -ResourceGroupName "azsu-rg-Integration-FIT-001" -Name "fieldopsfit001"
+$pubIP = "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-Integration-FIT-001/providers/Microsoft.Network/publicIPAddresses/azsu-pubIP-integration-fit-001"
+$apim = Get-AzApiManagement -ResourceGroupName "azsu-rg-Integration-FIT-001" -Name "fieldopsfit001"
+$apim.VpnType = "External"
+$apim.VirtualNetwork = $virtualNetwork
+$apim.PublicIpAddressId = $pubIP
+Set-AzApiManagement -InputObject $apim
+
+
+$apimResourceId = az apim show -n "fieldopstest001" -g "azsu-rg-integration-test-001" --query 'id' -o json
+
+$subnetResourceId = az network vnet subnet show -g "azsu-rg-integration-test-001" -n "azsu-sub-integration-apim-test-001" --vnet-name "azsu-vnet-integration-test-001" --query 'id' -o json
+
+
+$pubipresourceID = az network public-ip show -g "azsu-rg-integration-test-001" -n "azsu-pubIP-integration-test-001" --query 'id' -o json
+
+
+az resource show --ids $apimResourceId
+publicIpAddressId
+virtualNetworkType
+
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkConfiguration.subnetResourceId=$subnetResourceId
+az resource update --ids $apimResourceId --set properties.publicIpAddressId=$pubipresourceID
+
+------------------------------------------------------------
+$apimResourceId = az apim show -n "fieldopsfit001" -g "azsu-rg-Integration-FIT-00
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkType=Externa1" --query 'id' -o json
+$apimResourceId
+
+az resource show --ids $apimResourceId
+
+$subnetResourceId = az network vnet subnet show -g "azsu-rg-Integration-FIT-001" -n "azsu-sub-integration-fit-001" --vnet-name "azsu-vnet-integration-fit-001" --query 'id' -o json
+
+$pubipresourceID = az network public-ip show -g "azsu-rg-Integration-FIT-001" -n "azsu-pubIP-integration-fit-001" --query 'id' -o json
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkType=External
+az resource update --ids $apimResourceId --set properties.virtualNetworkConfiguration.subnetResourceId=$subnetResourceId
+az resource update --ids $apimResourceId --set properties.publicIpAddressId=$pubipresourceID
+------------------------------------------
+$apimResourceId = az apim show -n "Apimtiertestpoc" -g "azsu-rg-es-dev-001"
+
+az resource show --ids $apimResourceId
+
+$subnetResourceId = az network vnet subnet show -g "azsu-rg-es-dev-001" -n "azsu-sub-integration-test-002" --vnet-name "azsu-vnet-integration-test-001" --query 'id' -o json
+
+$pubipresourceID = az network public-ip show -g "azsu-rg-es-dev-001" -n "Test-pub-ip" --query 'id' -o json
+
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkType=External properties.virtualNetworkConfiguration.subnetResourceId=$subnetResourceId properties.publicIpAddressId=$pubipresourceID
+
+
+azsu-vnet-integration-test-001
+azsu-rg-es-dev-001
+azsu-sub-integration-test-002
+
+
+az functionapp update --resource-group "azsu-rg-nfrpoc-aspep-01" -n "test-fa-nfrpoc-aspep-01" --set publicNetworkAccess=Disabled

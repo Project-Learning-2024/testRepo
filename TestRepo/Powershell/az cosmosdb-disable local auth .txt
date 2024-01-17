@@ -1,0 +1,12 @@
+$cosmosdbname = "cosmos-db-account-name"
+$resourcegroup = "resource-group-name"
+$cosmosdb = az cosmosdb show --name $cosmosdbname --resource-group $resourcegroup | ConvertFrom-Json
+
+az resource update --ids $cosmosdb.id --set properties.disableLocalAuth=true --latest-include-preview
+
+
+$cosmosdbname = "azsucosmosdbnfrpoc001"
+$resourcegroup = "azsu-rg-nfrpoc-001"
+$cosmosdb = az cosmosdb show --name $cosmosdbname --resource-group $resourcegroup | ConvertFrom-Json
+
+az resource update --ids $cosmosdb.id --set properties.disableLocalAuth=true --latest-include-preview

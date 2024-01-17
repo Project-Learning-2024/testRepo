@@ -1,0 +1,96 @@
+cosmos-db- retention update
+
+az cosmosdb update --resource-group azsu-rg-forecast-prod-001 --name azsucosmosdbsqlforecastprod --backup-interval 240 --backup-retention 120
+
+==============================================================
+
+Add UK West and allow replication to complete
+
+az cosmosdb update --name azsucosmosdbsqlforecastprod --resource-group azsu-rg-forecast-prod-001 --locations regionName="uksouth" failoverPriority=0 isZoneRedundant=false --locations regionName="ukwest" failoverPriority=1 isZoneRedundant=False --enable-multiple-write-locations true
+
+================================================================================
+Change Failover priority to ukwest
+
+az cosmosdb failover-priority-change --failover-policies "uksouth=1" "ukwest=0" --name azsucosmosdbsqlforecastprod --resource-group azsu-rg-forecast-prod-001
+
+
+=============================================================================
+Remove UK South region and make UK West Primary
+
+
+az cosmosdb update --name azsucosmosdbsqlforecastprod --resource-group azsu-rg-forecast-prod-001 --locations regionName="ukwest" failoverPriority=0 isZoneRedundant=False
+
+=============================================================================
+Add UK south and enable zone redundancy and allow time for recreation of region and any replication
+
+az cosmosdb update --name azsucosmosdbsqlforecastprod --resource-group azsu-rg-forecast-prod-001 --locations regionName="uksouth" failoverPriority=1 isZoneRedundant=True --locations regionName="ukwest" failoverPriority=0 isZoneRedundant=False
+
+=======================================================================================
+Change Failover priority to uksouth primary
+
+
+az cosmosdb failover-priority-change --failover-policies "uksouth=0" "ukwest=1" --name azsucosmosdbsqlforecastprod --resource-group azsu-rg-forecast-prod-001
+
+==============================================================================
+Disable Multi-write region
+
+az cosmosdb update --name azsucosmosdbsqlforecastprod --resource-group azsu-rg-forecast-prod-001 --enable-multiple-write-locations false
+
+===================================================
+Remove UK West
+az cosmosdb update --name azsucosmosdbsqlforecastprod --resource-group azsu-rg-forecast-prod-001 --locations regionName="uksouth" failoverPriority=0 isZoneRedundant=True
+
+=====================================================================
+Cosmosdbrole creation
+
+$resourceGroupName = "azsu-rg-intworkday-dev-001"
+$accountName = "azsuintworkdaydbdev"
+
+New-AzCosmosDBSqlRoleDefinition -AccountName $accountName -ResourceGroupName $resourceGroupName -Type CustomRole -RoleName MyReadWriteRole -DataAction @('Microsoft.DocumentDB/databaseAccounts/readMetadata',    'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*',        'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*') -AssignableScope "/"
+
+=======================================================================================
+Cosmosdb role Assignment-
+
+$resourceGroupName = "azsu-rg-integration-fit-003"
+$accountName = "azsudbintworkdayfit003"
+$CustomRoleDefinitionId = "00000000-0000-0000-0000-000000000002"
+$principalId = "f5ae9bcd-6d09-40e4-8552-733b73736a49"
+
+New-AzCosmosDBSqlRoleAssignment -AccountName $accountName -ResourceGroupName $resourceGroupName -RoleDefinitionId $CustomRoleDefinitionId -Scope "/" -PrincipalId $principalId
+
+
+=========================================================================
+
+remove role
+
+Remove-AzCosmosDBSqlRoleAssignment -ResourceGroupName "azsu-rg-Integration-FIT-003" -AccountName "azsudbintworkdayfit003" -Id "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-fit-003/providers/Microsoft.DocumentDB/databaseAccounts/azsudbintworkdayfit003/sqlRoleAssignments/314191cb-5295-4890-a43d-667461a7210a" -PassThru
+
+true
+
+===================================================
+Enable/Disable local authentication in cosmosdb
+
+$resourceGroupName = "azsu-rg-forecast-test-002"
+$accountName = "azsucosmosdbsqlforecasttest02"
+
+$cosmosdb = az cosmosdb show --name $accountName --resource-group $resourceGroupName | ConvertFrom-Json
+$cosmosdb
+az resource update --ids $cosmosdb.id --set properties.disableLocalAuth=true --latest-include-preview
+
+
+====================================================================================
+Cosmosdb role Assignment -Validation
+
+$resourceGroupName = "azsu-rg-forecast-fit-003"
+$accountName = "azsucosmosdbsqlforecastfit003"
+
+$Assgned MI_list = Get-AzCosmosDBSqlRoleAssignment -ResourceGroupName $resourceGroupName -AccountName $accountName
+
+$Assgned MI_list.PrincipalId
+
+
+
+
+
+
+

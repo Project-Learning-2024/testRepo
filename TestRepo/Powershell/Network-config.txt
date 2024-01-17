@@ -1,0 +1,204 @@
+
+Attach-vnet-pubip-to-Apim
+
+$apim_nme = "fieldopsnfrpoc002"
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vnet_nme = "azsu-vnet-nfrpoc001"
+$apimResourceId = az apim show -n $apim_nme -g $rg --query 'id' -o json
+
+$subnetResourceId = az network vnet subnet show -g $rg -n apim --vnet-name $vnet_nme --query 'id' -o json
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkConfiguration.subnetResourceId=$subnetResourceId 
+
+==================================================================
+
+Bstn-subnet-Creation
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vnet_nme = "azsu-vnet-nfrpoc001"
+
+az network vnet subnet create --name "azsu-bstnsnet-nfrpoc001" --resource-group $rg --vnet-name $vnet_nme --address-prefix "10.38.1.96/27"
+=====================================================================
+Pubip-Creation
+
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+
+az network public-ip create --resource-group $rg --name "azsu-bastnpip-nfrpoc-002" --sku Standard --location uksouth --allocation-method Static --version IPv4 --dns-name bastnnfrpoc02pip --zone 1 2 3 --ddos-protection-mode Enabled
+
+
+====================================================
+
+NSG Rule Update
+
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+
+
+az network nsg rule update --name "HTTPS" --resource-group $rg --nsg-name "azsu-nsg-bstn-nfrpoc-001" --direction Inbound --source-port-ranges 443 --protocol "Tcp"
+
+az network nsg rule update --name "sshrdp" --resource-group $rg --nsg-name "azsu-nsg-bstn-nfrpoc-001" --direction Outbound --protocol "Tcp"
+
+az network nsg rule delete -g $rg --nsg-name "azsu-nsg-bstn-nfrpoc-001" -n "SSH"
+
+az network nsg rule create -g $rg --nsg-name "azsu-nsg-bstn-nfrpoc-001" -n AllowGetSessionInformationout --priority 130 --source-address-prefixes "*" --protocol "TCP" --destination-port-ranges 80 443 --access Allow --destination-address-prefixes "Internet" --direction Outbound
+
+========================================================================
+Update Bastion SKU
+
+$bstnnme = "azsu-bstn-nfrpoc-001"
+$rg = "azsu-rg-nfrpoc-aspep-01"
+
+az network bastion update --name $bstnnme --resource-group $rg --enable-ip-connect true --sku Standard --enable-tunneling true
+
+=================================================================================
+Associate/Update Nsg to Subnet
+
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+az network vnet subnet update -g $rg -n "AzureBastionSubnet" --vnet-name "azsu-vnet-nfrpoc001" --network-security-group "azsu-nsg-bstn-nfrpoc-001"
+
+============================================================================
+Bastion Creation
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vnet_nme = "azsu-vnet-nfrpoc001"
+$pip = "azsu-bastnpip-nfrpoc-002"
+
+
+az network bastion create --name "azsu-bstn-nfrpoc-001" --public-ip-address $pip --resource-group $rg --vnet-name $vnet_nme --location uksouth --sku Basic
+
+
+===================================================
+Remove Bastion,
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+
+az network bastion delete --name "azsu-bstnsnet-nfrpoc001" --resource-group $rg
+az network bastion delete --name "azsu-bstnsnet-nfrpoc002" --resource-group $rg
+---------------------------------------------------------
+Remove subnet
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vnet_nme = "azsu-vnet-nfrpoc001"
+az network vnet subnet delete --name "AzureBastionSubnet" --resource-group $rg --vnet-name $vnet_nme
+
+-------------------------------------------------------------------------
+Remove NSG
+$rg = "azsu-rg-nfrpoc-aspep-01"
+
+az network nsg delete -g $rg -n "azsu-nsg-bstn-nfrpoc-001"
+
+-------------------------------------------------
+Remove pubip
+$rg = "azsu-rg-nfrpoc-aspep-01"
+
+az network public-ip delete -g $rg -n "azsu-bastnpip-nfrpoc-002"
+
+============================================================================================
+Apim lockdown-update nsg rules
+
+$apim_nme = "fieldopsnfrpoc002"
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vnet_nme = "azsu-vnet-nfrpoc001"
+$nsg_nme = "azsu-nsg-nfrpoc-001"
+$nsg_rul_lst = @( "ClientCommunicationToAPIManagementInbound",
+"SecureClientCommunicationToAPIManagementInbound" )
+foreach($nsg_rul in $nsg_rul_lst){
+Write-Host "Updating nsg rule $nsg_rul"
+az network nsg rule update --name $nsg_rul --resource-group $rg --nsg-name $nsg_nme --direction Inbound --source-address-prefixes "AzureFrontDoor.Backend" --protocol "*"
+}
+
+==============================================================================
+Creation of Privatelinkserviceconne, prvte endpoint, prvt dns zone, prvt dns network link
+
+
+$RG = "azsu-rg-Integration-FIT-003"
+$vnetname = "azsu-vnet-integration-fit-003"
+$FA_List = @( "azsufaintchanlroutingfit03","azsufaintcommsfit03","azsufaintdedltrpurgerfit03","azsufaintpartorderstatsfit03",
+"azsufaintpartsorderfit03","azsufaintsbdedleteretryfit03","azsufaintwostatusfit03","azsufaintwowrapperfit03")
+## Place the virtual network you created previously into a variable. ##
+$vnet = Get-AzVirtualNetwork -ResourceGroupName $RG -Name $vnetname
+
+foreach($FA in $FA_List){
+Write-Host "Function app name $FA"
+
+$webapp = Get-AzWebApp -ResourceGroupName $RG -Name $FA
+Write-Host "Function app id "
+$pec = @{
+    Name = "$FA-nic"
+    PrivateLinkServiceId = $webapp.ID
+    GroupID = 'sites'
+}
+
+$privateEndpointConnection = New-AzPrivateLinkServiceConnection @pec
+
+## Create the private endpoint. ##
+$pe = @{
+    ResourceGroupName = "$RG"
+    Name = "$FA-privateendpoint"
+    Location = 'uksouth'
+    Subnet = $vnet.Subnets[5]
+    PrivateLinkServiceConnection = $privateEndpointConnection
+}
+New-AzPrivateEndpoint @pe
+}
+
+
+## Create the private DNS zone. ##
+$zn = @{
+    ResourceGroupName = $RG
+    Name = 'privatelink.azurewebsites.net'
+}
+$zone = New-AzPrivateDnsZone @zn
+
+## Create a DNS network link. ##
+$lk = @{
+    ResourceGroupName = $RG
+    ZoneName = 'privatelink.azurewebsites.net'
+    Name = 'dns-link'
+    VirtualNetworkId = $vnet.Id
+}
+$link = New-AzPrivateDnsVirtualNetworkLink @lk
+
+===========================================================================
+Create the DNS zone group
+
+$RG = "azsu-rg-Integration-FIT-003"
+$vnetname = "azsu-vnet-integration-fit-003"
+$FA_List = @( "azsufaintchanlroutingfit03","azsufaintcommsfit03","azsufaintdedltrpurgerfit03","azsufaintpartorderstatsfit03",
+"azsufaintpartsorderfit03","azsufaintsbdedleteretryfit03","azsufaintwostatusfit03","azsufaintwowrapperfit03")
+## Place the virtual network you created previously into a variable. ##
+$vnet = Get-AzVirtualNetwork -ResourceGroupName $RG -Name $vnetname
+
+foreach($FA in $FA_List){
+Write-Host "Function app name $FA"
+
+$zone = Get-AzPrivateDnsZone -ResourceGroupName $RG  -Name 'privatelink.azurewebsites.net'
+$PrivateDnsZoneId = $zone.ResourceId
+Write-host $PrivateDnsZoneId
+
+## Configure the DNS zone. ##
+$cg = @{
+    Name = 'privatelink.azurewebsites.net'
+    PrivateDnsZoneId = $zone.ResourceId
+}
+$config = New-AzPrivateDnsZoneConfig @cg
+
+## Create the DNS zone group. ##
+$zg = @{
+    ResourceGroupName = $RG
+    PrivateEndpointName = "$FA-privateendpoint"
+    Name = 'default'
+    PrivateDnsZoneConfig = $config
+}
+New-AzPrivateDnsZoneGroup @zg
+}
+
+=================================================================
+
+Associate Subnet to NSG
+
+az account set -s "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+az network vnet subnet update -g "azsu-rg-devops-nfr-poc-001" -n "TestSubnet1" --vnet-name "TestVNet1" --network-security-group "azsu-nsg-nfr-poc-001"
+
+

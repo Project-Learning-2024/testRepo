@@ -1,0 +1,13 @@
+az sql db tde set --database mydb --resource-group MyResourceGroup --server myserver --status Enabled
+
+
+az sql db tde set --database "azsusqlpoc" --resource-group "synapseworkspace-managedrg-bbeb4885-f59f-466f-b8b5-3feefc8052f2" --server "azsusynapsepoc001" --status Enabled
+
+
+az synapse sql pool tde set --name "azsusqlpoc" --workspace-name "azsusynapsepoc001" --resource-group "synapseworkspace-managedrg-bbeb4885-f59f-466f-b8b5-3feefc8052f2" --status Enabled --transparent-data-encryption-name current
+
+
+	    "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "allowBlobPublicAccess": false
+		}

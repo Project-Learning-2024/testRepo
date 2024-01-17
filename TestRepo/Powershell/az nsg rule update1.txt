@@ -1,0 +1,21 @@
+az network nsg rule update
+
+
+az account set --subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+
+az network nsg rule update --name "ClientCommunicationToAPIManagementInbound" --resource-group "azsu-rg-es-dev-001" --nsg-name "azsu-nsg-integration-test-001" --direction Inbound --source-port-ranges * --source-address-prefixes "AzureFrontDoor.Backend" --protocol *
+
+az account set --subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+
+az network nsg rule update --name "SecureClientCommunicationToAPIManagementInbound" --resource-group "azsu-rg-es-dev-001" --nsg-name "azsu-nsg-integration-test-001" --direction Inbound --source-port-ranges * --source-address-prefixes "AzureFrontDoor.Backend" --protocol *
+
+
+
+az network nsg update --name "azsu-nsg-integration-test-001" --resource-group "
+azsu-rg-es-dev-001" --new-name "azsu-nsg-integration-es-test-001"
+
+ClientCommunicationToAPIManagementInbound
+
+
+powershell - create rule
+$rule3 = New-AzNetworkSecurityRuleConfig -Name "$(rule_name1)" -Access Allow -Protocol Tcp -Direction Inbound -Priority 100 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix VirtualNetwork -DestinationPortRange "$(nsg-dpr-01)"

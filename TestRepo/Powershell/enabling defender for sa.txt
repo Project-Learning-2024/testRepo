@@ -1,0 +1,99 @@
+Microsoft Defender for Storage1	€0.0135 per storage account/hour7
+
+
+Microsoft Defender for Storage1	€9.7845 per storage account/month7
+
+
+7 Storage accounts that exceed 73 million monthly transactions will be charged €0.1493 for every 1 million transactions that exceed the threshold.
+
+
+az security atp storage update --is-enabled {false, true}  --resource-group --storage-accountz
+
+az security atp storage update --is-enabled {true}  --resource-group  --storage-account
+
+
+az security atp storage update --resource-group "azsu-rg-devops-nfr-poc-001" --storage-account "pocbiceptorage" --is-enabled true
+
+
+Centrica-SP-SIPD-PreProd
+az security atp storage update --resource-group "azsu-rg-devops-nfr-poc-001" --storage-account "pocbiceptorage" --is-enabled true
+----------------------------------------------------------------------------------------------
+
+$SAlist = @( "azsu-rg-workexecution-preprod-001",
+"azsu-rg-workexecution-preprod-001",
+"azsu-rg-we-smt-001"
+)
+
+Write-Host " Enabling Defender - Integration SA"
+$Integration_rglist = @( "azsu-rg-integration-datamigration-workorder-preprod-001",
+"azsu-rg-integration-preprod-001",
+"azsu-rg-integration-smt-001"
+)
+$Integ_rg1_salist = @( "azsusaintdatamgrtpreprod")
+
+$Integ_rg2_salist = @( "azsusaintegrationpreprod",
+"azsusaroutingpreprod001"
+)
+$Integ_rg3_salist = @( "azsusaintegrationsmt",
+"azsusaroutingsmt001"
+)
+foreach ($rg in $Integration_rglist)
+{
+echo "update in $rg"
+if ($rg -eq "azsu-rg-integration-preprod-001")
+{
+foreach ($SA in $Integ_rg1_salist)
+{
+echo "Enabling defender for $SA"
+az security atp storage update --resource-group $rg --storage-account $SA --is-enabled true
+}
+}
+elseif ($rg -eq "azsu-rg-integration-smt-001"){
+foreach ($SA in $Integ_rg2_salist)
+{
+echo "Enabling defender for $SA"
+az security atp storage update --resource-group $rg --storage-account $SA --is-enabled true
+}
+}
+else{
+foreach ($SA in $Integ_rg3_salist)
+{
+echo "Enabling defender for $SA"
+az security atp storage update --resource-group $rg --storage-account $SA --is-enabled true
+}
+}
+}
+
+-------------------------------------------------------------------------------------
+
+
+Write-Host " Enabling Defender - Workex SA"
+$Workex_rglist = @( "azsu-rg-workexecution-preprod-001",
+"azsu-rg-we-smt-001"
+)
+$wrkex_rg1salist = @( "azsusawediagpprd001",
+"ukfwestrpreprod001"
+)
+
+$wrkex_rg2_salist = @( "ukfwestrsmt001"
+)
+foreach ($rg in $Workex_rglist)
+{
+echo "update in $rg"
+if ($rg -eq "azsu-rg-we-smt-001")
+{
+foreach ($SA in $wrkex_rg2_salist)
+{
+echo "Enabling defender for $SA"
+az security atp storage update --resource-group $rg --storage-account $SA --is-enabled true
+}
+}
+else{
+foreach ($SA in $wrkex_rg1salist)
+{
+echo "Enabling defender for $SA"
+az security atp storage update --resource-group $rg --storage-account $SA --is-enabled true
+}
+}
+}
+

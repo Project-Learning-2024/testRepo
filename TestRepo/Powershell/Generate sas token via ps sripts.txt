@@ -1,0 +1,36 @@
+$(Build.BuildNumber)
+
+azsusaintegrationdev001
+
+52295
+
+ $StorageAccountName = "azwustrfoforcstdr1001"
+ $StorageAccountContext = (Get-AzStorageAccount | Where-Object{$_.StorageAccountName -eq $StorageAccountName}).Context
+ $StorageContainerName = "test"
+ $blobName = $(Build.BuildNumber)
+ $blobName = "51787"
+ 51735
+ $StartTime = Get-Date
+ $EndTime = (Get-Date).AddHours(4)
+APIM-tags-template.json
+ 
+ example link - https://muralikarumuru.github.io/2020-05-24-sas-token/
+
+https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-user-delegation-sas-create-powershell
+
+$SASURI = New-AzStorageBlobSASToken -Container $StorageContainerName -Blob $blobName -Context $StorageAccountContext -Permission "rl" -Protocol HttpsOnly -StartTime $StartTime -ExpiryTime $EndTime
+Write-host $SASURI
+
+
+$SASURI = New-AzStorageContainerSASToken -Name $StorageContainerName -Context $StorageAccountContext -Permission "rl" -Protocol HttpsOnly -StartTime $StartTime -ExpiryTime $EndTime
+Write-host $SASURI
+
+$SAS = $SASURI -replace '\?' -replace ""
+
+Write-Output("##vso[task.setvariable variable=SAS;]$SAS")
+Write-Output("$SAS")
+ 
+ 
+Reference code
+https://github.com/uglide/azure-content/blob/master/articles/storage/storage-dotnet-shared-access-signature-part-1.md
+

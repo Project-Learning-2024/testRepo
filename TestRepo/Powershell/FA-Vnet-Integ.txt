@@ -1,0 +1,1 @@
+az functionapp vnet-integration add -n azsufaintwostatustst01 -g azsu-rg-integration-test-001 --vnet azsu-vnet-integration-test-001 --subnet azsu-sub-integration-functionapps-test-001

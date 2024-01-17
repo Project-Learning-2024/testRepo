@@ -1,0 +1,8 @@
+az network front-door routing-rule delete --front-door-name "azsu-frontdoor-integration-apim-test-001" --name "ApimRoutingApi" --resource-group "azsu-rg-integration-test-001"
+
+az network front-door delete --name "azsu-frontdoor-integration-apim-test-001" --resource-group "azsu-rg-integration-test-001"
+
+Slowness and Performance issue to all the Prod Azure service
+
+
+az afd endpoint delete -g "azsu-rg-devops-nfr-poc-001" --profile-name "azsu-frontdoor-std-nfrpoc-002" --endpoint-name "azsu-frontdoor-std-nfrpoc-002-axd7gbhmhgccfuc2.z01.azurefd.net" --yes

@@ -1,0 +1,11 @@
+principal=$(
+    az webapp identity show \
+        --resource-group $resourceGroupName \
+        --name $functionName \
+        --query principalId \
+        --output tsv
+)
+
+az webapp identity assign -g azsu-rg-devops-nfr-poc-001 -n apiapp-pocnfr007
+    az webapp identity show --resource-group "azsu-rg-devops-nfr-poc-001" --name "apiapp-pocnfr007" --query principalId --output tsv
+	

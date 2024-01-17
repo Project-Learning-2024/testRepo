@@ -1,0 +1,95 @@
+
+find-module -name "az"
+
+Version              Name                                Repository           Description
+-------              ----                                ----------           -----------
+9.0.0                Az                                  PSGallery            Microsoft Azure PowerShell - Cmdlets to …
+
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+
+
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+
+Install-Module -Name Az.PrivateDns -force
+
+$backendSubnet = New-AzVirtualNetworkSubnetConfig -Name backendSubnet -AddressPrefix "10.2.0.0/24"
+$vnet = New-AzVirtualNetwork `
+  -ResourceGroupName MyAzureResourceGroup `
+  -Location eastus `
+  -Name myAzureVNet `
+  -AddressPrefix 10.2.0.0/16 `
+  -Subnet $backendSubnet
+
+$zone = New-AzPrivateDnsZone -Name private.contoso.com -ResourceGroupName MyAzureResourceGroup
+
+-Tag @{ "Env"="test" }
+
+@{"tagKey1"="tagValue1"; "tagKey2"="tagValue2"}
+
+$zone = New-AzPrivateDnsZone -Name "privatelink-poc.apim.net" -ResourceGroupName "azsu-rg-devops-nfr-poc-001" -Tag @{ "Env"="Dev/Test"; "Servicename"="NFR-poc" }
+
+$link = New-AzPrivateDnsVirtualNetworkLink -ZoneName private.contoso.com `
+  -ResourceGroupName MyAzureResourceGroup -Name "mylink" `
+  -VirtualNetworkId $vnet.id -EnableRegistration
+  
+  $vnet = Get-AzVirtualNetwork -Name "TestVNet1" -ResourceGroupName "azsu-rg-devops-nfr-poc-001"
+  
+  $vnetid = $vnet.id
+echo $vnetid
+  az network vnet show -g "azsu-rg-devops-nfr-poc-001" -n "TestVNet1"
+  
+  output:
+  $a = az network vnet show -g "azsu-rg-devops-nfr-poc-001" -n "TestVNet1" --query 'id' -o tsv
+  Outp:
+PS /home/surendranath> $a
+/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-devops-nfr-poc-001/providers/Microsoft.Network/virtualNetworks/TestVNet1
+  
+  New-AzPrivateDnsVirtualNetworkLink -ZoneName "privatelink-poc.apim.net"
+  -ResourceGroupName "azsu-rg-devops-nfr-poc-001" -Name "poc-vnet-link" `
+  -VirtualNetworkId $vnet.id -EnableRegistration
+  
+  
+  Syntax to create Pub.IP:
+  -DomainNameLabel = poclabel.uksouth.cloudapp.azure.com
+  
+$rg = 'azsu-rg-devops-nfr-poc-001'
+$loc = 'UK South'
+$pubIP = 'Test-pub-ip'
+$sku = 'Basic'
+$alloc = 'Static'
+$zone = 1,2,3
+
+New-AzPublicIpAddress -ResourceGroupName $rg -Name $pubIP -Location $loc -AllocationMethod $alloc -SKU $sku -zone $zone -debug
+  
+$publicIp = New-AzPublicIpAddress -Name $publicIpName -ResourceGroupName $rgName -AllocationMethod Static -DomainNameLabel $dnsPrefix -Location $location -IpAddressVersion "IPv4" -Tier "Regional"
+
+$publicIp = New-AzPublicIpAddress -Name "Test-pub-ip" -ResourceGroupName "azsu-rg-devops-nfr-poc-001" -AllocationMethod "Static" -DomainNameLabel "poclabel.uksouth.cloudapp.azure.com" -Location "UK South" -IpAddressVersion "IPv4" -Tier "Regional" -SKU "Basic"
+
+Zone = ['1', '2', '3']
+
+Remove-AzPublicIpAddress -Name "$(pub-ip-name)" -ResourceGroupName "$(resourceGroupName)" -Force
+
+
+
+## Create IP tag for Internet and Routing Preference. ##
+$tag = @{
+    IpTagType = 'RoutingPreference'
+    Tag = 'Microsoft network'   
+}
+$ipTag = New-AzPublicIpTag @tag
+
+## Create IP. ##
+$ip = @{
+    Name = "$(pub-ip-name)"
+    ResourceGroupName = "$(resourceGroupName)"
+    Location = "$(location)"
+    Sku = "$(sku)"
+    AllocationMethod = 'Static'
+    IpAddressVersion = "$(ipa-version)"
+    IpTag = $ipTag
+    Zone = 1,2,3 
+    DomainNameLabel = "$(DNLabel)"	
+}
+New-AzPublicIpAddress @ip

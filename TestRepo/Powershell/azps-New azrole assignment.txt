@@ -1,0 +1,6 @@
+New-AzRoleAssignment -ObjectId "b34d7e76-c8f0-4afb-ad60-124babe182af" -Scope "/subscriptions/ddd6ff1a-5861-4df0-b881-6bcf598a426b/resourceGroups/azsu-rg-Integration-prod-001/providers/Microsoft.ServiceBus/namespaces/azsu-sb-integration-prod-HA-001" -RoleDefinitionName "Owner"
+New-AzRoleAssignment -ObjectId "b34d7e76-c8f0-4afb-ad60-124babe182af" -Scope "/subscriptions/ddd6ff1a-5861-4df0-b881-6bcf598a426b/resourceGroups/azsu-rg-Integration-prod-001/providers/Microsoft.ServiceBus/namespaces/azsu-sb-integration-prod-HA-001" -RoleDefinitionName "Owner"
+
+
+
+New-AzRoleAssignment -ObjectId "1b652fd7-2e89-4346-a10c-6bdce2afac3d" -Scope "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-Integration-Dev-001/providers/Microsoft.Storage/storageAccounts/azsusaintegrationdev001" -RoleDefinitionName "Storage Blob Data Contributor"

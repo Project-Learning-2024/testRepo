@@ -1,0 +1,24 @@
+daily standup
+
+- audit log store - need to check with venkat
+
+Apimtiertestpoc
+
+
+rg - azsu-rg-es-dev-001
+
+azsu-vnet-integration-test-001
+
+Set-AzContext -Subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+
+$virtualNetwork = New-AzApiManagementVirtualNetwork -SubnetResourceId "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-es-dev-001/providers/Microsoft.Network/virtualNetworks/azsu-vnet-integration-test-001/subnets/azsu-sub-integration-test-001"
+$apim = Get-AzApiManagement -ResourceGroupName "azsu-rg-es-dev-001" -Name "Apimtiertestpoc"
+$apim.VpnType = "External"
+$apim.VirtualNetwork = $virtualNetwork
+Set-AzApiManagement -InputObject $apim
+
+pre-prod
+/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourceGroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/Microsoft.OperationalInsights/workspaces/azsu-u-law-sipd-001
+
+dev
+/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001

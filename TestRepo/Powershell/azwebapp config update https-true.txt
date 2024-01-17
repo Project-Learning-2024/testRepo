@@ -1,0 +1,1 @@
+az webapp update --https-only true --name "azsuwebapp-nfr-poc-001" --resource-group "azsu-rg-devops-nfr-poc-001"

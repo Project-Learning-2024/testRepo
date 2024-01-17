@@ -1,0 +1,8 @@
+
+
+az monitor alert-processing-rule update --name "test_action2" --enabled false --resource-group "azsu-rg-rostering-es-001"
+
+az monitor metrics alert update --enabled false --name "test_action2" --resource-group "azsu-rg-rostering-es-001"
+
+
+--resource-group "azsu-rg-rostering-es-001" --name "test_action2" --status "Disabled"

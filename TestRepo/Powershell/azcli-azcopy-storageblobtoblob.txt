@@ -1,0 +1,7 @@
+azcopy copy "https://<storageaccountname>.blob.core.windows.net/container1/<Tesfolder2><Storageaccountsastoken>"  "https://<storageaccountname>.blob.core.windows.net/container2<Storageaccountsastoken>" --recursive==true
+
+?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-07-07T22:28:48Z&st=2023-07-07T14:28:48Z&spr=https&sig=Njo3wE57y8eMx3HXcCjr%2Folw9yrSop53HOBg5dvk0W0%3D
+
+https://azwudlrawforcstdr1001.blob.core.windows.net/dynamics/test?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-07-07T22:28:48Z&st=2023-07-07T14:28:48Z&spr=https&sig=Njo3wE57y8eMx3HXcCjr%2Folw9yrSop53HOBg5dvk0W0%3D
+
+https://azwudlrawforcstdr1001.blob.core.windows.net/general/folder1?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-07-07T22:28:48Z&st=2023-07-07T14:28:48Z&spr=https&sig=Njo3wE57y8eMx3HXcCjr%2Folw9yrSop53HOBg5dvk0W0%3D

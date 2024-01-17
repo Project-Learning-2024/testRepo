@@ -1,0 +1,7 @@
+Custom domain name should not be in dot
+
+example
+
+az afd custom-domain regenerate-validation-token -g "azsu-rg-patchpoc-001" --profile-name "azfrontdoor-patchpoc-001" --custom-domain-name "api-nfr-poc-centrica-com"
+
+az afd custom-domain regenerate-validation-token -g MyResourceGroup --profile-name MyProfle --custom-domain-name "api-nfr-poc.centrica.com"

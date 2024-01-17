@@ -1,0 +1,17 @@
+acr soft delete
+
+arm change
+
+            "softDeletePolicy": {
+                "retentionDays": 7,
+                "status": "disabled"
+            }
+			
+			
+az acr config soft-delete update -r myregistry --status Enabled --days 30
+
+azsuacrrnfrpoc001
+
+az acr config soft-delete update -r "azsuacrrnfrpoc001" --status Enabled --days 7
+
+LR.xlsx

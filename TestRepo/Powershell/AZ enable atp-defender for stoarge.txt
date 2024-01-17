@@ -1,0 +1,34 @@
+capman-rostering
+
+
+VA2020
+$rg = "azsu-rg-rostering-intdev-001"
+$servr_name = "azsusqlservercapmandi001"
+$db = "azsusqldbcapmanintd001"
+
+Set-AzSqlDatabaseVulnerabilityAssessmentRuleBaseline -ResourceGroupName $rg -ServerName $servr_name -DatabaseName $db -BaselineResult @(,@('DATABASE', 'ALTER', 'SQL_USER', 'opsuser')) -RuleID 'VA2020'
+
+Get-AzSqlDatabaseVulnerabilityAssessmentRuleBaseline -ResourceGroupName $rg -ServerName $servr_name -DatabaseName $db -RuleID 'VA2108' | Select-Object -Property *
+
+917631-RJS, 49.204.117.100, 49.204.117.100
+
+'917631-RJS', '49.204.117.100', '49.204.117.100'
+$a = @("@('917631-RJS', '49.204.117.100', '49.204.117.100')",
+"@('ajith2', '157.46.181.0', '157.46.181.255')")
+
+
+$Roster_rg_salist = @("azsusacapmanlogprod001",
+"azsusacapmanattprod001",
+"azsusacapmanarmprod001",
+"sipdazsusqlscanlogs",
+"azsusarostercsvprod001",
+"azsusacapmandiagprod001",
+"azsusarosteringfaprod001",
+"azsusacapmanadfprod001"
+)
+foreach ($SA in $Roster_rg_salist)
+{
+echo "Enabling defender for $SA"
+az security atp storage update --resource-group $rg --storage-account $SA --is-enabled true
+}
+}

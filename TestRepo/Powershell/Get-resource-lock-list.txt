@@ -1,0 +1,13 @@
+$lockId = (Get-AzResourceLock -ResourceGroupName azsu-rg-rostering-dev-009 -ResourceName azsulogadbrosteringd009 -ResourceType Microsoft.OperationalInsights/workspaces).LockId
+
+write-host $lockId
+
+
+==========================================================
+azcli
+
+lockid=$(az lock list --resource-group azsu-rg-rostering-dev-009 --resource-name azsulogadbrosteringd009 --resource-type Microsoft.OperationalInsights/workspaces --query id)
+
+echo $lockid
+
+

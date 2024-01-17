@@ -1,0 +1,2 @@
+az functionapp identity assign -g $(RG_Name) -n $(FA1) --identities /subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourcegroups/azsu-rg-integration-nonprod-mi/providers/microsoft.managedidentity/userassignedidentities/azsu-mi-integration-channelrouting-nonprod-001
+

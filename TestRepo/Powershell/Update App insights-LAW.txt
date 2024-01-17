@@ -1,0 +1,8 @@
+az config set extension.use_dynamic_install=yes_without_prompt
+
+$rg = "azsu-rg-forecast-prod-001"
+$ai = "azsuappinsightdvopsforecastprod"
+$rid_law = "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-p-law-sipd-001"
+
+
+az monitor app-insights component update --app $ai -g $rg --workspace $rid_law

@@ -1,0 +1,13 @@
+$rg = "azsu-rg-nfr-poc-fa-asp"
+$SA_nme = "nfrpocaspfab7f9"
+
+az storage account update -g $rg -n $SA_nme --https-only true
+
+az storage account update -g $rg -n $SA_nme --set kind=StorageV2
+
+2302130030002642
+
+Wasim Ahmad
+waahmad@microsoft.com
+
+

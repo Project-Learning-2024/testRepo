@@ -1,0 +1,9 @@
+$rg = "azsu-rg-workexecution-dev"
+$webapp_nme = "workexecution-app"
+$diag_sttng_nme = "AzureAppsServiceDiagnoticsLogsToWorkspace"
+$metric = @()
+$log = @()
+$category_list = Get-AzDiagnosticSettingCategory -ResourceId "/subscriptions/28413d58-4d22-4b96-8d24-0b6f9ec05ec7/resourceGroups/$rg/providers/Microsoft.Web/sites/$webapp_nme"
+$category_list | ForEach-Object {if($_.CategoryType -eq "Metrics"){$metric+=New-AzDiagnosticSettingMetricSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false} else{$log+=New-AzDiagnosticSettingLogSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false}}
+
+New-AzDiagnosticSetting -Name $diag_sttng_nme -ResourceId "/subscriptions/28413d58-4d22-4b96-8d24-0b6f9ec05ec7/resourceGroups/$rg/providers/Microsoft.Web/sites/$webapp_nme" -WorkspaceId "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001" -Log $log -Metric $metric

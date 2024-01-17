@@ -1,0 +1,23 @@
+$FA_List = @( "azsufaintworkdayfit01","azsufaintcommsfit01","azsufaintreferencedatafit01")
+$ID_List = @()
+foreach($FA in $FA_List){
+Write-Host "Principal ID of $FA"
+$ID = (Get-AzResource -Name $FA -ResourceType Microsoft.Web/sites).Identity.PrincipalId
+$ID_List += $ID
+}
+Write-Host $ID_List
+Write-Host "##vso[task.setvariable variable=ID_List;isoutput=true]$ID_List"
+
+===============================================
+
+Add princple id to kV acccess policy
+
+$All_FA="$(out.ID_List)"
+$value_list = $All_FA.Split(' ') 
+write-host $value_list
+$SecretsKeyVault= "azsukvintegrationfit001"
+foreach($value in $value_list){
+Write-Host "Setting Key Vault Policy for $value"
+az keyvault set-policy --name $SecretsKeyVault --key-permissions get list update --secret-permissions get list --certificate-permissions get list --object-id $value
+}
+

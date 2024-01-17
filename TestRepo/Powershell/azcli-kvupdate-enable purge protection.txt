@@ -1,0 +1,2 @@
+
+az keyvault update --name "kv name" --resource-group "rg" --enable-purge-protection true

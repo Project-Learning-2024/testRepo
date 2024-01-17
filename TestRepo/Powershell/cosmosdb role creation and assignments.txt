@@ -1,0 +1,51 @@
+Get-AzCosmosDBSqlRoleDefinition -ResourceGroupName "azsu-rg-forecast-fit-004" AccountName "azsucosmosdbsqlforecastfit004" 
+   [-Id <String>]
+   [-DefaultProfile <IAzureContextContainer>]
+   [<CommonParameters>
+
+
+$resourceGroupName = "azsu-rg-forecast-fit-004"
+$accountName = "azsucosmosdbsqlforecastfit004"
+New-AzCosmosDBSqlRoleDefinition -AccountName $accountName -ResourceGroupName $resourceGroupName -Type "CustomRole" -RoleName "Cosmos Custom Data Contributor" -DataAction @('Microsoft.DocumentDB/databaseAccounts/readMetadata', 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*', 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*') -AssignableScope "/"
+
+
+
+$resourceGroupName = "<myResourceGroup>"
+$accountName = "<myCosmosAccount>"
+$readOnlyRoleDefinitionId = "<roleDefinitionId>" # as fetched above
+# For Service Principals make sure to use the Object ID as found in the Enterprise applications section of the Azure Active Directory portal blade.
+$principalId = "<aadPrincipalId>"
+New-AzCosmosDBSqlRoleAssignment -AccountName $accountName `
+    -ResourceGroupName $resourceGroupName `
+    -RoleDefinitionId $readOnlyRoleDefinitionId `
+    -Scope "/" `
+    -PrincipalId $principalId
+	
+	
+az cosmosdb sql role definition list --account-name $accountName --resource-group $resourceGroupName
+
+
+00000000-0000-0000-0000-000000000001
+
+00000000-0000-0000-0000-000000000002
+
+$resourceGroupName = "azsu-rg-forecast-fit-004"
+$accountName = "azsucosmosdbsqlforecastfit004"
+$readOnlyRoleDefinitionId = "00000000-0000-0000-0000-000000000001"
+$CustomRoleDefinitionId = "00000000-0000-0000-0000-000000000002"
+$principalId = "9347f96b-24f8-4923-8745-9ad3374c75c5"
+
+New-AzCosmosDBSqlRoleAssignment -AccountName $accountName -ResourceGroupName $resourceGroupName -RoleDefinitionId $readOnlyRoleDefinitionId -Scope "/" -PrincipalId $principalId
+
+
+New-AzCosmosDBSqlRoleDefinition -AccountName $accountName -ResourceGroupName $resourceGroupName -Type CustomRole -RoleName MyReadWriteRole -DataAction @('Microsoft.DocumentDB/databaseAccounts/readMetadata',    'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*',        'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*') -AssignableScope "/"
+
+
+
+$CustomRoleDefinitionId = "00000000-0000-0000-0000-000000000002"
+03298070-849b-4ac6-b81b-fbedaa9aef87
+$principalId = "26eb91a6-ce21-4d4a-94f1-3ec791830c2d"
+
+New-AzCosmosDBSqlRoleAssignment -AccountName $accountName -ResourceGroupName $resourceGroupName -RoleDefinitionId $CustomRoleDefinitionId -Scope "/" -PrincipalId $principalId
+
+Centrica-SP-Rostering-ADO-FIT

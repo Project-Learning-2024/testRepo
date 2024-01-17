@@ -1,0 +1,24 @@
+
+Set-AzSqlDatabaseAudit -ResourceGroupName "ResourceGroup01" -ServerName "Server01" -DatabaseName "Database01" -BlobStorageTargetState Enabled  -StorageAccountResourceId "/subscriptions/7fe3301d-31d3-4668-af5e-211a890ba6e3/resourceGroups/resourcegroup01/providers/Microsoft.Storage/storageAccounts/mystorage"
+
+===========================================
+
+sql db audit policy update
+
+az monitor log-analytics workspace create --resource-group "azsu-rg-rostering-dev-009" --location "uksouth" --workspace-name "azsulogadbrosteringd009"
+
+$wpid = az monitor log-analytics workspace show --resource-group "azsu-rg-rostering-dev-009" --workspace-name "azsulogadbrosteringd009" --query customerId -o tsv
+
+
+az sql db audit-policy update -g "azsu-rg-rostering-dev-009" -s "azsusqlservercapmand009" -n "azsusqldbcapmand009" --state Enabled --lats Enabled --lawri $wpid
+
+
+===================================================
+
+az sql db list --resource-group "azsu-rg-devops-nfr-poc-001" --server "azsusqlserver-nfr-poc-002" --query "[].name"
+
+az sql db audit-policy update -g "azsu-rg-devops-nfr-poc-001" -s "azsusqlserver-nfr-poc-002" -n "master" --state Enabled --lats Enabled --lawri "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"
+
+az sql db audit-policy update -g "azsu-rg-nfrpoc-001" -s "azsusqlservercapmannfrt234" -n "master" --state Enabled --lats Enabled --lawri "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001"
+
+

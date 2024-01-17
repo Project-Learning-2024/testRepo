@@ -1,0 +1,144 @@
+Azure CLI -afd timeout response
+az afd profile update --profile-name "azsu-frontdoor-integration-apim-test-001" --resource-group "azsu-rg-integration-test-001" --origin-response-timeout-seconds 180
+
+========================================================================
+
+Enable MI
+
+az resource update --ids "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-dev-001/providers/Microsoft.Cdn/profiles/azsu-frontdoor-integration-apim-dev-001" --set identity.type=SystemAssigned --api-version 2023-05-01
+
+=======================================================================
+
+kv set policy
+
+$rg = "azsu-rg-integration-dev-001"
+$kv_nme = "azsukvintegrationtest001"
+$fdn_prncpl_id = "f1973bd7-57f6-4711-afc2-30783961fc07"
+az keyvault set-policy --name $kv_nme --key-permissions get list update --secret-permissions get list --certificate-permissions get list update --object-id $fdn_prncpl_id
+
+========================================================================
+
+Frontdoor secret creation
+
+$sub_id = "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$rg = "azsu-rg-integration-dev-001"
+$kv_nme = "azsukvintegrationtest001"
+$fdn_prfl_nme = "azsu-frontdoor-integration-apim-dev-001"
+$kv_cert_nme = "FieldopsApimFdnTestCert"
+
+
+az afd secret create -g $rg --profile-name $fdn_prfl_nme --secret-name $kv_cert_nme  --use-latest-version true --secret-source /subscriptions/$sub_id/resourceGroups/azsu-rg-Integration-Test-001/providers/Microsoft.KeyVault/vaults/$kv_nme/secrets/$kv_cert_nme --use-latest-version true
+
+
+=====================================================================================
+
+KV cert pfx file import
+
+$cert_nme = "FieldopsApimFdnTestCert"
+$cert_path = "$(System.DefaultWorkingDirectory)/_NFR-Repo/NFR-Security/KV-Cert-Import/api.test.fieldops.pfx"
+$cert_path
+az keyvault certificate import --vault-name "azsukvintegrationtest001" -n $cert_nme -f $cert_path --password "$(Kv-Cert-pfx-pwd)"
+================================================
+enable Kv Cert
+======================
+$cert_nme = "FieldopsApimFdnTestCert"
+$cert_nme1 = "fieldopsnonprod"
+
+
+az keyvault certificate set-attributes -n $cert_nme --vault-name "azsukvintegrationtest001" --enabled true
+
+az keyvault certificate set-attributes -n $cert_nme1 --vault-name "azsukvintegrationtest001" --enabled false
+==================================================================================
+Attach KV cert into Frontdoor Secret-Test
+
+$sub_id = "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$rg = "azsu-rg-Integration-Test-001"
+$kv_nme = "azsukvintegrationtest001"
+$fdn_prfl_nme = "azsu-frontdoor-integration-apim-test-001"
+$kv_cert_nme = "fieldopsnonprod"
+
+
+az afd secret create -g $rg --profile-name $fdn_prfl_nme --secret-name $kv_cert_nme --secret-source /subscriptions/$sub_id/resourceGroups/$rg/providers/Microsoft.KeyVault/vaults/$kv_nme/secrets/$kv_cert_nme --use-latest-version true
+
+============================================================================
+
+Update FDN Custom domain Cert-Dev
+
+$rg = "azsu-rg-integration-dev-001"
+$fdn_prfl_nme = "azsu-frontdoor-integration-apim-dev-001"
+$kv_cert_nme = "fieldopsnonprod"
+$cust_dmn = "api-pilot.dev.fieldops.centrica.com"
+$cust_dmn = $cust_dmn.replace(".","-")
+
+az afd custom-domain update -g $rg --custom-domain-name $cust_dmn --profile-name $fdn_prfl_nme --certificate-type CustomerCertificate --secret $kv_cert_nme
+
+=======================================================================
+
+Update multiple FDN Custom domain Cert-Test-Fit04
+
+
+$rg = "azsu-rg-Integration-Test-001"
+$fdn_prfl_nme = "azsu-frontdoor-integration-apim-test-001"
+$kv_cert_nme = "FieldopsApimFdnTestCert"
+$cust_dmn_lst = @("api.test.fieldops.centrica.com",
+"api-developer.test.fieldops.centrica.com",
+"api-management.test.fieldops.centrica.com",
+"api-fit01.test.fieldops.centrica.com",
+"api-management-fit01.test.fieldops.centrica.com",
+"api-developer-fit01.test.fieldops.centrica.com",
+"api-developer-fit02.test.fieldops.centrica.com",
+"api-fit02.test.fieldops.centrica.com",
+"api-management-fit02.test.fieldops.centrica.com",
+"api-management-fit03.test.fieldops.centrica.com",
+"api-fit03.test.fieldops.centrica.com",
+"api-developer-fit03.test.fieldops.centrica.com",
+"api-management-fit04.test.fieldops.centrica.com",
+"api-fit04.test.fieldops.centrica.com",
+"api-developer-fit04.test.fieldops.centrica.com")
+
+$cust_dmn_cnvtd_lst = @()
+
+$cust_dmn_lst | ForEach{
+ $cust_dmn_cnvtd_lst += $_.Replace(".","-")
+}
+$cust_dmn_cnvtd_lst
+
+foreach($cust_dmn in $cust_dmn_cnvtd_lst)
+{
+Write-Host "updating Custom certficate for the cust_dmn is $cust_dmn"
+az afd custom-domain update -g $rg --custom-domain-name $cust_dmn --profile-name $fdn_prfl_nme --certificate-type CustomerCertificate --secret $kv_cert_nme
+}
+
+
+=================
+Dev
+$rg = "azsu-rg-integration-dev-001"
+$fdn_prfl_nme = "azsu-frontdoor-integration-apim-dev-001"
+$kv_cert_nme = "FieldopsApimFdnTestCert"
+$cust_dmn_lst = @("api-developer.dev.fieldops.centrica.com",
+"api-management.dev.fieldops.centrica.com",
+"api.dev.fieldops.centrica.com")
+
+$cust_dmn_cnvtd_lst = @()
+
+$cust_dmn_lst | ForEach{
+ $cust_dmn_cnvtd_lst += $_.Replace(".","-")
+}
+$cust_dmn_cnvtd_lst
+
+foreach($cust_dmn in $cust_dmn_cnvtd_lst)
+{
+Write-Host "updating Custom certficate for the cust_dmn is $cust_dmn"
+az afd custom-domain update -g $rg --custom-domain-name $cust_dmn --profile-name $fdn_prfl_nme --certificate-type CustomerCertificate --secret $kv_cert_nme
+}
+
+================================================================================
+Update-Gateway-APIM-Custom-Dns - Dev
+
+
+$rg = "azsu-rg-integration-dev-001"
+$apim_nme = "fieldopsdev001"
+
+$hostConfiguration = '[{\"hostName\":\"api-developer.dev.fieldops.centrica.com\",\"type\":\"DeveloperPortal\",\"keyVaultId\":\"https:\/\/azsukvintegrationtest001.vault.azure.net\/secrets\/FieldopsApimFdnTestCert\/f1c84b701e934687a9c7659c1d678ede\"},{\"hostName\":\"api-management.dev.fieldops.centrica.com\",\"type\":\"Management\",\"keyVaultId\":\"https:\/\/azsukvintegrationtest001.vault.azure.net\/secrets\/FieldopsApimFdnTestCert\/f1c84b701e934687a9c7659c1d678ede\"},{\"hostName\":\"api.dev.fieldops.centrica.com\",\"type\":\"Proxy\",\"keyVaultId\":\"https:\/\/azsukvintegrationtest001.vault.azure.net\/secrets\/FieldopsApimFdnTestCert\/f1c84b701e934687a9c7659c1d678ede\"}]'
+
+az apim update --name $apim_nme --resource-group $rg --set hostnameConfigurations=$hostConfiguration

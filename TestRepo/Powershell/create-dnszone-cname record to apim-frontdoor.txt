@@ -1,0 +1,116 @@
+
+$region = Global
+$type = ExternalDNS
+$Site = External
+$RecordType = CNAME
+$DnsRecords = "api.fieldopspoc.centrica.com"
+$rg = "azsu-rg-devops-nfr-poc-001"
+-------------------------------------------------------------------n
+remove frontdoor
+az extension add --name front-door
+az network front-door delete --name "frontdoor-integration-apim-test" --resource-group "azsu-rg-integration-test-001"
+
+az network front-door delete --name "frontdoor-integration-apim-preprod001" --resource-group "azsu-rg-integration-test-001"
+
+az network front-door delete --name "frontdoor-integration-apim-preprod001" --resource-group "azsu-rg-Integration-preprod-001"
+
+Remove-AzFrontDoor -Name "frontdoor-integration-apim-fit001" -ResourceGroupName "azsu-rg-Integration-FIT-001"
+Remove-AzFrontDoor -Name "frontdoor-integration-apim-fit001" -ResourceGroupName "azsu-rg-Integration-FIT-001"
+---------------------------------------------------------
+$ipaddres = "frontdoor-integration-apim-test.FQDN"
+
+New-AzDnsRecordSet -Name "www" -RecordType A -ZoneName "centrica.com" -ResourceGroupName "MyResourceGroup" -Ttl 3600 -DnsRecords (New-AzDnsRecordConfig -IPv4Address "1.2.3.4")
+
+New-AzDnsZone -Name "centrica.com" -ResourceGroupName "azsu-rg-devops-nfr-poc-001"
+
+New-AzDnsRecordSet -Name "api.fieldopspoc" -RecordType CNAME -ZoneName "centrica.com" -ResourceGroupName "azsu-rg-devops-nfr-poc-001" -Ttl 3600 -DnsRecords (New-AzDnsRecordConfig -Cname "api.fieldopspoc.centrica.com")
+
+New-AzDnsRecordSet -Name "api.fieldopspoc" -RecordType CNAME -ZoneName "centrica.com" -ResourceGroupName "azsu-rg-devops-nfr-poc-001" -Ttl 3600 -DnsRecords (New-AzDnsRecordConfig -Cname "testpoc.com")
+
+
+azsu-rg-devops-nfr-poc-001
+
+-frontDoorName "frontdoor-integration-apim-test" -backendAddress "fieldopstest001.azure-api.net"
+
+
+
+
+azsu-rg-integration-test-001
+
+Rg - azsu-rg-integration-test-001
+
+azsu-frontdoor-integration-apim-test-001
+fieldopstest001.azure-api.net
+frontdoor fqdn : azsu-frontdoor-integration-apim-test-001.azurefd.net
+------------------------------------------------------------
+azsu-rg-Integration-FIT-001
+fieldopsfit001
+fieldopsfit001.azure-api.net
+frontdoor-integration-apim-fit001
+--------------------------------------------------------
+azsu-rg-integration-preprod-001
+rg preprod - 
+ apim resorc - fieldopspreprod001
+ fieldopspreprod001.azuazsu-rg-Integration-preprod-001re-api.net
+azsu-frontdoor-integration-apim-preprod-001
+azsu-frontdoor-integration-apim-preprod-001.azurefd.net
+-------------------------------------------------------
+prod service connection - Centrica-SP-SIPD-PROD
+subscription - sipdprod (ddd6ff1a-5861-4df0-b881-6bcf598a426b)
+rg - azsu-rg-Integration-prod-001
+apim - fieldopsprod001.azure-api.net
+
+azsu-frontdoor-integration-apim-prod-001.azurefd.net
+
+
+----------------------
+api-fit-pilot.test.fieldops.centrica.com
+$dnsrecord_list = @( "api-fit-pilot.test.fieldops","api-portal.test.fieldops",
+"api-developer.test.fieldops",
+"api-management.test.fieldops",
+"api-scm.test.fieldops"
+)
+foreach ($dns in $dnsrecord_list)
+{
+echo " creating dns record $dns"
+New-AzDnsRecordSet -Name $dns -RecordType CNAME -ZoneName "centrica.com" -ResourceGroupName "azsu-rg-integration-test-001" -Ttl 3600 -DnsRecords (New-AzDnsRecordConfig -Cname "frontdoor-integration-apim-test001.azurefd.net")
+}
+
+
+service connection name Centrica-SP-SIPD-PreProd
+
+List of Cname record
+
+api.test.fieldops.centrica.com
+api-pilot.test.fieldops.centrica.com
+api-portal.test.fieldops.centrica.com
+api-developer.test.fieldops.centrica.com
+api-management.test.fieldops.centrica.com
+api-scm.test.fieldops.centrica.com
+
+frontend point: frontdoor-integration-apim-test001.azurefd.net
+
+                frontdoor-integration-apim-fit001.azurefd.net
+				
+
+-----------------------------------------------------------------------------------------------------------
+Removal:
+
+$RecordSet = Get-AzDnsRecordSet -Name "api.test.fieldops" -ResourceGroupName "azsu-rg-integration-test-001" -ZoneName "centrica.com"
+Remove-AzDnsRecordSet -RecordSet $RecordSet
+
+$RecordSet = Get-AzDnsRecordSet -Name "api.test.fieldops" -ResourceGroupName "azsu-rg-integration-test-001" -RecordType CNAME -ZoneName "centrica.com"
+Remove-AzDnsRecordSet -RecordSet $RecordSet
+
+
+$zone = Get-AzDnsZone -Name "centrica.com" -ResourceGroupName "azsu-rg-integration-test-001"
+Remove-AzDnsZone -Zone $zone
+
+Remove-AzDnsZone -Name "centrica.com" -ResourceGroupName "azsu-rg-integration-test-001"
+
+$RecordSet = Get-AzDnsRecordSet -Name "api.test.fieldops" -ResourceGroupName "azsu-rg-integration-test-001" -ZoneName "centrica.com"
+Remove-AzDnsRecordSet -RecordSet $RecordSet -y
+
+azcli
+
+az network dns zone delete -g "azsu-rg-integration-test-001" -n "centrica.com"

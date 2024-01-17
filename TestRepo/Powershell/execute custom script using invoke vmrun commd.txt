@@ -1,0 +1,13 @@
+via path
+
+ Set-AzContext -Subscription "4cea2edf-5276-4e08-9a65-dc0a256d9581"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Invoke-AzVMRunCommand -ResourceGroupName "azsu-rg-patchpoc-001" -Name "azsu-rdsvmA-nfrpoc-001" -CommandId 'RunPowerShellScript' -ScriptPath '$(System.DefaultWorkingDirectory)/_TestRepo/VM-Wndws/VM-CustomScrpts-Wndws/sconfigdisable.ps1' 
+====================================================================================
+inline script
+
+$rg = "azsu-rg-patchpoc-001"
+$vmnme = "azsu-rdsvmA-nfrpoc-001"
+
+az vm run-command invoke -g $rg -n $vmnme --command-id RunPowerShellScript --scripts "Start-Process -FilePath 'C:\Temp\postman.exe' -ArgumentList "/q /norestart" -Wait -NoNewWindow"
+

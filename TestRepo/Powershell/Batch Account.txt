@@ -1,0 +1,32 @@
+Batch account key and Create Batch poolid
+
+$Context = Get-AzBatchAccountKey -AccountName "azsubatchrosterd033" -ResourceGroupName "azsu-rg-rostering-dev-009"
+$imageReference = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSImageReference" -ArgumentList @("WindowsServer", "MicrosoftWindowsServer", "2016-Datacenter", "*")
+$configuration = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSVirtualMachineConfiguration" -ArgumentList @($imageReference, "batch.node.windows amd64","Zonal")
+New-AzBatchPool -Id "MyPool" -VirtualMachineSize "STANDARD_D1_V2" -VirtualMachineConfiguration $configuration -TargetDedicatedComputeNodes 3 -BatchContext $Context
+=======================================================================================
+batch pool creation
+
+$nodeagentskuid = batch.node.windows amd64
+
+"\"batch.node.windows amd64\""
+
+az batch pool create --id MyPool --vm-size STANDARD_D1_V2 --account-name azsubatchrosterd033 --target-dedicated-nodes 3 --node-agent-sku-id "\"batch.node.windows amd64\"" --account-key WBzYbKcXFHvIUwMINJzNIuIBwXQj5bZGD5pHOwiw9hNG/6fK+WpYd3EFyjzgE3AEcPP+5xhlGosBUx/IWn3w9g== --image MicrosoftWindowsServer:WindowsServer:2016-Datacenter:latest --policy zonal
+
+=============================================================================
+
+Get Auto scale formula
+
+$windowsAutoScaleFormula = Get-Content -Path ("D:/a/r1/a/SIPD-HA/BatchAccount/ARM-Templates/windowspool.txt") -Raw
+
+Write-Output("##vso[task.setvariable variable=windowsAutoScaleFormula;]$windowsAutoScaleFormula")
+
+Write-Output("$windowsAutoScaleFormula")
+
+
+=========================================================================
+
+az batch account login --name azsubatchrosterd033 --resource-group azsu-rg-rostering-dev-009
+
+az batch pool create --json-file  "D:/a/r1/a/SIPD-HA/BatchAccount/ARM-Templates/pool.json"
+

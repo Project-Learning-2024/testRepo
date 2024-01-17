@@ -1,0 +1,5 @@
+cd
+cd
+cd
+dir
+Invoke-AzVMRunCommand -ResourceGroupName "azsu-rg-Integration-Test-001" -Name "azsu-rdsvmA-integration-test-001" -CommandId 'RunPowerShellScript' -ScriptPath '.\agent.ps1' -Parameter @{"tokn" = "$(tokn)";"vmuser" = "$(vmusername)";"vmpass" = "$(windowsLogonPassword)";"url" = "$(orgurl)";"agentpoolname" = "$(agentpoolname)" ; "softwarepath" = "$(softwarepath)"}

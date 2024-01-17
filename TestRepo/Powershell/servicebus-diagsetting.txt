@@ -1,0 +1,11 @@
+$rg = "azsu-rg-we-test-001"
+$sb_nme = "ukf-we-sb-cptest2-01"
+$diag_sttng_nme = "AzureServiceBusDiagnoticsLogsToWorkspace"
+$metric = @()
+$log = @()
+$category_list = Get-AzDiagnosticSettingCategory -ResourceId "/subscriptions/ef8cfd30-5d36-4db7-94b1-b756c8f9b67c/resourceGroups/$rg/providers/Microsoft.ServiceBus/namespaces/$sb_nme"
+
+$category_list | ForEach-Object {if($_.CategoryType -eq "Metrics"){$metric+=New-AzDiagnosticSettingMetricSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false} else{$log+=New-AzDiagnosticSettingLogSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false}}
+
+
+New-AzDiagnosticSetting -Name $diag_sttng_nme -ResourceId "/subscriptions/ef8cfd30-5d36-4db7-94b1-b756c8f9b67c/resourceGroups/$rg/providers/Microsoft.ServiceBus/namespaces/$sb_nme" -WorkspaceId "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001" -Log $log -Metric $metric

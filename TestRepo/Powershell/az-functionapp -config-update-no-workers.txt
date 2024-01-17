@@ -1,0 +1,16 @@
+az account set --subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$rg = "azsu-rg-integration-fitcopy-001"
+$FA_list = @( "azsu-fa-integrationwrapper-fitcopy001",
+"azsu-fa-integration-statuschange-fitcopy001",
+"azsu-fa-integration-productspublisher-fitcopy001",
+"azsu-fa-integration-partsorderstatus-fitcopy001",
+"azsu-fa-integration-channelrouting-fitcopy001" )
+foreach($FA in $FA_list){
+Write-Host "Updating FTPS $FA"
+az functionapp config set -g "$rg" -n "$FA" --ftps-state=Disabled
+}
+
+
+
+
+az functionapp config set -g "azsu-rg-es-dev-001" -n "azsu-fa-nfr-poc-002" --number-of-workers=2

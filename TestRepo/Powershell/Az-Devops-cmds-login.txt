@@ -1,0 +1,11 @@
+az version
+ az extension add --name azure-devops
+ az devops configure --defaults organization=https://dev.azure.com/contoso project=ContosoWebApp
+ 
+ https://dev.azure.com.mcas.ms/FieldPlatform/CustomDelivery/_wiki/wikis/CustomDelivery.wiki/2915/Releases
+ 
+ 
+  az devops configure --defaults organization=https://dev.azure.com.mcas.ms/FieldPlatform/
+  
+ 
+az devops wiki page show --path 'my wiki' --wiki 'CustomDelivery.wiki' --content "DevOps"

@@ -1,0 +1,3 @@
+az account set -s "4cea2edf-5276-4e08-9a65-dc0a256d9581"
+az provider register --namespace 'Microsoft.ApiManagement'
+

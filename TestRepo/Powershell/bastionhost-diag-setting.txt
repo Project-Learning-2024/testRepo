@@ -1,0 +1,17 @@
+$subid = "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$rg = "$(RG)"
+$bstn_hstnme = "$(bstn_hstnme)"
+$diag_sttng_nme = "AzureBastionDiagnosticLogsToWorkspace"
+$resrc_id = "/subscriptions/$subid/resourcegroups/$rg/providers/Microsoft.Network/bastionHosts/$bstn_hstnme"
+
+$devtest_wrkspce = "azsu-d-law-sipd-001"
+$wrkspce_id = "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/$devtest_wrkspce"
+
+$metric = @()
+$log = @()
+$category_list = Get-AzDiagnosticSettingCategory -ResourceId $resrc_id
+
+$category_list | ForEach-Object {if($_.CategoryType -eq "Metrics"){$metric+=New-AzDiagnosticSettingMetricSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false} else{$log+=New-AzDiagnosticSettingLogSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false}}
+
+
+New-AzDiagnosticSetting -Name $diag_sttng_nme -ResourceId $resrc_id -WorkspaceId $wrkspce_id -Log $log -Metric $metric

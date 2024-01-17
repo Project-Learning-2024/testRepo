@@ -1,0 +1,2 @@
+az sql server advanced-threat-protection-setting update -g "azsu-rg-nfrpoc-001" -n "azsusqlservercapmannfrt234" --state Enabled
+

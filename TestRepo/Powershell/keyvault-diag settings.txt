@@ -1,0 +1,9 @@
+$rg = "azsu-rg-forecast-dev-001"
+$kv_nme = "docsws3705160343"
+$diag_sttng_nme = "AzureKeyVaultDiagnosticsLogsToWorkspace"
+$metric = @()
+$log = @()
+$category_list = Get-AzDiagnosticSettingCategory -ResourceId "/subscriptions/03ad5432-23cc-4682-a641-85e5b92d6485/resourceGroups/$rg/providers/Microsoft.KeyVault/vaults/$kv_nme"
+$category_list | ForEach-Object {if($_.CategoryType -eq "Metrics"){$metric+=New-AzDiagnosticSettingMetricSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false} else{$log+=New-AzDiagnosticSettingLogSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false}}
+
+New-AzDiagnosticSetting -Name $diag_sttng_nme -ResourceId "/subscriptions/03ad5432-23cc-4682-a641-85e5b92d6485/resourceGroups/$rg/providers/Microsoft.KeyVault/vaults/$kv_nme" -WorkspaceId "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001" -Log $log -Metric $metric

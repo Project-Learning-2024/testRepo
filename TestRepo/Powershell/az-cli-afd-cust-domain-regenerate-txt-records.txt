@@ -1,0 +1,36 @@
+_dnsauth.api-nfr-poc.centrica.com
+
+0zjrrhf3q9wk22qgs9jfrj45nmr677gy
+
+j5r46d1jjdf23b02clrzd5nyqlgytlvf
+
+_dnsauth.api-poc01.test.fieldops.centrica.com
+
+09xj690gkv9mhh5kr5wyt33b62dlmhkh
+
+az afd custom-domain list -g "azsu-rg-patchpoc-001" --profile-name "azfrontdoor-patchpoc-001" --query "[? contains(name,'nfr')].{Name:name}" -o tsv
+
+$rg = "azsu-rg-patchpoc-001"
+$afd_nme = "azfrontdoor-patchpoc-001"
+$cust_dmn_lst = @( "api-nfr-poc.centrica.com",
+"api-poc01.test.fieldops.centrica.com" )
+
+foreach($cust_dmn in $cust_dmn_lst){
+Write-Host "Regenerating Txt records for $cust_dmn"
+
+az afd custom-domain regenerate-validation-token -g $rg --profile-name $afd_nme --custom-domain-name $cust_dmn
+}
+
+
+$cust_dmn_lst = @( "api-pilot-fit04-test-fieldops-centrica-com",
+"api-scm-fit04-test-fieldops-centrica-com",
+"api-developer-fit04-test-fieldops-centrica-com",
+"api-portal-fit04-test-fieldops-centrica-com",
+"api-management-fit04-test-fieldops-centrica-com",
+"api-fit04-test-fieldops-centrica-com" )
+
+$cust_dmn_cnvtd_lst = @()
+$cust_dmn_lst | ForEach{
+ $cust_dmn_cnvtd_lst += $_.Replace(".","-")
+}
+$cust_dmn_cnvtd_lst

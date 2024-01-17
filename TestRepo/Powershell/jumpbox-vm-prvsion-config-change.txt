@@ -1,0 +1,98 @@
+Generate SAS
+
+ Set-AzContext -Subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$StorageAccountName = "azsurgnfrpocaspep018c9a"
+ $StorageAccountContext = (Get-AzStorageAccount | Where-Object{$_.StorageAccountName -eq $StorageAccountName}).Context
+ $StorageContainerName = "tools"
+
+ $StartTime = Get-Date
+ $EndTime = (Get-Date).AddHours(4)
+$SASURI = New-AzStorageContainerSASToken -Name $StorageContainerName -Context $StorageAccountContext -Permission "rl" -Protocol HttpsOnly -StartTime $StartTime -ExpiryTime $EndTime
+
+Write-host $SASURI
+$SAS = $SASURI
+Write-Output("##vso[task.setvariable variable=SAS;]$SAS")
+Write-Output("$SAS")
+
+=================================================
+
+Genreate Random pwd
+
+$kvnme = "azsu-kv-nfrpoc-003"
+
+$RandomString = -join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | ForEach-Object {[char]$_})
+$pwd = -join("Sipd@",$RandomString)
+
+$Secure_value = ConvertTo-SecureString $pwd -AsPlainText -Force
+$secret = Set-AzKeyVaultSecret -VaultName $kvnme -Name "rdssuprusrpwd" -SecretValue $Secure_value
+
+==================================================
+
+invoke cmd
+
+ Set-AzContext -Subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Invoke-AzVMRunCommand -ResourceGroupName "azsu-rg-nfrpoc-aspep-01" -Name "azsu-rdsvmA-nfrpoc-009" -CommandId 'RunPowerShellScript' -ScriptString 'Add-WindowsCapability -Online -Name ServerCore.AppCompatibility~~~~0.0.1.0'
+
+=============================================================
+
+install ado agent
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vm_nme = "azsu-rdsvmA-nfrpoc-009"
+Invoke-AzVMRunCommand -ResourceGroupName $rg -Name $vm_nme -CommandId 'RunPowerShellScript' -ScriptPath '$(System.DefaultWorkingDirectory)/_TestRepo/VM-Wndws/VM-CustomScrpts-Wndws/Install-ADO-Agent/Install-ADO-Agent.ps1' -Parameter @{"tokn" = "$(Adoagentpat)";"vmuser" = "$(vmusername)";"vmpass" = "$(rdssuprusrpwd)";"url" = "$(orgurl)";"agentpoolname" = "$(agentpoolname)"}
+
+=======================================================================
+Update VM Auto-shutdown config
+
+Set-AzContext -Subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+
+$rg = "azsu-rg-Integration-Test-001"
+$vm_nme = "azsu-rdsvmA-integration-test-001"
+$schdl_nme = "shutdown-computevm-$vm_nme"
+$mail_grp = "sipdnfrsec@centricaplc.onmicrosoft.com"
+$Resource = Get-AzResource -ResourceType "Microsoft.DevTestLab/schedules" -ResourceGroupName $rg -ResourceName $schdl_nme
+$Resource.Properties.notificationSettings.emailRecipient=$mail_grp
+$Resource | Set-AzResource -Force
+
+#$Resource.Properties.dailyRecurrence.time=1800
+#$Resource.Properties.notificationSettings.timeInMinutes=30
+#$Resource.Properties.status=Enabled
+
+
+==================================================================
+post deployment task - Create local vm user  - Not wroking
+
+ Set-AzContext -Subscription "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$usr_lanid = "rj00s"
+$intlpwd = "Sipd@2023"
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vm_nme = "azsu-rdsvmA-nfrpoc-009"
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Invoke-AzVMRunCommand -ResourceGroupName $rg -Name $vm_nme -CommandId 'RunPowerShellScript' -ScriptString 'net user $usr_lanid $intlpwd  /ADD'
+Invoke-AzVMRunCommand -ResourceGroupName $rg -Name $vm_nme -CommandId 'RunPowerShellScript' -ScriptString 'net localgroup "Remote Desktop Users" $usr_lanid  /add'
+
+
+=============================================
+
+Remove VM
+az account set -s "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347"
+$vm_nme = "azsu-rdsvm-integration-test-001"
+$rg = "azsu-rg-Integration-Test-001"
+$nicnme = "azsu-nic-integration-test-001"
+az network nic update -g $rg --name $nicnme --remove networkSecurityGroup
+az vm delete -g $rg -n $vm_nme --yes
+
+===========================================================
+Enable VM Autoshutdown Config
+
+$rg = "azsu-rg-nfrpoc-aspep-01"
+$vm_nme = "azsu-rdsvmA-nfrpoc-009"
+$mail_grp = "vm-test-grp@centricaplc.onmicrosoft.com"
+
+
+az vm auto-shutdown -g $rg -n $vm_nme --time "19:00" --email $mail_grp
+
+
+

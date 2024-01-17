@@ -1,0 +1,26 @@
+RoleAssign_azsufaintcomms_ServiceBus
+
+$FA_List = @( "azsufaintcommsfit03","azsufaintpartsorderfit03","azsufaintpartorderstatsfit03","azsufaintwostatusfit03","azsufaintwowrapperfit03","azsufaintdedltrpurgerfit03","azsufaintsbdedleteretryfit03")
+foreach($FA in $FA_List){
+Write-Host "Function app name $FA"
+$ID = (Get-AzResource -Name $FA  -ResourceType Microsoft.Web/sites).Identity.PrincipalId
+New-AzRoleAssignment -ObjectId $ID -Scope "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-Integration-FIT-003/providers/Microsoft.ServiceBus/namespaces/azsu-sb-integration-fit-003" -RoleDefinitionName "Azure Service Bus Data Owner"
+}
+
+=========================================
+
+storage
+
+$resourceName= "azsufaintworkdayfit01"
+$ID = (Get-AzResource -Name $resourceName  -ResourceType Microsoft.Web/sites).Identity.PrincipalId
+
+New-AzRoleAssignment -ObjectId $ID -Scope "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-fit-001/providers/Microsoft.Storage/storageAccounts/azsusaintegrationfit01" -RoleDefinitionName "Storage Blob Data Contributor"
+
+===================================
+cosmosdb
+$resourceName= "azsufaintworkdaytst01"
+$ID = (Get-AzResource -Name $resourceName  -ResourceType Microsoft.Web/sites).Identity.PrincipalId
+
+New-AzRoleAssignment -ObjectId $ID -Scope "/subscriptions/c678f6a4-dcf2-44d6-bb9c-8773dc2ff347/resourceGroups/azsu-rg-integration-test-001/providers/Microsoft.DocumentDB/databaseAccounts/azsudbintworkdaytest01" -RoleDefinitionName "Contributor"
+======================================================
+

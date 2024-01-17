@@ -1,0 +1,23 @@
+$apimResourceId = az apim show -n ${APIMNAME} -g ${RESOURCE_GROUP} --query 'id' -o json
+
+$subnetResourceId = az network vnet subnet show -g ${RESOURCE_GROUP} -n apim --vnet-name ${VNETNAME} --query 'id' -o json
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkConfiguration.subnetResourceId=$subnetResourceId
+
+
+$apimResourceId = az apim show -n ${APIMNAME} -g ${RESOURCE_GROUP} --query 'id' -o json
+
+$subnetResourceId = az network vnet subnet show -g ${RESOURCE_GROUP} -n apim --vnet-name ${VNETNAME} --query 'id' -o json
+
+$pubip_address = az network public-ip show -g $rg -n $pubip_nme --query 'ipAddress'
+ $pubip_address = az network public-ip show -g $rg -n $pubip_nme --query 'id'
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkType="External" properties.virtualNetworkConfiguration.subnetResourceId=$subnetResourceId properties.publicIpAddressId=$pubip_address
+
+$pubip_nme = "azsu-pubIP-nfrpoc-001"
+
+az network public-ip show -g MyResourceGroup -n MyIp
+
+
+az resource update --ids $apimResourceId --set properties.virtualNetworkType="External" properties.virtualNetworkConfiguration.subnetResourceId=$subnetResourceId properties.publicIpAddressId=$pubip_address
+

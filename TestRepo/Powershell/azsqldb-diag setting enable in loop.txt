@@ -1,0 +1,23 @@
+service principle issue aman told will come to ur area
+
+time wave api
+
+
+
+$rg = "azsu-rg-datamigration-preprod-001"
+$server_nme = "azsusqlserverdatamigrationpre001"
+
+$db_nme_list = @( "azsusqldbdatamigrationpre001" )
+
+$diag_sttng_nme = "AzureSqldbDiagnoticsLogsToWorkspace"
+$metric = @()
+$log = @()
+$db_tmplte = "azsusqldbdatamigrationpre001"
+$category_list = Get-AzDiagnosticSettingCategory -ResourceId "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/$rg/providers/Microsoft.Sql/servers/$server_nme/databases/$db_tmplte"
+
+$category_list | ForEach-Object {if($_.CategoryType -eq "Metrics"){$metric+=New-AzDiagnosticSettingMetricSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false} else{$log+=New-AzDiagnosticSettingLogSettingsObject -Enabled $true -Category $_.Name -RetentionPolicyEnabled $false}}
+
+foreach($db_nme in $db_nme_list){
+Write-Host "Updating diag setting $db_nme"
+New-AzDiagnosticSetting -Name $diag_sttng_nme -ResourceId "/subscriptions/623fbf80-a26a-4955-a8b6-f602a56cb50f/resourceGroups/$rg/providers/Microsoft.Sql/servers/$server_nme/databases/$db_nme" -WorkspaceId "/subscriptions/a2a057a9-c6d7-42cf-b5eb-c7b69aad9042/resourcegroups/azsu-rg-coreloganalyticsprod-sipd-001/providers/microsoft.operationalinsights/workspaces/azsu-d-law-sipd-001" -Log $log -Metric $metric
+}

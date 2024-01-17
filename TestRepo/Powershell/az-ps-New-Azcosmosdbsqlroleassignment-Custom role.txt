@@ -1,0 +1,26 @@
+
+As Microsoft team confirmed, we cannot see those data roles in azure portal for cosmosdb. only via powershell script able to see and get assigned further
+MS# - 2303310030000996
+
+MS - document link recommended
+https://learn.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac?WT.mc_id=Portal-Microsoft_Azure_Security#built-in-role-definitions
+
+Below is the working commands to do custom role assignment 
+
+$resourceGroupName = "azsu-rg-forecast-prod-001"
+$accountName = "azsucosmosdbsqlforecastprod"
+$CustomRoleDefinitionId = "00000000-0000-0000-0000-000000000002"
+$principalId = ""
+
+New-AzCosmosDBSqlRoleAssignment -AccountName $accountName -ResourceGroupName $resourceGroupName -RoleDefinitionId $CustomRoleDefinitionId -Scope "/" -PrincipalId $principalId
+
+
+Reason for Role assignment
+
+Enforce to use Managed Identity for Cosmos DB accounts
+
+US - 168305
+US - 174894
+
+
+

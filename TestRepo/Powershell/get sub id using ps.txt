@@ -1,0 +1,14 @@
+#Get Subscription ID
+$resourceGroupObject = Get-AzResourceGroup -Name $ResourceGroupName
+$subscriptionRegex = '(?<=\/subscriptions\/)[^\/]+'
+$matched = [regex]::Matches($resourceGroupObject.ResourceId.ToString(), $subscriptionRegex)
+$subscriptionId = $matched[0].Value
+
+
+--------------------------------------------------------------
+
+another method
+
+$splt_subid = (Get-AzResourceGroup -Name $ResourceGroupName).ResourceId.Split("/")
+
+$Subid = $splt_subid[2]

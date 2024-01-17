@@ -1,0 +1,1 @@
+Get-AzPolicyDefinition -SubscriptionId "c678f6a4-dcf2-44d6-bb9c-8773dc2ff347" -Builtin | Where-Object {$_.Name -eq "ff25f3c8-b739-4538-9d07-3d6d25cfb255"}
